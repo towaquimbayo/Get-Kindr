@@ -18,10 +18,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         {/* Show data */}
-        <p>{!data ? 'Loading...' : data}</p>
+        <p className='text-8xl font-bold'>{!data ? 'Loading...' : data}</p>
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
+        <p className='text-pink-400'>
           Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <p className='text-blue-400 text-5xl m-6'>
+          If this is blue, Tailwind is working!
         </p>
         
         <a
