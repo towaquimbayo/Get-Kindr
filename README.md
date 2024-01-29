@@ -10,7 +10,7 @@ cd backend && flask run -p 5001
 ```
 4) Open another terminal and run:
 ```
-cd frontend && npm i && npm start
+cd frontend && npm i && npm run dev
 ```
 5) Enjoy!
 

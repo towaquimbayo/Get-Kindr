@@ -6,4 +6,4 @@ CORS(app)
 
 @app.route("/")
 def hello_kindr():
-    return {"message": "Hello KINDR!"}
+    return {"message": "Backend is working!"}
