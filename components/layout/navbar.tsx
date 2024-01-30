@@ -26,8 +26,8 @@ export default function NavBar({ session }: { session: Session | null }) {
             <Image
               src="/kindr_logo.png"
               alt="KINDR logo"
-              width="30"
-              height="30"
+              width="96"
+              height="96"
               className="mr-2 rounded-sm"
             ></Image>
           </Link>
