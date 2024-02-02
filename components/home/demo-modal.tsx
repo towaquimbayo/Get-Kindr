@@ -30,7 +30,7 @@ const DemoModal = ({
           </a>
           <h3 className="font-display text-2xl font-bold">Precedent</h3>
           <p className="text-sm text-gray-500">
-            Precedent is an opinionated collection of components, hooks, and
+            KINDR is an opinionated collection of components, hooks, and
             utilities for your Next.js project.
           </p>
         </div>

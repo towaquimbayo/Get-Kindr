@@ -126,7 +126,7 @@ const features = [
   {
     title: "One-click Deploy",
     description:
-      "Jumpstart your next project by deploying Precedent to [Vercel](https://vercel.com/) in one click.",
+      "Jumpstart your next project by deploying KINDR to [Vercel](https://vercel.com/) in one click.",
     demo: (
       <a href={DEPLOY_URL}>
         <Image
@@ -142,7 +142,7 @@ const features = [
   {
     title: "Built-in Auth + Database",
     description:
-      "Precedent comes with authentication and database via [Auth.js](https://authjs.dev/) + [Prisma](https://prisma.io/)",
+      "KINDR comes with authentication and database via [Auth.js](https://authjs.dev/) + [Prisma](https://prisma.io/)",
     demo: (
       <div className="flex items-center justify-center space-x-20">
         <Image alt="Auth.js logo" src="/authjs.webp" width={50} height={50} />
@@ -153,7 +153,7 @@ const features = [
   {
     title: "Hooks, utilities, and more",
     description:
-      "Precedent offers a collection of hooks, utilities, and `@vercel/og`",
+      "KINDR offers a collection of hooks, utilities, and `@vercel/og`",
     demo: (
       <div className="grid grid-flow-col grid-rows-3 gap-10 p-10">
         <span className="font-mono font-semibold">useIntersectionObserver</span>
