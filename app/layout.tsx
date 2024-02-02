@@ -7,9 +7,9 @@ import Footer from "@/components/layout/footer";
 import { Suspense } from "react";
 
 export const metadata = {
-  title: "Precedent - Building blocks for your Next.js project",
+  title: "KINDR - Kindness is our currency",
   description:
-    "Precedent is the all-in-one solution for your Next.js project. It includes a design system, authentication, analytics, and more.",
+    "KINDR is a hub that connects volunteers with non-profit organizations, and rewards them for their efforts. Join the community and start making a difference today!",
   metadataBase: new URL("https://precedent.dev"),
   themeColor: "#FFF",
 };
