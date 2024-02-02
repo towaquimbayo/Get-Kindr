@@ -55,11 +55,11 @@ export default async function Home() {
         >
           <a
             className="group flex max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-5 py-2 text-sm text-white transition-colors hover:bg-white hover:text-black"
-            href={DEPLOY_URL}
+            href={"https://kindr-xi.vercel.app"}
             target="_blank"
             rel="noopener noreferrer"
           >
-            <svg
+            {/* <svg
               className="h-4 w-4 group-hover:text-black"
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -72,10 +72,10 @@ export default async function Home() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-            </svg>
-            <p>Deploy to Vercel</p>
+            </svg> */}
+            <p>Volunteer today!</p>
           </a>
-          <a
+          {/* <a
             className="flex max-w-fit items-center justify-center space-x-2 rounded-full border border-gray-300 bg-white px-5 py-2 text-sm text-gray-600 shadow-md transition-colors hover:border-gray-800"
             href="https://github.com/steven-tey/precedent"
             target="_blank"
@@ -86,7 +86,7 @@ export default async function Home() {
               <span className="hidden sm:inline-block">Star on</span> GitHub{" "}
               <span className="font-semibold">{nFormatter(stars)}</span>
             </p>
-          </a>
+          </a> */}
         </div>
       </div>
       <div className="my-10 grid w-full max-w-screen-xl animate-fade-up grid-cols-1 gap-5 px-5 md:grid-cols-3 xl:px-0">
