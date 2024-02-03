@@ -8,8 +8,13 @@ module.exports = {
   },
   theme: {
     extend: {
+      colors: {
+        primary: "#FF5656",
+        secondary: "#455A7C",
+        tertiary: "#41B5BD",
+      },
       fontFamily: {
-        display: ["var(--font-sf)", "system-ui", "sans-serif"],
+        display: ["var(--font-playfair)", "system-ui", "sans-serif"],
         default: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       animation: {
