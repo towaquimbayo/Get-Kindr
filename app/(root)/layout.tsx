@@ -1,3 +1,4 @@
+import Footer from "@/components/layout/footer";
 import Nav from "@/components/layout/nav";
 
 export default async function RootLayout({
@@ -11,6 +12,7 @@ export default async function RootLayout({
       <main className="flex min-h-screen w-full flex-col items-center justify-center py-32">
         {children}
       </main>
+      <Footer />
     </>
   );
 }

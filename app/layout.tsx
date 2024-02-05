@@ -2,8 +2,6 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import cx from "classnames";
 import { inter, playfairDisplay } from "./fonts";
-import Nav from "@/components/layout/nav";
-import Footer from "@/components/layout/footer";
 
 export const metadata = {
   title: "KINDR - Kindness is our currency",
@@ -22,7 +20,6 @@ export default async function RootLayout({
     <html lang="en">
       <body className={cx(inter.variable, playfairDisplay.variable)}>
         {children}
-        <Footer />
         <Analytics />
       </body>
     </html>
