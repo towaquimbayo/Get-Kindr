@@ -21,10 +21,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cx(inter.variable, playfairDisplay.variable)}>
-        <Nav />
-        <main className="flex min-h-screen w-full flex-col items-center justify-center py-32">
-          {children}
-        </main>
+        {children}
         <Footer />
         <Analytics />
       </body>

@@ -16,7 +16,7 @@ export default function NavBar({ session }: { session: Session | null }) {
       } z-30 transition-all`}
     >
       <div className="mx-5 my-1 flex min-h-16 w-full max-w-screen-xl items-center justify-between">
-        <Link href="/" className="flex items-center font-display text-2xl">
+        <Link href="/" className="flex items-center">
           <Image
             src="/kindr_logo.png"
             alt="KINDR logo"
