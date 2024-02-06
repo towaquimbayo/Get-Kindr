@@ -12,9 +12,9 @@ export default function Provider({
   return (
     <SessionProvider
       session={session}
-      basePath="/"
-      refetchInterval={5 * 60}
-      refetchOnWindowFocus={true}
+      // basePath="/"
+      // refetchInterval={5 * 60}
+      // refetchOnWindowFocus={true}
     >
       {children}
     </SessionProvider>
