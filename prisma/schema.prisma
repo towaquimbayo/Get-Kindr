@@ -50,6 +50,57 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  accountType   String
+  organization  Organization?
+  volunteer     Volunteer?
+}
+
+model Event {
+  id                String   @id @default(uuid())
+  name              String
+  description       String?
+  start_time        DateTime
+  end_time          DateTime
+  organization_id   String
+  organization      Organization @relation(fields: [organization_id], references: [id])
+  tags              String[]
+  address           String
+  city              String
+  recurring         Boolean
+  online            Boolean
+  token_bounty      Int
+  number_of_spots   Int
+  event_volunteers  EventVolunteer[]
+}
+
+model EventVolunteer {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  volunteerId String
+  volunteer Volunteer @relation(fields: [volunteerId], references: [id])
+  @@unique([eventId, volunteerId])
+}
+
+model Volunteer {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  bio             String
+  admin           Boolean
+  phoneNumber     String
+  volunteerEvents EventVolunteer[]
+  @@unique([userId])
+}
+
+model Organization {
+  id              String   @id @default(cuid())
+  organizationId  String
+  user            User     @relation(fields: [organizationId], references: [id])
+  name            String
+  description     String?
+  events          Event[]
+  @@unique([organizationId])
 }
 
 model VerificationToken {
