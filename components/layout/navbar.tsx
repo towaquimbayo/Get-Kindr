@@ -22,7 +22,7 @@ export default function NavBar({ session }: { session: Session | null }) {
             alt="KINDR logo"
             width="100"
             height="100"
-            objectFit="contain"
+            style={{ objectFit: "contain" }}
             className="mr-2"
           />
         </Link>

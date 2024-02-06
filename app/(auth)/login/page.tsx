@@ -25,7 +25,7 @@ export default function Login() {
             alt="KINDR logo"
             width="120"
             height="120"
-            objectFit="contain"
+            style={{ objectFit: "contain" }}
             className="mr-2"
           />
         </Link>
@@ -42,7 +42,7 @@ export default function Login() {
               alt="Google icon"
               width="25"
               height="25"
-              objectFit="contain"
+              style={{ objectFit: "contain" }}
               className="mr-2"
             />
             <span className="text-md hidden sm:flex">Sign in with Google</span>
@@ -57,7 +57,7 @@ export default function Login() {
               alt="Facebook icon"
               width="25"
               height="25"
-              objectFit="contain"
+              style={{ objectFit: "contain" }}
               className="mr-2"
             />
             <span className="text-md hidden sm:flex">
@@ -103,9 +103,8 @@ export default function Login() {
         <Image
           src="/auth-support-image.jpg"
           alt="2 females hug each other in support of each other."
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          style={{ objectFit: "cover", objectPosition: "center" }}
+          fill
         />
       </div>
     </div>
