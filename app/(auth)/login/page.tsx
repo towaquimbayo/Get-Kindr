@@ -4,22 +4,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import InputField from "@/components/layout/fields";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session && status === "authenticated") router.push("/");
+  }, [session, router, status]);
+
   return (
     <div className="flex h-full w-full">
-      <div className="flex w-2/3 flex-col items-center justify-center px-32">
+      <div className="m-auto flex  w-full max-w-screen-sm flex-col items-center justify-center px-4 lg:w-2/3">
         <Link href="/" className="mb-20 flex w-full">
           <Image
             src="/kindr_logo.png"
             alt="KINDR logo"
             width="120"
             height="120"
-            objectFit="contain"
+            style={{ objectFit: "contain" }}
             className="mr-2"
           />
         </Link>
-        <h1 className="mb-16 text-center font-display text-5xl font-bold">
+        <h1 className="mb-16 text-center font-display text-4xl font-bold md:text-5xl">
           Welcome back
         </h1>
         <div className="flex w-full rounded-lg border border-[#eaeaea]">
@@ -32,10 +42,10 @@ export default function Login() {
               alt="Google icon"
               width="25"
               height="25"
-              objectFit="contain"
+              style={{ objectFit: "contain" }}
               className="mr-2"
             />
-            <span className="text-md">Sign in with Google</span>
+            <span className="text-md hidden sm:flex">Sign in with Google</span>
           </div>
           <div className="my-4 border-r border-[#eaeaea]" />
           <div
@@ -47,10 +57,12 @@ export default function Login() {
               alt="Facebook icon"
               width="25"
               height="25"
-              objectFit="contain"
+              style={{ objectFit: "contain" }}
               className="mr-2"
             />
-            <span className="text-md">Sign in with Facebook</span>
+            <span className="text-md hidden sm:flex">
+              Sign in with Facebook
+            </span>
           </div>
         </div>
         <div className="my-10 flex w-full justify-between">
@@ -86,14 +98,13 @@ export default function Login() {
           </Link>{" "}
         </p>
       </div>
-      <div className="relative h-screen w-1/2">
+      <div className="relative hidden h-screen w-1/2 lg:flex">
         <div className="relative z-10 h-full w-full bg-black bg-opacity-30" />
         <Image
           src="/auth-support-image.jpg"
           alt="2 females hug each other in support of each other."
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          style={{ objectFit: "cover", objectPosition: "center" }}
+          fill
         />
       </div>
     </div>

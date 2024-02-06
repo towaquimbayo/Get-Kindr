@@ -1,5 +1,7 @@
 # KINDR
 
+(Outdated!) Just run `npm i`, then `npm run dev` to get it up and running!
+
 ### Development mode
 1) Clone the repo
 2) Open the repo in your favourite code editor

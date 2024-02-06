@@ -2,6 +2,9 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import cx from "classnames";
 import { inter, playfairDisplay } from "./fonts";
+import Provider from "@/components/shared/provider";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const metadata = {
   title: "KINDR - Kindness is our currency",
@@ -16,11 +19,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  if (session && session.user) {
+    console.log(`User signed in with email: ${session.user.email}`);
+  }
   return (
     <html lang="en">
       <body className={cx(inter.variable, playfairDisplay.variable)}>
-        {children}
-        <Analytics />
+        <Provider session={session}>
+          {children}
+          <Analytics />
+        </Provider>
       </body>
     </html>
   );
