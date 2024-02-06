@@ -4,8 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import InputField from "@/components/layout/fields";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from 'next/navigation'
 
 export default function Login() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  
+  useEffect(() => {
+    if (session) router.push("/");
+  }, [session, router]);
+
   return (
     <div className="flex h-full w-full">
       <div className="m-auto flex  max-w-screen-sm flex-col items-center justify-center px-4 w-full lg:w-2/3">
