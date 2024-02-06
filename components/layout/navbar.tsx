@@ -15,7 +15,7 @@ export default function NavBar({ session }: { session: Session | null }) {
         scrolled ? "bg-white/50 shadow-md backdrop-blur-xl" : "bg-white/0"
       } z-30 transition-all`}
     >
-      <div className="mx-5 my-1 flex min-h-16 w-full max-w-screen-xl items-center justify-between">
+      <div className="mx-5 my-1 flex h-16 min-h-16 w-full max-w-screen-xl items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
             src="/kindr_logo.png"
