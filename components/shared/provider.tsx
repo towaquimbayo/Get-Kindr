@@ -9,5 +9,14 @@ export default function Provider({
   children: React.ReactNode;
   session: any;
 }) {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+  return (
+    <SessionProvider
+      session={session}
+      basePath="/"
+      refetchInterval={5 * 60}
+      refetchOnWindowFocus={true}
+    >
+      {children}
+    </SessionProvider>
+  );
 }
