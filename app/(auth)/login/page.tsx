@@ -6,19 +6,19 @@ import { signIn } from "next-auth/react";
 import InputField from "@/components/layout/fields";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 export default function Login() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
-  
+
   useEffect(() => {
-    if (session) router.push("/");
-  }, [session, router]);
+    if (session && status === "authenticated") router.push("/");
+  }, [session, router, status]);
 
   return (
     <div className="flex h-full w-full">
-      <div className="m-auto flex  max-w-screen-sm flex-col items-center justify-center px-4 w-full lg:w-2/3">
+      <div className="m-auto flex  w-full max-w-screen-sm flex-col items-center justify-center px-4 lg:w-2/3">
         <Link href="/" className="mb-20 flex w-full">
           <Image
             src="/kindr_logo.png"
@@ -60,7 +60,9 @@ export default function Login() {
               objectFit="contain"
               className="mr-2"
             />
-            <span className="text-md hidden sm:flex">Sign in with Facebook</span>
+            <span className="text-md hidden sm:flex">
+              Sign in with Facebook
+            </span>
           </div>
         </div>
         <div className="my-10 flex w-full justify-between">
