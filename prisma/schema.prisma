@@ -95,12 +95,12 @@ model Volunteer {
 
 model Organization {
   id              String   @id @default(cuid())
-  organizationId  String
-  user            User     @relation(fields: [organizationId], references: [id])
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
   name            String
   description     String?
   events          Event[]
-  @@unique([organizationId])
+  @@unique([userId])
 }
 
 model VerificationToken {
