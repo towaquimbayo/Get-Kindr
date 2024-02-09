@@ -1,22 +1,44 @@
 "use client";
 
+import { FormEvent, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
-import { InputField, ToggleField } from "@/components/layout/fields";
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { InputField, ToggleField } from "@/components/layout/fields";
 
 export default function Signup() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [isOrganization, setIsOrganization] = useState(false);
 
   useEffect(() => {
     if (session && status === "authenticated") router.push("/");
   }, [session, router, status]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    // TODO: Add form validations
+    const formData = new FormData(e.currentTarget);
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        first_name: formData.get("first_name"),
+        last_name: formData.get("last_name"),
+        organization_name: formData.get("organization_name"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+        is_organization: isOrganization,
+      }),
+    });
+    console.log("Signup Response: ", res);
+    setLoading(false);
+    if (res.ok) router.push("/");
+    else console.error("Signup failed");
+  };
 
   return (
     <div className="flex h-full w-full">
@@ -72,7 +94,10 @@ export default function Signup() {
           <p className="px-8 text-sm text-black">OR</p>
           <hr className="my-auto h-px w-48 border-0 bg-[#EAEAEA]" />
         </div>
-        <form action="POST" className="flex w-full flex-col space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col space-y-4"
+        >
           {isOrganization ? (
             <InputField
               id="organization_name"
@@ -121,7 +146,7 @@ export default function Signup() {
             type="submit"
             className="text-md h-12 w-full rounded-md bg-primary text-white focus:outline-none"
           >
-            Sign Up
+            {loading ? "Loading..." : "Sign Up"}
           </button>
         </form>
         <p className="pt-6">
