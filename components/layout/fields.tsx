@@ -28,7 +28,7 @@ function ToggleField({ id = "", name = "", label = "", onChange = () => {} }) {
     <div className="flex w-full flex-col space-y-2">
       <label
         htmlFor={name}
-        className="relative inline-flex cursor-pointer items-center gap-4 text-sm text-[#4B4B4B]"
+        className="relative inline-flex cursor-pointer items-center gap-4 my-2 text-sm text-[#4B4B4B]"
       >
         <input
           type="checkbox"
