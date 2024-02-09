@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import InputField from "@/components/layout/fields";
+import { InputField } from "@/components/layout/fields";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
