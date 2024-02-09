@@ -12,6 +12,8 @@ module.exports = {
         primary: "#FF5656",
         secondary: "#455A7C",
         tertiary: "#41B5BD",
+        start: "#FFCCCC",
+        end: "#FF9999",
       },
       fontFamily: {
         display: ["var(--font-playfair)", "system-ui", "sans-serif"],
