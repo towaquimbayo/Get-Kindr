@@ -9,7 +9,7 @@ export default async function RootLayout({
   return (
     <>
       <Nav />
-      <main className="flex min-h-screen w-full flex-col items-center justify-center py-8 md:pt-24 pb-12">
+      <main className="flex min-h-screen w-full flex-col items-center justify-center py-8 md:py-32">
         {children}
       </main>
       <Footer />
