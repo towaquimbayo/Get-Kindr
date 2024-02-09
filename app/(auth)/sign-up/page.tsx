@@ -20,8 +20,8 @@ export default function Signup() {
 
   return (
     <div className="flex h-full w-full">
-      <div className="m-auto flex  w-full max-w-screen-sm flex-col items-center justify-center px-4 lg:w-2/3">
-        <Link href="/" className="mb-20 flex w-full">
+      <div className="m-auto flex  w-full max-w-screen-sm flex-col items-center justify-center px-4 py-8 lg:w-2/3">
+        <Link href="/" className="mb-10 flex w-full sm:mb-20">
           <Image
             src="/kindr_logo.png"
             alt="KINDR logo"
@@ -81,7 +81,7 @@ export default function Signup() {
               label="Organization Name"
             />
           ) : (
-          <div className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
+            <div className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
               <InputField
                 id="first_name"
                 name="first_name"
