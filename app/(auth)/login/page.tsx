@@ -4,17 +4,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { InputField } from "@/components/layout/fields";
-import { useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (session && status === "authenticated") router.push("/");
   }, [session, router, status]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const res = await signIn("credentials", {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      redirect: false,
+      callbackUrl: "/",
+    });
+    console.log("Login Response: ", res);
+    setLoading(false);
+  };
 
   return (
     <div className="flex h-full w-full">
@@ -35,7 +50,7 @@ export default function Login() {
         <div className="flex w-full rounded-lg border border-[#eaeaea]">
           <div
             className="flex w-1/2 cursor-pointer items-center justify-center gap-2 p-4"
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/" })}
           >
             <Image
               src="/google-logo.png"
@@ -70,7 +85,10 @@ export default function Login() {
           <p className="px-8 text-sm text-black">OR</p>
           <hr className="my-auto h-px w-48 border-0 bg-[#EAEAEA]" />
         </div>
-        <form action="POST" className="flex w-full flex-col space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col space-y-4"
+        >
           <InputField
             id="email"
             name="email"
@@ -88,7 +106,7 @@ export default function Login() {
             type="submit"
             className="text-md h-12 w-full rounded-md bg-primary text-white focus:outline-none"
           >
-            Login
+            {loading ? "Loading..." : "Login"}
           </button>
         </form>
         <p className="pt-6">
