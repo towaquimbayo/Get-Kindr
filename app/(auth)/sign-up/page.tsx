@@ -18,10 +18,6 @@ export default function Signup() {
     if (session && status === "authenticated") router.push("/");
   }, [session, router, status]);
 
-  useEffect(() => {
-    console.log("isOrganization: ", isOrganization);
-  }, [isOrganization]);
-
   return (
     <div className="flex h-full w-full">
       <div className="m-auto flex  w-full max-w-screen-sm flex-col items-center justify-center px-4 lg:w-2/3">
