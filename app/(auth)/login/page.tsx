@@ -93,7 +93,7 @@ export default function Login() {
         </form>
         <p className="pt-6">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-semibold text-primary">
+          <Link href="/sign-up" className="font-semibold text-primary">
             Sign Up
           </Link>{" "}
         </p>
