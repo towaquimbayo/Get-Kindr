@@ -9,6 +9,17 @@ import { Session } from "next-auth";
 export default function NavBar({ session }: { session: Session | null }) {
   const scrolled = useScroll(50);
 
+  function NavLink({ href="", name="" }) {
+    return (
+      <Link
+        href={href}
+        className="hidden transition-all ease-in-out hover:text-primary sm:block"
+      >
+        {name}
+      </Link>
+    );
+  }
+
   return (
     <div
       className={`fixed top-0 flex w-full justify-center ${
@@ -27,27 +38,12 @@ export default function NavBar({ session }: { session: Session | null }) {
           />
         </Link>
         <div className="flex items-center space-x-8">
-          <Link
-            href="/about"
-            className="transition-all ease-in-out hover:text-primary"
-          >
-            About
-          </Link>
-          <Link
-            href="/events"
-            className="transition-all ease-in-out hover:text-primary"
-          >
-            Events
-          </Link>
+          <NavLink href="/about" name="About" />
+          <NavLink href="/events" name="Events" />
           {session ? (
             <UserDropdown session={session} />
           ) : (
-            <Link
-              href="/login"
-              className="transition-all ease-in-out hover:text-primary"
-            >
-              Login
-            </Link>
+            <NavLink href="/login" name="Login" />
           )}
         </div>
       </div>
