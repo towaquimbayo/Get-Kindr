@@ -25,9 +25,9 @@ export async function POST(req: Request) {
 
     const hashedPassword = await hash(password, 16);
 
-    return NextResponse.json({ message: "Signup successful" }, { status: 200 });
+    return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (e) {
     console.error("Signup failed", e);
-    return NextResponse.error();
+    return new Response("Failed to signup", { status: 500 });
   }
 }
