@@ -22,6 +22,7 @@ export default function Signup() {
     setLoading(true);
     // TODO: Add form validations
     const formData = new FormData(e.currentTarget);
+    // Add user to database
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -74,7 +75,7 @@ export default function Signup() {
           <div className="my-4 border-r border-[#eaeaea]" />
           <div
             className="flex w-1/2 cursor-pointer items-center justify-center gap-2 p-4"
-            // onClick={() => signIn("facebook")}
+            onClick={() => signIn("facebook")}
           >
             <Image
               src="/facebook-logo.png"

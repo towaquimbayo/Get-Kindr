@@ -65,7 +65,7 @@ export default function Login() {
           <div className="my-4 border-r border-[#eaeaea]" />
           <div
             className="flex w-1/2 cursor-pointer items-center justify-center gap-2 p-4"
-            // onClick={() => signIn("facebook")}
+            onClick={() => signIn("facebook")}
           >
             <Image
               src="/facebook-logo.png"
