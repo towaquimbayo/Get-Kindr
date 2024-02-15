@@ -17,7 +17,7 @@ export default function Profile() {
       <h1>My Account</h1>
       {session && session.user && (
         <p>
-          Hello {session.user?.name} and {session.user?.accountType}
+          Hello {session.user?.name}, {session.user.accountType}
         </p>
       )}
     </div>
