@@ -52,10 +52,44 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log("Sign In Callback: ", {
+        user,
+        account,
+        profile,
+        email,
+        credentials,
+      });
+
+      // Check if this sign in callback is being called in the credentials authentication flow. If so, use the next-auth adapter to create a session entry in the database (SignIn is called after authorize so we can safely assume the user is valid and already authenticated).
+      // if (
+      //   req.query.nextauth.includes("callback") &&
+      //   req.query.nextauth.includes("credentials") &&
+      //   req.method === "POST"
+      // ) {
+      //   if (user) {
+      //     const sessionToken = generateSessionToken();
+      //     const sessionExpiry = fromDate(session.maxAge);
+
+      //     await adapter.createSession({
+      //       sessionToken: sessionToken,
+      //       userId: user.id,
+      //       expires: sessionExpiry,
+      //     });
+
+      //     const cookies = new Cookies(req, res);
+
+      //     cookies.set("next-auth.session-token", sessionToken, {
+      //       expires: sessionExpiry,
+      //     });
+      //   }
+      // }
+
+      return true;
+    },
     async jwt({ token, user, session, trigger }) {
-      console.log("JWT Callback: ", { token, user, session });
+      console.log("JWT Callback: ", { token, user, session, trigger });
 
       // Trigger is used to update the token with new data
       if (trigger === "update" && session.name) {
@@ -68,7 +102,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          // accountType: user.accountType,
+          accountType: user.accountType,
         };
       }
 
@@ -89,6 +123,7 @@ export const authOptions: NextAuthOptions = {
           id: token.id,
           email: token.email,
           name: token.name,
+          accountType: token.accountType,
         },
       };
     },
@@ -96,14 +131,15 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 1 day
+    maxAge: 30 * 24 * 60 * 60, // 30 Days
+    updateAge: 24 * 60 * 60 // 1 Day
   },
   pages: {
-    signIn: "/profile",
+    signIn: "/login",
     signOut: "/login",
     error: "/login",
   },
-  debug: false,
+  debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);

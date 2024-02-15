@@ -42,9 +42,11 @@ export default function NavBar({ session }: { session: Session | null }) {
           <NavLink href="/events" name="Events" />
           <NavLink href="/recovery" name="Recovery (Temp)" />
           <NavLink href="/add_event" name="Add Event (Temp)" />
-          <NavLink href="/profile" name="Profile" />
           {session ? (
-            <UserDropdown session={session} />
+            <>
+              <NavLink href="/profile" name="Profile" />
+              <UserDropdown session={session} />
+            </>
           ) : (
             <NavLink href="/login" name="Login" />
           )}
