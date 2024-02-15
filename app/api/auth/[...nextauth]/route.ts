@@ -102,7 +102,6 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          accountType: user.accountType,
         };
       }
 
@@ -123,7 +122,6 @@ export const authOptions: NextAuthOptions = {
           id: token.id,
           email: token.email,
           name: token.name,
-          accountType: token.accountType,
         },
       };
     },

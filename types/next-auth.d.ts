@@ -6,7 +6,6 @@ declare module "next-auth" {
       id: string;
       email: string | undefined | null;
       name: string | undefined | null;
-      // accountType: string | undefined | null;
     } & DefaultSession["user"];
   }
 }
