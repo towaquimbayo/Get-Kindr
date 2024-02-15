@@ -9,7 +9,7 @@ import { Session } from "next-auth";
 export default function NavBar({ session }: { session: Session | null }) {
   const scrolled = useScroll(50);
 
-  function NavLink({ href="", name="" }) {
+  function NavLink({ href = "", name = "" }) {
     return (
       <Link
         href={href}
@@ -21,7 +21,7 @@ export default function NavBar({ session }: { session: Session | null }) {
   }
 
   return (
-    <div
+    <nav
       className={`fixed top-0 flex w-full justify-center ${
         scrolled ? "bg-white/50 shadow-md backdrop-blur-xl" : "bg-white/0"
       } z-30 transition-all`}
@@ -49,6 +49,6 @@ export default function NavBar({ session }: { session: Session | null }) {
           )}
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
