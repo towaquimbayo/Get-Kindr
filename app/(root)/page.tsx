@@ -46,7 +46,7 @@ const Home = async () => {
       {/* Featured Events */}
       <SectionTitle title="Volunteer and touch the lives of many." pretitle="Featured Events" align="left" />
       <Container className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {events.length > 0 ? (
+        {/* {events.length > 0 ? (
           events.slice(0,3).map((event) => (
             <div key={event.id} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
               <div className="relative h-48">
@@ -56,14 +56,10 @@ const Home = async () => {
               <p className="text-gray-500">{event.description}</p>
             </div>
           ))
-        ) : (
+        ) : ( */}
           <>
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
-              <img
-                loading="lazy"
-                srcSet=""
-                className="w-10 rounded-xl aspect-square"
-              />
+              <Image src="/placeholder_image.svg" width="40" height="40" quality={100} className="rounded-lg opacity-40 bg-gray-200 p-2" alt="Placeholder Image" />
               <div className="mt-6 text-2xl font-medium leading-10 whitespace-nowrap">
                 Rhythm of Life Society
               </div>
@@ -72,19 +68,11 @@ const Home = async () => {
                 for our high-energy team of ...
               </div>
               <div className="flex gap-5 justify-between mt-5 leading-[187.5%]">
-                <img
-                  loading="lazy"
-                  src=""
-                  className="w-5 aspect-square"
-                />
+                <Image src="/location.svg" width="20" height="20" quality={100} alt="Location Icon" />
                 <div className="flex-auto">Vancouver, BC</div>
               </div>
               <div className="flex gap-5 justify-between mt-4 leading-[187.5%]">
-                <img
-                  loading="lazy"
-                  src=""
-                  className="w-5 aspect-square"
-                />
+                <Image src="/calendar.svg" width="20" height="20" quality={100} alt="Calendar Icon" />
                 <div className="flex-auto">Feb 3, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
@@ -92,11 +80,7 @@ const Home = async () => {
               </div>
             </div>
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
-            <img
-                loading="lazy"
-                srcSet=""
-                className="w-10 rounded-xl aspect-square"
-              />
+              <Image src="/placeholder_image.svg" width="40" height="40" quality={100} className="rounded-lg opacity-40 bg-gray-200 p-2" alt="Placeholder Image" />
               <div className="mt-6 text-2xl font-medium leading-10 whitespace-nowrap">
                 SAHAS
               </div>
@@ -104,19 +88,11 @@ const Home = async () => {
                 Helpline volunteers provide emotional support, information and resources, and effective ...
               </div>
               <div className="flex gap-5 justify-between mt-5 leading-[187.5%]">
-                <img
-                  loading="lazy"
-                  src=""
-                  className="w-5 aspect-square"
-                />
+                <Image src="/location.svg" width="20" height="20" quality={100} alt="Location Icon" />
                 <div className="flex-auto">Richmond, BC</div>
               </div>
               <div className="flex gap-5 justify-between mt-4 leading-[187.5%]">
-                <img
-                  loading="lazy"
-                  src=""
-                  className="w-5 aspect-square"
-                />
+                <Image src="/calendar.svg" width="20" height="20" quality={100} alt="Calendar Icon" />
                 <div className="flex-auto">Feb 21, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
@@ -124,11 +100,7 @@ const Home = async () => {
               </div>
             </div>
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
-            <img
-                loading="lazy"
-                srcSet=""
-                className="w-10 rounded-xl aspect-square"
-              />
+              <Image src="/placeholder_image.svg" width="40" height="40" quality={100} className="rounded-lg opacity-40 bg-gray-200 p-2" alt="Placeholder Image" />
               <div className="mt-6 text-2xl font-medium leading-10 whitespace-nowrap">
                 Pinegrove Place
               </div>
@@ -136,19 +108,11 @@ const Home = async () => {
                 We are dedicated to promoting person-centered, holistic care in a manner ...
               </div>
               <div className="flex gap-5 justify-between mt-5 leading-[187.5%]">
-                <img
-                  loading="lazy"
-                  src=""
-                  className="w-5 aspect-square"
-                />
+                <Image src="/location.svg" width="20" height="20" quality={100} alt="Location Icon" />
                 <div className="flex-auto">Burnaby, BC</div>
               </div>
               <div className="flex gap-5 justify-between mt-4 leading-[187.5%]">
-                <img
-                  loading="lazy"
-                  src=""
-                  className="w-5 aspect-square"
-                />
+                <Image src="/calendar.svg" width="20" height="20" quality={100} alt="Calendar Icon" />
                 <div className="flex-auto">March 12, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
@@ -156,7 +120,7 @@ const Home = async () => {
               </div>
             </div>
           </>
-        )}
+        {/* )} */}
       </Container>
 
       {/* About */}
