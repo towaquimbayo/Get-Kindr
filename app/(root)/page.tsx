@@ -8,20 +8,20 @@ const Home = async () => {
 
   const faq_data = [
     {
-      question: "What is the best way to get started?",
-      answer: "The best way to get started is to read the documentation. We have a quick start guide that will help you get up and running in no time."
+      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
+      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
     },
     {
-      question: "What is the best way to get started?",
-      answer: "The best way to get started is to read the documentation. We have a quick start guide that will help you get up and running in no time."
+      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
+      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
     },
     {
-      question: "What is the best way to get started?",
-      answer: "The best way to get started is to read the documentation. We have a quick start guide that will help you get up and running in no time."
+      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
+      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
     },
     {
-      question: "What is the best way to get started?",
-      answer: "The best way to get started is to read the documentation. We have a quick start guide that will help you get up and running in no time."
+      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
+      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
     },
   ];
 
@@ -61,7 +61,7 @@ const Home = async () => {
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
               <img
                 loading="lazy"
-                srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                srcSet=""
                 className="w-10 rounded-xl aspect-square"
               />
               <div className="mt-6 text-2xl font-medium leading-10 whitespace-nowrap">
@@ -74,7 +74,7 @@ const Home = async () => {
               <div className="flex gap-5 justify-between mt-5 leading-[187.5%]">
                 <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/f151a4a7e813070c964f448b51bb41c1b1803f8ed36a5a9960a0a18311946b3d?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                  src=""
                   className="w-5 aspect-square"
                 />
                 <div className="flex-auto">Vancouver, BC</div>
@@ -82,7 +82,7 @@ const Home = async () => {
               <div className="flex gap-5 justify-between mt-4 leading-[187.5%]">
                 <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/718eba12e95fb0a5cd867bd8c6d5f2a60e6dcff81cf78a28f4e1ef88cb9ff9d3?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                  src=""
                   className="w-5 aspect-square"
                 />
                 <div className="flex-auto">Feb 3, 2024</div>
@@ -94,31 +94,30 @@ const Home = async () => {
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
             <img
                 loading="lazy"
-                srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                srcSet=""
                 className="w-10 rounded-xl aspect-square"
               />
               <div className="mt-6 text-2xl font-medium leading-10 whitespace-nowrap">
-                Rhythm of Life Society
+                SAHAS
               </div>
               <div className="mt-5 leading-8 text-black text-opacity-60">
-                Our Drum Run event is looking to add a Social Media Assistant
-                for our high-energy team of ...
+                Helpline volunteers provide emotional support, information and resources, and effective ...
               </div>
               <div className="flex gap-5 justify-between mt-5 leading-[187.5%]">
                 <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/f151a4a7e813070c964f448b51bb41c1b1803f8ed36a5a9960a0a18311946b3d?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                  src=""
                   className="w-5 aspect-square"
                 />
-                <div className="flex-auto">Vancouver, BC</div>
+                <div className="flex-auto">Richmond, BC</div>
               </div>
               <div className="flex gap-5 justify-between mt-4 leading-[187.5%]">
                 <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/718eba12e95fb0a5cd867bd8c6d5f2a60e6dcff81cf78a28f4e1ef88cb9ff9d3?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                  src=""
                   className="w-5 aspect-square"
                 />
-                <div className="flex-auto">Feb 3, 2024</div>
+                <div className="flex-auto">Feb 21, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
                 <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-orange-600 rounded-2xl w-full">VOLUNTEER NOW</a>
@@ -127,31 +126,30 @@ const Home = async () => {
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
             <img
                 loading="lazy"
-                srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/4c663e8ef18f8af4bcda62a8c1f022f6bf6678ad6393435133eefe9e5b5770fc?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                srcSet=""
                 className="w-10 rounded-xl aspect-square"
               />
               <div className="mt-6 text-2xl font-medium leading-10 whitespace-nowrap">
-                Rhythm of Life Society
+                Pinegrove Place
               </div>
               <div className="mt-5 leading-8 text-black text-opacity-60">
-                Our Drum Run event is looking to add a Social Media Assistant
-                for our high-energy team of ...
+                We are dedicated to promoting person-centered, holistic care in a manner ...
               </div>
               <div className="flex gap-5 justify-between mt-5 leading-[187.5%]">
                 <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/f151a4a7e813070c964f448b51bb41c1b1803f8ed36a5a9960a0a18311946b3d?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                  src=""
                   className="w-5 aspect-square"
                 />
-                <div className="flex-auto">Vancouver, BC</div>
+                <div className="flex-auto">Burnaby, BC</div>
               </div>
               <div className="flex gap-5 justify-between mt-4 leading-[187.5%]">
                 <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/718eba12e95fb0a5cd867bd8c6d5f2a60e6dcff81cf78a28f4e1ef88cb9ff9d3?apiKey=987aa06a0d974f4aa5948e6389c02cba&"
+                  src=""
                   className="w-5 aspect-square"
                 />
-                <div className="flex-auto">Feb 3, 2024</div>
+                <div className="flex-auto">March 12, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
                 <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-orange-600 rounded-2xl w-full">VOLUNTEER NOW</a>
@@ -173,14 +171,17 @@ const Home = async () => {
       </Container>
 
       {/* FAQ */}
-      {/* <SectionTitle title="Frequently Asked Questions" pretitle="FAQ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ad saepe repellat itaque molestiae quo?</SectionTitle>
-      <Container className="!p-0">
-          <div className="w-full max-w-2xl p-2 mx-auto rounded-2xl">
-            {faq_data.map((faq, index) => (
-              
-            ))}
-          </div>
-      </Container> */}
+      <SectionTitle title="Frequently Asked Questions" pretitle="FAQ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ad saepe repellat itaque molestiae quo?</SectionTitle>
+      <Container>
+        <div className="grid gap-10 md:gap-8 sm:p-3 md:grid-cols-2 lg:px-12 xl:px-32">
+          {faq_data.map((faq, index) => (
+            <div key={index} className="mb-4">
+              <h3 className="text-xl font-bold">{faq.question}</h3>
+              <p>{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
       
       {/* Footer */}
       <Container className="">
