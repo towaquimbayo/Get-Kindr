@@ -15,7 +15,7 @@ export async function POST(req: Request) {
       isOrganization,
     } = await req.json();
 
-    console.log("POST request: ", {
+    console.log("Signup request: ", {
       firstName,
       lastName,
       organizationName,
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     // Create user in database
     const user = await prisma.user.create({
       data: {
-        name: `${firstName} ${lastName}`,
+        name: isOrganization ? organizationName : `${firstName} ${lastName}`,
         email,
         hashedPassword,
         image: `https://ui-avatars.com/api/?name=${firstName}+${lastName}`,
@@ -94,17 +94,17 @@ export async function POST(req: Request) {
     }
     console.log("User created: ", user);
 
-    const token = await jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET!,
-      {
-        expiresIn: "1d",
-      },
-    );
-    const response = NextResponse.json({ message: "Signup successful", success: true });
-    response.cookies.set("token", token, { httpOnly: true, path: "/" });
-    return response;
-    // return NextResponse.json(user);
+    // const token = jwt.sign(
+    //   { id: user.id, email: user.email },
+    //   process.env.JWT_SECRET!,
+    //   {
+    //     expiresIn: "1d",
+    //   },
+    // );
+    // const response = NextResponse.json({ message: "Signup successful", success: true });
+    // response.cookies.set("token", token, { httpOnly: true, path: "/" });
+    // return response;
+    return NextResponse.json(user);
   } catch (e) {
     console.error("Signup failed", e);
     return NextResponse.json({ message: "Signup failed" }, { status: 500 });

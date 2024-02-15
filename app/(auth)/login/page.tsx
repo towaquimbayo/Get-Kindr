@@ -25,7 +25,6 @@ export default function Login() {
       email: form.get("email")?.toString().trim() as string,
       password: form.get("password")?.toString().trim() as string,
       redirect: false,
-      callbackUrl: "/",
     });
     console.log("Login Response: ", res);
 

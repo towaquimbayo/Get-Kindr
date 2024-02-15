@@ -68,6 +68,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
+          // accountType: user.accountType,
         };
       }
 
@@ -98,7 +99,7 @@ export const authOptions: NextAuthOptions = {
     maxAge: 24 * 60 * 60, // 1 day
   },
   pages: {
-    signIn: "/",
+    signIn: "/profile",
     signOut: "/login",
     error: "/login",
   },
