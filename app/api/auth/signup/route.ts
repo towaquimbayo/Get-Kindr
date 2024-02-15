@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import prisma from "@/lib/prisma";
 import { AccountType } from "@prisma/client";
+import jwt from "jsonwebtoken";
 
 export async function POST(req: Request) {
   try {
@@ -91,9 +92,19 @@ export async function POST(req: Request) {
         { status: 500 },
       );
     }
-
     console.log("User created: ", user);
-    return NextResponse.json(user);
+
+    const token = await jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: "1d",
+      },
+    );
+    const response = NextResponse.json({ message: "Signup successful", success: true });
+    response.cookies.set("token", token, { httpOnly: true, path: "/" });
+    return response;
+    // return NextResponse.json(user);
   } catch (e) {
     console.error("Signup failed", e);
     return NextResponse.json({ message: "Signup failed" }, { status: 500 });

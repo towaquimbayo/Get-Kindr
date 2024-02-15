@@ -9,7 +9,7 @@ export default function Profile() {
     <div>
       <h1>My Account</h1>
       {session && session.user && (
-        <p>Hello {session.user?.email}</p>
+        <p>Hello {session.user?.name}</p>
       )}
     </div>
   );
