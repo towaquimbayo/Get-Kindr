@@ -151,14 +151,14 @@ const Home = async () => {
       <Container className="">
         <div className="text-center">
           <p className="text-gray-500">
-            A project by{" "}
+            &copy; 2024{" "}
             <a
               className="font-semibold text-gray-600 underline-offset-4 transition-colors hover:underline"
-              href="https://github.com/jescalada"
+              href="https://getkindr.com/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              BCIT Students
+              KINDR
             </a>
           </p>
         </div>
