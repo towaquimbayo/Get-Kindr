@@ -20,21 +20,33 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        console.log("Credentials", credentials);
+      async authorize(credentials) {
+        console.log("Credentials:", credentials);
+
         if (!credentials || !credentials.email || !credentials.password) {
-          return null;
+          console.error("Missing required fields");
+          throw new Error("Please enter an email and password");
         }
-        const user = await prisma.user.findFirst({
+
+        // Check if user exists
+        const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-        if (!user) return null;
-        // const valid = await compare(credentials.password, user.password || "");
-        // if (!valid) return null;
-        return { id: user.id, name: user.name, email: user.email };
+        if (!user || !user.hashedPassword) {
+          console.error("User not found");
+          throw new Error("User not found");
+        }
+
+        // Check if password is valid
+        const valid = await compare(credentials.password, user.hashedPassword);
+        if (!valid) {
+          console.error("Incorrect password");
+          throw new Error("Incorrect password");
+        }
+        return user;
       },
     }),
   ],

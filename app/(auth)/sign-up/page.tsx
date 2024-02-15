@@ -20,25 +20,33 @@ export default function Signup() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    const form = new FormData(e.currentTarget);
+    const data = {
+      firstName: form.get("firstName")?.toString().trim() || null,
+      lastName: form.get("lastName")?.toString().trim() || null,
+      organizationName: form.get("organizationName")?.toString().trim() || null,
+      email: form.get("email")?.toString().trim(),
+      password: form.get("password")?.toString().trim(),
+      isOrganization: isOrganization,
+    };
+
     // TODO: Add form validations
-    const formData = new FormData(e.currentTarget);
-    // Add user to database
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        first_name: formData.get("first_name"),
-        last_name: formData.get("last_name"),
-        organization_name: formData.get("organization_name"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-        is_organization: isOrganization,
-      }),
+      body: JSON.stringify(data),
     });
-    console.log("Signup Response: ", res);
     setLoading(false);
-    if (res.ok) router.push("/");
-    else console.error("Signup failed");
+
+    console.log("Signup Response: ", res);
+    if (res.ok) router.push("/login");
+    else {
+      const error = await res.json();
+      const errorMsg = error?.message || "Signup failed";
+      const errorMsgElement = document.getElementById("errorMsg");
+      if (errorMsgElement) errorMsgElement.textContent = errorMsg;
+      console.error("Signup failed");
+    }
   };
 
   return (
@@ -101,22 +109,22 @@ export default function Signup() {
         >
           {isOrganization ? (
             <InputField
-              id="organization_name"
-              name="organization_name"
+              id="organizationName"
+              name="organizationName"
               type="text"
               label="Organization Name"
             />
           ) : (
             <div className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0">
               <InputField
-                id="first_name"
-                name="first_name"
+                id="firstName"
+                name="firstName"
                 type="text"
                 label="First Name"
               />
               <InputField
-                id="last_name"
-                name="last_name"
+                id="lastName"
+                name="lastName"
                 type="text"
                 label="Last Name"
               />
@@ -149,6 +157,7 @@ export default function Signup() {
           >
             {loading ? "Loading..." : "Sign Up"}
           </button>
+          <p id="errorMsg" className="text-red-500 text-center" />
         </form>
         <p className="pt-6">
           Already have an account?{" "}

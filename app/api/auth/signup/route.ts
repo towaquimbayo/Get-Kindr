@@ -6,24 +6,46 @@ import { AccountType } from "@prisma/client";
 export async function POST(req: Request) {
   try {
     const {
-      first_name,
-      last_name,
+      firstName,
+      lastName,
+      organizationName,
       email,
       password,
-      is_organization,
-      organization_name,
+      isOrganization,
     } = await req.json();
 
-    // Check if user already exists
-    const existingUserByEmail = await prisma.user.findUnique({
-      where: {
-        email,
-      },
+    console.log("POST request: ", {
+      firstName,
+      lastName,
+      organizationName,
+      email,
+      password,
+      isOrganization,
     });
 
-    if (existingUserByEmail) {
+    // Check if required fields are present
+    if (
+      (isOrganization && !organizationName) ||
+      (!isOrganization && (!firstName || !lastName)) ||
+      !email ||
+      !password
+    ) {
+      console.error("Missing required fields");
       return NextResponse.json(
-        { user: null, message: "User already exists" },
+        { message: "Missing required fields" },
+        { status: 400 },
+      );
+    }
+
+    // Check if user already exists
+    const emailExist = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (emailExist) {
+      console.error("Email already exists");
+      return NextResponse.json(
+        { message: "Email already exists" },
         { status: 400 },
       );
     }
@@ -33,25 +55,24 @@ export async function POST(req: Request) {
     // Create user in database
     const user = await prisma.user.create({
       data: {
-        name: first_name + " " + last_name,
+        name: `${firstName} ${lastName}`,
         email,
         hashedPassword,
-        image:
-          "https://ui-avatars.com/api/?name=" + first_name + "+" + last_name,
-        accountType: is_organization
+        image: `https://ui-avatars.com/api/?name=${firstName}+${lastName}`,
+        accountType: isOrganization
           ? AccountType.ORGANIZATION
           : AccountType.VOLUNTEER,
         accounts: {},
-        organization: is_organization
+        organization: isOrganization
           ? {
               create: {
-                name: organization_name,
+                name: organizationName,
                 description: "",
                 events: {},
               },
             }
           : {},
-        volunteer: is_organization
+        volunteer: isOrganization
           ? {}
           : {
               create: {
@@ -63,11 +84,18 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("User created: ", user);
+    if (!user) {
+      console.error("User creation failed");
+      return NextResponse.json(
+        { message: "User creation failed" },
+        { status: 500 },
+      );
+    }
 
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
+    console.log("User created: ", user);
+    return NextResponse.json(user);
   } catch (e) {
     console.error("Signup failed", e);
-    return new Response("Failed to signup", { status: 500 });
+    return NextResponse.json({ message: "Signup failed" }, { status: 500 });
   }
 }
