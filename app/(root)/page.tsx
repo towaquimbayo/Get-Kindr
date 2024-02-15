@@ -34,7 +34,7 @@ const Home = async () => {
         <div className="flex items-end w-full z-20">
           <div className="max-w-xl mb-16">
             <p className="text-md font-bold tracking-widest text-teal-500 uppercase">Give a hand to make</p>
-            <h1 className="py-1 pb-6 text-4xl font-bold leading-snug tracking-tight text-gray-800 md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">the world better</h1>
+            <h1 className="py-1 pb-6 text-4xl font-display font-bold leading-snug tracking-tight text-gray-800 md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">the world better</h1>
 
             <div className="flex flex-col items-start space-y-3 sm:space-x-4 sm:space-y-0 sm:items-center sm:flex-row">
               <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-orange-600 rounded-2xl">VOLUNTEER NOW</a>
