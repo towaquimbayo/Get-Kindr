@@ -20,14 +20,24 @@ export default function Login() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const formData = new FormData(e.currentTarget);
+    const form = new FormData(e.currentTarget);
     const res = await signIn("credentials", {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
+      email: form.get("email")?.toString().trim() as string,
+      password: form.get("password")?.toString().trim() as string,
       redirect: false,
-      callbackUrl: "/",
     });
     console.log("Login Response: ", res);
+
+    if (!res) {
+      console.error("Login failed");
+    } else if (res.error) {
+      const errorMsg = res.error;
+      const errorMsgElement = document.getElementById("errorMsg");
+      if (errorMsgElement) errorMsgElement.textContent = errorMsg;
+      console.error("Login failed");
+    }
+
+    // router.push("/");
     setLoading(false);
   };
 
@@ -65,7 +75,7 @@ export default function Login() {
           <div className="my-4 border-r border-[#eaeaea]" />
           <div
             className="flex w-1/2 cursor-pointer items-center justify-center gap-2 p-4"
-            // onClick={() => signIn("facebook")}
+            onClick={() => signIn("facebook")}
           >
             <Image
               src="/facebook-logo.png"
@@ -108,6 +118,7 @@ export default function Login() {
           >
             {loading ? "Loading..." : "Login"}
           </button>
+          <p id="errorMsg" className="text-red-500 text-sm text-center" />
         </form>
         <p className="pt-6">
           Don&apos;t have an account?{" "}

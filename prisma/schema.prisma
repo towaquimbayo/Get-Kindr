@@ -43,16 +43,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  accountType   AccountType @default(VOLUNTEER)
-  organization  Organization?
-  volunteer     Volunteer?
+  id              String    @id @default(cuid())
+  hashedPassword  String?
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String
+  accounts        Account[]
+  sessions        Session[]
+  accountType     AccountType @default(VOLUNTEER)
+  organization    Organization?
+  volunteer       Volunteer?
 }
 
 model Event {
