@@ -54,6 +54,8 @@ model User {
   accountType     AccountType @default(VOLUNTEER)
   organization    Organization?
   volunteer       Volunteer?
+  wallet          Wallet?
+  admin           Boolean @default(false)
 }
 
 model Event {
@@ -88,7 +90,6 @@ model Volunteer {
   userId          String
   user            User     @relation(fields: [userId], references: [id])
   bio             String
-  admin           Boolean
   phoneNumber     String
   volunteerEvents EventVolunteer[]
   @@unique([userId])
@@ -100,8 +101,30 @@ model Organization {
   user            User     @relation(fields: [userId], references: [id])
   name            String
   description     String?
+  phoneNumber     String?
+  address         String?
   events          Event[]
   @@unique([userId])
+}
+
+model Wallet {
+  id                      String   @id @default(cuid())
+  userId                  String
+  user                    User     @relation(fields: [userId], references: [id])
+  balance                 Int
+  transactionsToWallet    Transaction[]  @relation("TransactionToWallet")
+  transactionsFromWallet  Transaction[] @relation("TransactionFromWallet")
+  @@unique([userId])
+}
+
+model Transaction {
+  id                    String   @id @default(cuid())
+  sourceWalletId        String
+  sourceWallet          Wallet   @relation("TransactionToWallet", fields: [sourceWalletId], references: [id])
+  destinationWalletId   String
+  destinationWallet     Wallet   @relation("TransactionFromWallet", fields: [destinationWalletId], references: [id])
+  amount                Int
+  createdAt             DateTime @default(now())
 }
 
 model VerificationToken {

@@ -7,6 +7,7 @@ import { InputField } from "@/components/layout/fields";
 import { FormEvent, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/layout/button";
 
 export default function Login() {
   const { data: session, status } = useSession();
@@ -112,13 +113,8 @@ export default function Login() {
             type="password"
             label="Password"
           />
-          <button
-            type="submit"
-            className="text-md h-12 w-full rounded-md bg-primary text-white focus:outline-none"
-          >
-            {loading ? "Loading..." : "Login"}
-          </button>
-          <p id="errorMsg" className="text-red-500 text-sm text-center" />
+          <Button type="submit" loading={loading} text="Login" full />
+          <p id="errorMsg" className="text-center text-sm text-red-500" />
         </form>
         <p className="pt-6">
           Don&apos;t have an account?{" "}

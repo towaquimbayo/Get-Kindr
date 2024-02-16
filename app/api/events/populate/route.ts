@@ -1,18 +1,12 @@
 import prisma from "@/lib/prisma";
 
-/*
- * This function will create dummy events in the database.
- * @param {Request} request - The incoming request
- * @returns {Response} - The response to the incoming request
- */
 const dummyEvents = [
   {
-    name: "Event 1",
-    description: "This is the first event",
+    name: "Event 3",
+    description: "This is the third event",
     start_time: new Date(),
     end_time: new Date(),
-    // Generate random UUID
-    organization_id: "923e4567-e89b-12d3-a456-426614174000",
+    organization_id: "clsn6cghj0001vbewrz1qrso4",
     tags: ["tag1", "tag2", "tag3"],
     address: "123 Main St",
     city: "San Francisco",
@@ -25,11 +19,11 @@ const dummyEvents = [
     },
   },
   {
-    name: "Event 2",
-    description: "This is the second event",
+    name: "Event 4",
+    description: "This is the fourth event",
     start_time: new Date(),
     end_time: new Date(),
-    organization_id: "923e4567-e89b-12d3-a456-426614174000",
+    organization_id: "clsn6fj470003vbew10saulwi",
     tags: ["tag1"],
     address: "123 Main St",
     city: "San Francisco",
@@ -43,6 +37,12 @@ const dummyEvents = [
   },
 ];
 
+/**
+ * Populates the database with dummy events.
+ * @endpoint GET /api/events/populate
+ * @param {Request} request - The incoming request
+ * @returns {Response} - The response to the incoming request
+ */
 export async function GET(request: Request) {
   try {
     for (const event of dummyEvents) {
