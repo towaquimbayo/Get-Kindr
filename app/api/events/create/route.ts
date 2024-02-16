@@ -11,10 +11,53 @@ export async function POST(request: Request) {
 
   try {
     // Get all the new organization info from the request
-    const newEvent = await request.json();
+    const {
+      name,
+      description,
+      start_time,
+      end_time,
+      organization_id,
+      tags,
+      address,
+      city,
+      recurring,
+      online,
+      token_bounty,
+      number_of_spots,
+    } = await request.json();
 
-    // Set the event_volunteers to an object with a create property that is an empty array
-    newEvent.event_volunteers = { create: [] };
+    // If any of the required fields are missing, return an error
+    if (
+      !name ||
+      !start_time ||
+      !end_time ||
+      !organization_id ||
+      !address ||
+      !city ||
+      !token_bounty ||
+      !number_of_spots
+    ) {
+      return new Response("Missing required fields", {
+        status: 400,
+      });
+    }
+
+    // Create a new event object with the new event info
+    const newEvent = {
+      name,
+      description,
+      start_time: new Date(start_time),
+      end_time: new Date(end_time),
+      organization_id,
+      tags,
+      address,
+      city,
+      recurring,
+      online,
+      token_bounty,
+      number_of_spots,
+      event_volunteers: { create: [] }, // Add an empty array for event_volunteers
+    };
 
     // Add the new event to the database
     createdEvent = await prisma.event.create({
