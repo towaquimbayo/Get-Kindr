@@ -6,6 +6,7 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { InputField, ToggleField } from "@/components/layout/fields";
+import Button from "@/components/layout/button";
 
 export default function Signup() {
   const { data: session, status } = useSession();
@@ -151,13 +152,8 @@ export default function Signup() {
               setIsOrganization(!isOrganization);
             }}
           />
-          <button
-            type="submit"
-            className="text-md h-12 w-full rounded-md bg-primary text-white focus:outline-none"
-          >
-            {loading ? "Loading..." : "Sign Up"}
-          </button>
-          <p id="errorMsg" className="text-red-500 text-center" />
+          <Button type="submit" loading={loading} text="Sign Up" full />
+          <p id="errorMsg" className="text-center text-red-500" />
         </form>
         <p className="pt-6">
           Already have an account?{" "}
