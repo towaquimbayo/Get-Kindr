@@ -1,5 +1,5 @@
-/** @type {import('tailwindcss').Config} */
-const plugin = require("tailwindcss/plugin");
+import plugin from "tailwindcss/plugin";
+import tailwindcss from "tailwindcss";
 
 module.exports = {
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
@@ -7,7 +7,19 @@ module.exports = {
     hoverOnlyWhenSupported: true,
   },
   theme: {
+    screens: {
+      'mb': '480px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     extend: {
+      spacing: {
+        '30': '120px',
+        '34': '136px',
+      },
       colors: {
         primary: "#FF5656",
         secondary: "#455A7C",
