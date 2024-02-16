@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 
-/*
+/**
  * This function will create a table in the database if it does not exist.
+ * @endpoint GET /api/events/create-table
  * @param {Request} request - The incoming request
  * @returns {Response} - The response to the incoming request
  */
