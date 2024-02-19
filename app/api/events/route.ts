@@ -49,18 +49,19 @@ const DEFAULT = {
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    console.log("url search params", url.searchParams);
+    // console.log("url search params", url.searchParams);
 
     const eventID = url.searchParams.get("eventID");
 
-    const searchMode = SEARCH_FIELDS.includes(url.searchParams.get("searchMode")) 
-      ? url.searchParams.get("searchMode") : DEFAULT.searchMode;
+    let searchMode = url.searchParams.get("searchMode");
+    searchMode = searchMode && SEARCH_FIELDS.includes(searchMode) ? searchMode : DEFAULT.searchMode;
     const searchTerm = url.searchParams.get("search") ? url.searchParams.get("search") : null;
 
-    const sortField = SORT_FIELDS.includes(url.searchParams.get("sortField")) 
-      ? url.searchParams.get("sortField") : DEFAULT.sortField;
-    const sortMode = SORT_MODES.includes(url.searchParams.get("sortMode")) 
-      ? url.searchParams.get("sortMode") : DEFAULT.sortMode;
+    let sortField = url.searchParams.get("sortField");
+    sortField = sortField && SORT_FIELDS.includes(sortField) ? sortField : DEFAULT.sortField;
+
+    let sortMode = url.searchParams.get("sortMode");
+    sortMode = sortMode && SORT_MODES.includes(sortMode) ? sortMode : DEFAULT.sortMode;
 
     const currentTime = new Date();
 
@@ -71,8 +72,8 @@ export async function GET(request: Request) {
         where: { id: eventID },
       });
     } else if (searchMode && searchTerm) { // If searchMode and searchTerm are present, search for events
-      console.log("searchMode", searchMode);
-      console.log("searchTerm", searchTerm);
+      // console.log("searchMode", searchMode);
+      // console.log("searchTerm", searchTerm);
       if (SEARCH_FIELDS.includes(searchMode)) {
         events = await prisma.event.findMany({
           where: {
@@ -105,7 +106,7 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify(events), { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response("Error getting events: " + error, {
+    return new Response("Error getting events: " + error, { //TODO: Hide exact error to user
       status: 500,
     });
   }
