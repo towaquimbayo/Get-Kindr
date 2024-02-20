@@ -13,8 +13,11 @@ export async function GET(request: Request) {
     const organizations = organizationId
       ? await prisma.organization.findFirst({
           where: { id: organizationId },
+          include: {
+            user: true,
+          },
         })
-      : await prisma.organization.findMany();
+      : await prisma.organization.findMany({ include: { user: true } });
 
     return new Response(JSON.stringify(organizations), { status: 200 });
   } catch (error) {

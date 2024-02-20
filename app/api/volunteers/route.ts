@@ -13,8 +13,11 @@ export async function GET(request: Request) {
     const volunteers = volunteerId
       ? await prisma.volunteer.findFirst({
           where: { id: volunteerId },
+          include: {
+            user: true,
+          },
         })
-      : await prisma.volunteer.findMany();
+      : await prisma.volunteer.findMany({ include: { user: true } });
 
     return new Response(JSON.stringify(volunteers), { status: 200 });
   } catch (error) {
