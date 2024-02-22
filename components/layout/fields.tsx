@@ -1,3 +1,6 @@
+import { LucideEye, LucideEyeOff } from "lucide-react";
+import { useState } from "react";
+
 function InputField({
   id = "",
   name = "",
@@ -29,6 +32,50 @@ function InputField({
   );
 }
 
+function PasswordField({
+  id = "",
+  name = "",
+  placeholder = "",
+  label = "",
+  minLength = 0,
+  maxLength = 100,
+  onChange = () => {},
+  error = "",
+}) {
+  const [hidePassword, setHidePassword] = useState(true);
+  return (
+    <div className="flex w-full flex-col space-y-2">
+      <label htmlFor={name} className="text-sm text-[#4B4B4B]">
+        {label}
+      </label>
+      <div className="relative">
+        <input
+          type={hidePassword ? "password" : "text"}
+          id={id}
+          name={name}
+          placeholder={placeholder}
+          minLength={minLength}
+          maxLength={maxLength}
+          onChange={onChange}
+          className="h-12 w-full rounded-lg border border-[#EAEAEA] px-4 pr-8"
+        />
+        {hidePassword ? (
+          <LucideEye
+            className="absolute right-4 top-3 text-[#4B4B4B] hover:cursor-pointer"
+            onClick={() => setHidePassword(false)}
+          />
+        ) : (
+          <LucideEyeOff
+            className="absolute right-4 top-3 text-[#4B4B4B] hover:cursor-pointer"
+            onClick={() => setHidePassword(true)}
+          />
+        )}
+      </div>
+      {error && <span className="text-sm text-red-500">{error}</span>}
+    </div>
+  );
+}
+
 function ToggleField({ id = "", name = "", label = "", onChange = () => {} }) {
   return (
     <div className="flex w-full flex-col space-y-2">
@@ -51,4 +98,4 @@ function ToggleField({ id = "", name = "", label = "", onChange = () => {} }) {
   );
 }
 
-export { InputField, ToggleField };
+export { InputField, PasswordField, ToggleField };

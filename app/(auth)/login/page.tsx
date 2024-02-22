@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { InputField } from "@/components/layout/fields";
+import { InputField, PasswordField } from "@/components/layout/fields";
 import { FormEvent, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -116,14 +116,17 @@ export default function Login() {
             name="email"
             type="email"
             label="Email"
+            minLength={3}
+            maxLength={100}
             placeholder="example@email.com"
             onChange={() => setErrorMsg("")}
           />
-          <InputField
+          <PasswordField
             id="password"
             name="password"
-            type="password"
             label="Password"
+            minLength={8}
+            maxLength={50}
             onChange={() => setErrorMsg("")}
           />
           <Button type="submit" loading={loading} text="Login" full />

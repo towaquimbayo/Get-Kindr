@@ -5,7 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { InputField, ToggleField } from "@/components/layout/fields";
+import {
+  InputField,
+  PasswordField,
+  ToggleField,
+} from "@/components/layout/fields";
 import Button from "@/components/layout/button";
 import AlertMessage from "@/components/layout/alertMessage";
 import {
@@ -219,10 +223,9 @@ export default function Signup() {
             onChange={() => clearErrors("email")}
             error={(fieldErrors as { email?: string })?.email}
           />
-          <InputField
+          <PasswordField
             id="password"
             name="password"
-            type="password"
             label="Password"
             minLength={8}
             maxLength={50}
