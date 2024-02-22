@@ -30,6 +30,7 @@ const DEFAULT = {
   sortField: "start_time",
   sortMode: "asc",
   searchMode: null,
+  timeAll: false
 };
 
 /**
@@ -57,13 +58,15 @@ export async function GET(request: Request) {
     searchMode = searchMode && SEARCH_FIELDS.includes(searchMode) ? searchMode : DEFAULT.searchMode;
     const searchTerm = url.searchParams.get("search") ? url.searchParams.get("search") : null;
 
+    const allTime = url.searchParams.get("all") === "true" ? true : DEFAULT.timeAll;
+
     let sortField = url.searchParams.get("sortField");
     sortField = sortField && SORT_FIELDS.includes(sortField) ? sortField : DEFAULT.sortField;
 
     let sortMode = url.searchParams.get("sortMode");
     sortMode = sortMode && SORT_MODES.includes(sortMode) ? sortMode : DEFAULT.sortMode;
 
-    const currentTime = new Date();
+    const currentTime = !allTime ? new Date() : new Date(0);
 
     let events = null;
 
