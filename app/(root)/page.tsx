@@ -142,7 +142,7 @@ const Home = async () => {
       {/* About */}
       <Container className="flex flex-wrap items-center !p-0 my-10">
         <div className="lg:w-1/2">
-          <SectionTitle title="Together we can make a difference." pretitle="Why Kindr" align="left">KINDR is not just a rewards program; it's a movement towards creating a more empathetic and supportive world. By connecting volunteers, charities, sponsors, and donors in a seamless ecosystem, KINDR empowers every participant to make impactful choices. It's an invitation to live a life of purpose, enjoy the freedom of meaningful rewards, and be part of a community that values actions that make a difference.</SectionTitle>
+          <SectionTitle title="Together we can make a difference." pretitle="Why Kindr" align="left">KINDR is not just a rewards program; it&apos;s a movement towards creating a more empathetic and supportive world. By connecting volunteers, charities, sponsors, and donors in a seamless ecosystem, KINDR empowers every participant to make impactful choices. It&apos;s an invitation to live a life of purpose, enjoy the freedom of meaningful rewards, and be part of a community that values actions that make a difference.</SectionTitle>
         </div>
 
         <div className="flex justify-center lg:w-1/2 xl:pl-20">
