@@ -4,6 +4,8 @@ function InputField({
   type = "text",
   placeholder = "",
   label = "",
+  minLength = 0,
+  maxLength = 100,
   onChange = () => {},
   error = "",
 }) {
@@ -17,6 +19,8 @@ function InputField({
         id={id}
         name={name}
         placeholder={placeholder}
+        minLength={minLength}
+        maxLength={maxLength}
         onChange={onChange}
         className="h-12 w-full rounded-lg border border-[#EAEAEA] px-4"
       />
