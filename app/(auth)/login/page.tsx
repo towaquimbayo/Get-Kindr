@@ -8,11 +8,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/layout/button";
+import AlertMessage from "@/components/layout/alertMessage";
 
 export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     if (session && status === "authenticated") router.push("/");
@@ -21,24 +23,32 @@ export default function Login() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg("");
+
     const form = new FormData(e.currentTarget);
+    const data = {
+      email: form.get("email")?.toString().trim() ?? "",
+      password: form.get("password")?.toString().trim() ?? "",
+    };
+
+    if (!data.email || !data.password) {
+      setErrorMsg("Please enter an email and password.");
+      setLoading(false);
+      return;
+    }
+
     const res = await signIn("credentials", {
-      email: form.get("email")?.toString().trim() as string,
-      password: form.get("password")?.toString().trim() as string,
+      email: data.email,
+      password: data.password,
       redirect: false,
     });
     console.log("Login Response: ", res);
 
     if (!res) {
-      console.error("Login failed");
+      setErrorMsg("An error occurred. Please try again.");
     } else if (res.error) {
-      const errorMsg = res.error;
-      const errorMsgElement = document.getElementById("errorMsg");
-      if (errorMsgElement) errorMsgElement.textContent = errorMsg;
-      console.error("Login failed");
+      setErrorMsg(res.error);
     }
-
-    // router.push("/");
     setLoading(false);
   };
 
@@ -96,6 +106,7 @@ export default function Login() {
           <p className="px-8 text-sm text-black">OR</p>
           <hr className="my-auto h-px w-48 border-0 bg-[#EAEAEA]" />
         </div>
+        {errorMsg && <AlertMessage message={errorMsg} />}
         <form
           onSubmit={handleSubmit}
           className="flex w-full flex-col space-y-4"
@@ -106,15 +117,16 @@ export default function Login() {
             type="email"
             label="Email"
             placeholder="example@email.com"
+            onChange={() => setErrorMsg("")}
           />
           <InputField
             id="password"
             name="password"
             type="password"
             label="Password"
+            onChange={() => setErrorMsg("")}
           />
           <Button type="submit" loading={loading} text="Login" full />
-          <p id="errorMsg" className="text-center text-sm text-red-500" />
         </form>
         <p className="pt-6">
           Don&apos;t have an account?{" "}

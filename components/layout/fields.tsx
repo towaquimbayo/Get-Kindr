@@ -4,6 +4,10 @@ function InputField({
   type = "text",
   placeholder = "",
   label = "",
+  minLength = 0,
+  maxLength = 100,
+  onChange = () => {},
+  error = "",
 }) {
   return (
     <div className="flex w-full flex-col space-y-2">
@@ -15,8 +19,12 @@ function InputField({
         id={id}
         name={name}
         placeholder={placeholder}
+        minLength={minLength}
+        maxLength={maxLength}
+        onChange={onChange}
         className="h-12 w-full rounded-lg border border-[#EAEAEA] px-4"
       />
+      {error && <span className="text-sm text-red-500">{error}</span>}
     </div>
   );
 }
