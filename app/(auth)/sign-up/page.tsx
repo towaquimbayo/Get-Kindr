@@ -251,8 +251,8 @@ export default function Signup() {
           </Link>{" "}
         </p>
       </div>
-      <div className="relative hidden h-screen w-1/2 lg:flex">
-        <div className="relative z-10 h-full w-full bg-black bg-opacity-30" />
+      <div className="relative hidden min-h-screen w-1/2 lg:flex">
+        <div className="relative z-10 h-auto w-full bg-black bg-opacity-30" />
         <Image
           src="/auth-support-image.jpg"
           alt="2 females hug each other in support of each other."
