@@ -23,8 +23,9 @@ export default function Signup() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isOrganization, setIsOrganization] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
     if (session && status === "authenticated") router.push("/");
@@ -85,6 +86,7 @@ export default function Signup() {
     setLoading(true);
     setErrorMsg("");
     setFieldErrors({});
+    setSuccessMsg("");
 
     const form = new FormData(e.currentTarget);
     const data = {
@@ -109,7 +111,8 @@ export default function Signup() {
     if (!res) {
       setErrorMsg("An error occurred. Please try again.");
     } else if (res.ok) {
-      router.push("/login");
+      setSuccessMsg("Account created successfully. Redirecting to login...");
+      setTimeout(() => router.push("/login"), 3000);
     } else {
       const error = await res.json();
       setErrorMsg(error.message);
@@ -171,6 +174,7 @@ export default function Signup() {
           <hr className="my-auto h-px w-48 border-0 bg-[#EAEAEA]" />
         </div>
         {errorMsg && <AlertMessage message={errorMsg} />}
+        {successMsg && <AlertMessage message={successMsg} type="success" />}
         <form
           onSubmit={handleSubmit}
           className="flex w-full flex-col space-y-4"
