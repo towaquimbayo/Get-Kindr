@@ -5,6 +5,8 @@ import Link from "next/link";
 
 
 export default function Add_Event() {
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [errorFields, setErrorFields] = useState<string>('');
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const [valueDate, setPlaceValueDate] = useState<string>(formattedDate);
@@ -112,8 +114,8 @@ export default function Add_Event() {
             description: valueDescription,
             start_time: valueDate + " " + valueStartTime,
             end_time: valueDate + " " + valueEndTime,
-            organization_id: "abcdefghijklmnopqrstuvwxy",
-            tags: valueTags,
+            organization_id: "clsn6cghj0001vbewrz1qrso4",
+            tags: valueTags.split(' '),
             address: valueAddress,
             city: valueCity,
             recurring: valueRecurring,
@@ -136,9 +138,48 @@ export default function Add_Event() {
             console.log("An error occurred. Please try again.");
         } else if (res.ok) {
             console.log("Successfully created event.")
+            const eventData = await res.json();
+            console.log("Returned event: ", eventData);
+            window.location.href = "/events";
         } else {
+            invalidSubmit();
             console.log("Rejected event creation. Please try again.")
         }
+    }
+
+    const invalidSubmit = () => {
+        var missingFields = [];
+        if (valueName.length === 0) {
+            missingFields.push("Event Name");
+        }
+        if (valueAddress.length === 0) {
+            missingFields.push("Address");
+        }
+        if (valueCity.length === 0) {
+            missingFields.push("City");
+        }
+        if (valueDate.length === 0) {
+            missingFields.push("Date");
+        }
+        if (valueStartTime.length === 0) {
+            missingFields.push("Start Time");
+        }
+        if (valueEndTime.length === 0) {
+            missingFields.push("End Time");
+        }
+        if (valueVolNum === 0) {
+            missingFields.push("Available Spots");
+        }
+        setErrorMessage("Fill all required fields for an event");
+        var errorFields = "";
+        for (let i = 0; i < missingFields.length; i++) {
+            if (i === missingFields.length - 1) {
+                errorFields = errorFields + missingFields[i];
+                break;
+            }
+            errorFields = errorFields + missingFields[i] + ',   ';
+        }
+        setErrorFields(errorFields);
     }
 
     return (
@@ -227,9 +268,13 @@ export default function Add_Event() {
                             <input id="Tags" value={valueTags} onInput={updateValueTags} onBlur={(e) => formatValueTags(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-primary" placeholder="Enter tags related to your event ..."></input>
                         </div>
                     </div>
-                    <div className="flex justify-evenly w-full mb-8  mt-12">
+                    <div className="flex justify-evenly w-full mb-4  mt-12">
                         <button className="text-md h-12 w-1/5 rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold"><Link href="/" className="w-fit">Cancel</Link></button>
                         <button onClick={submitEvent} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold">Submit</button>
+                    </div>
+                    <div className="flex flex-col  items-center justify-center w-full mb-4 mt-2 h-fit">
+                        <h3 className="w-4/5 font-semibold text-center text-primary text-xl whitespace-pre-wrap">{errorMessage}</h3>
+                        <h3 className="w-4/5 font-semibold text-center text-primary text-lg whitespace-pre-wrap">{errorFields}</h3>
                     </div>
                 </div>
             </div>
