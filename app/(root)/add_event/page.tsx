@@ -1,18 +1,28 @@
 "use client";
 import React, { useState } from "react";
 import "../../globals.css";
-import { isForOfStatement } from "typescript";
+import Link from "next/link";
 
 
 export default function Add_Event() {
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
-    const [placeholderDate, setPlaceValueDate] = useState<string>(formattedDate);
+    const [valueDate, setPlaceValueDate] = useState<string>(formattedDate);
     const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
     const [valuePhone, setValuePhone] = useState<string>('');
     const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
     const [valueVolNum, setValueVolNum] = useState<string>('');
     const [valueTags, setTagsValue] = useState<string>('');
+    const [valueName, setValueName] = useState<string>('');
+    const [valueSupervisor, setValueSupervisor] = useState<string>('');
+    const [valuePosition, setValuePosition] = useState<string>('');
+    const [valueAddress, setValueAddress] = useState<string>('');
+    const [valueCity, setValueCity] = useState<string>('');
+    const [valueStartTime, setValueStartTime] = useState<string>('');
+    const [valueEndTime, setValueEndTime] = useState<string>('');
+    const [valueRecurring, setValueRecurring] = useState<boolean>(false)
+    const [valueOnline, setValueOnline] = useState<boolean>(false)
+    const [valueDescription, setValueDescription] = useState<string>('');
     const formatDate = (event: string) => {
         if (event.length == 11) {
             event = event.slice(0, 4) + event.slice(5, 11);
@@ -94,6 +104,25 @@ export default function Add_Event() {
             setTagsValue(formattedTags);
         }
     }
+    const submitEvent = () => {
+        const eventInfo = {
+            "name": valueName,
+            "position": valuePosition,
+            "supervisor": valueSupervisor,
+            "address": valueAddress,
+            "city": valueCity,
+            "start_time": valueDate + " " + valueStartTime,
+            "end_time": valueDate + " " + valueEndTime,
+            "number_of_spots": valueVolNum,
+            "online": valueOnline,
+            "recurring": valueRecurring,
+            "description": valueDescription,
+            "tags": valueTags.split(' '),
+            "token_bounty": 100,
+            "organization_id": "abcdefghijklmnopqrstuvwxy",
+        };
+        console.log(eventInfo);
+    }
 
     return (
         <div className="flex flex-1 flex-col items-center w-full bg-blue-100 pb-12">
@@ -101,33 +130,43 @@ export default function Add_Event() {
                 <p className="ext-left font-display text-3xl font-bold text-tertiary mt-16 pl-6">Create Event</p>
                 <p className="font-display font-bold text-4xl max-w-xs mb-12 pl-6 sm:max-w-full md:max-w-2xl md:text-6xl  lg:max-w-full">Host the future of giving back.</p>
                 <div className="flex flex-col items-center border-4 rounded-lg border-secondary bg-gray-50">
+                    <div className="flex justify-evenly w-full mt-12">
+                        <div className="flex flex-col w-5/6">
+                            <label htmlFor="Name" className="font-semibold pl-4 ">Event Name</label>
+                            <input id="Name" onChange={(e) => setValueName(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 font-semibold text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
+                        </div>
+                    </div>
                     <div className="flex justify-evenly w-full pt-12">
                         <div className="flex flex-col w-5/12">
                             <label htmlFor="Position" className="font-semibold pl-4">Position</label>
-                            <input id="Position" className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Position"></input>
+                            <input id="Position" onChange={(e) => setValuePosition(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Volunteer Title"></input>
                         </div>
                         <div className="flex flex-col w-5/12">
                             <label htmlFor="Supervisor" className="font-semibold pl-4">Supervisor</label>
-                            <input id="Supervisor" className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Coordinator"></input>
+                            <input id="Supervisor" onChange={(e) => setValueSupervisor(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Coordinator"></input>
                         </div>
                     </div>
-                    <div className="flex justify-evenly w-full mt-8">
-                        <div className="flex flex-col w-5/6">
-                            <label htmlFor="Supervisor" className="font-semibold pl-4 ">Address</label>
-                            <input id="Supervisor" className="rounded-lg border-2 border border-[#EAEAEA] pl-6 font-semibold text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Address"></input>
+                    <div className="flex justify-evenly w-full pt-12">
+                        <div className="flex flex-col w-5/12">
+                            <label htmlFor="Position" className="font-semibold pl-4">Address</label>
+                            <input id="Position" onChange={(e) => setValueAddress(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event Address"></input>
+                        </div>
+                        <div className="flex flex-col w-5/12">
+                            <label htmlFor="Supervisor" className="font-semibold pl-4">City</label>
+                            <input id="Supervisor" onChange={(e) => setValueCity(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event City"></input>
                         </div>
                     </div>
                     <div className="flex flex-col mb:flex-row justify-evenly items-center w-full">
                         <div className="flex flex-col w-4/5 mb:w-1/3 mb:min-w-40 mt-8">
                             <label htmlFor="Date" className="font-semibold pl-4">Date</label>
-                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base" value={placeholderDate}></input>
+                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base" value={valueDate}></input>
                         </div>
                         <div className="flex flex-col w-4/5 mt-8 mb:w-1/3 mb:min-w-44">
                             <label htmlFor="time" className="font-semibold pl-4">Time</label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="time" className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
+                                <input type="time" id="startTime" onChange={(e) => setValueStartTime(e.target.value)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
                                 <h1 className="text-xl mt-0.5 mb:text-2xl">-</h1>
-                                <input type="time" id="time" className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
+                                <input type="time" id="endTime" onChange={(e) => setValueEndTime(e.target.value)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
                             </div>
                         </div>
                     </div>
@@ -143,14 +182,14 @@ export default function Add_Event() {
                             </div>
                             <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-gray-400 mt-4 md:w-34 md:w-1/3 md:h-24 md:pt-1">
                                 <div className="mt-2 w-full ml-2">
-                                    <input id="Virtual" type="checkbox"
+                                    <input id="Virtual" type="checkbox" onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-light text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Virtual">
                                         Virtual
                                     </label>
                                 </div>
                                 <div className="mt-2 w-full ml-2">
-                                    <input id="Recurring" type="checkbox"
+                                    <input id="Recurring" type="checkbox" onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-light text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Recurring">
                                         Recurring
@@ -162,7 +201,7 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full pt-2">
                         <div className="flex flex-col w-4/5">
                             <label htmlFor="Description" className="font-semibold pl-4">Description</label>
-                            <textarea id="Description" rows={6} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
+                            <textarea id="Description" rows={6} onChange={(e) => setValueDescription(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mt-8">
@@ -172,8 +211,8 @@ export default function Add_Event() {
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mb-8  mt-12">
-                        <button className="text-md h-12 w-1/5 rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold">Cancel</button>
-                        <button className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold">Submit</button>
+                        <button className="text-md h-12 w-1/5 rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold"><Link href="/" className="w-fit">Cancel</Link></button>
+                        <button onClick={submitEvent} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold">Submit</button>
                     </div>
                 </div>
             </div>
