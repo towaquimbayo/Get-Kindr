@@ -11,7 +11,7 @@ export default function Add_Event() {
     const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
     const [valuePhone, setValuePhone] = useState<string>('');
     const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
-    const [valueVolNum, setValueVolNum] = useState<string>('');
+    const [valueVolNum, setValueVolNum] = useState<number>(0);
     const [valueTags, setTagsValue] = useState<string>('');
     const [valueName, setValueName] = useState<string>('');
     const [valueSupervisor, setValueSupervisor] = useState<string>('');
@@ -63,7 +63,6 @@ export default function Add_Event() {
         // Clear the placeholder value when the user clicks on the input field
         setPlaceValueVolNum('');
     };
-
     const handleInputBlurVolNum = () => {
         if (placeholderPhone !== '') return;
         // Reset the placeholder value when the user clicks outside the input field
@@ -72,16 +71,16 @@ export default function Add_Event() {
     const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
         console.log(event.target.value);
         if (event.target.value.length == 0) {
-            setValueVolNum('0');
+            setValueVolNum(0);
             return;
         }
         const newValue = event.target.value;
         // Validate if the input is a number before updating the state
         if (newValue.length > 3) {
             const correctLen = newValue.slice(0, 3);
-            setValueVolNum(correctLen)
+            setValueVolNum(parseInt(correctLen, 10))
         } else {
-            setValueVolNum(newValue)
+            setValueVolNum(parseInt(newValue, 10));
         }
     }
     const updateValueTags = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +91,7 @@ export default function Add_Event() {
             const tags = valueTags.split(' ');
             let formattedTags = '';
             for (let i = 0; i < tags.length; i++) {
-                if (tags[i].charAt(0) !== "#") {
+                if (tags[i].charAt(0) !== "#" && tags[i].length > 0) {
                     tags[i] = '#' + tags[i];
                 }
                 if (i === 0) {
@@ -104,24 +103,42 @@ export default function Add_Event() {
             setTagsValue(formattedTags);
         }
     }
-    const submitEvent = () => {
+    const submitEvent = async () => {
+        // Removed Elements:
+        // - valuePosition
+        // - valueSupervisor
         const eventInfo = {
-            "name": valueName,
-            "position": valuePosition,
-            "supervisor": valueSupervisor,
-            "address": valueAddress,
-            "city": valueCity,
-            "start_time": valueDate + " " + valueStartTime,
-            "end_time": valueDate + " " + valueEndTime,
-            "number_of_spots": valueVolNum,
-            "online": valueOnline,
-            "recurring": valueRecurring,
-            "description": valueDescription,
-            "tags": valueTags.split(' '),
-            "token_bounty": 100,
-            "organization_id": "abcdefghijklmnopqrstuvwxy",
+            name: valueName,
+            description: valueDescription,
+            start_time: valueDate + " " + valueStartTime,
+            end_time: valueDate + " " + valueEndTime,
+            organization_id: "abcdefghijklmnopqrstuvwxy",
+            tags: valueTags,
+            address: valueAddress,
+            city: valueCity,
+            recurring: valueRecurring,
+            online: valueOnline,
+            token_bounty: 100,
+            number_of_spots: valueVolNum,
         };
-        console.log(eventInfo);
+        const data = JSON.stringify(eventInfo);
+        console.log(data);
+        const res = await fetch('/api/events/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        });
+
+        console.log("Response: ", res);
+        if (!res) {
+            console.log("An error occurred. Please try again.");
+        } else if (res.ok) {
+            console.log("Successfully created event.")
+        } else {
+            console.log("Rejected event creation. Please try again.")
+        }
     }
 
     return (
