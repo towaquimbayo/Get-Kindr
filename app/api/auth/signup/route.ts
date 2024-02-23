@@ -30,9 +30,9 @@ export async function POST(req: Request) {
       !email ||
       !password
     ) {
-      console.error("Missing required fields");
+      console.error("Signup failed: Missing required fields.");
       return NextResponse.json(
-        { message: "Missing required fields" },
+        { message: "Please fill out all mandatory fields." },
         { status: 400 },
       );
     }
@@ -43,9 +43,11 @@ export async function POST(req: Request) {
     });
 
     if (emailExist) {
-      console.error("Email already exists");
+      console.error(
+        `Signup failed: Email ${email} is already associated with an account.`,
+      );
       return NextResponse.json(
-        { message: "Email already exists" },
+        { message: "An account with this email already exists." },
         { status: 400 },
       );
     }
@@ -85,16 +87,19 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      console.error("User creation failed");
+      console.error("Signup failed: User creation failed in Prisma.");
       return NextResponse.json(
-        { message: "User creation failed" },
+        { message: "An unexpected error occurred. Please try again." },
         { status: 500 },
       );
     }
-    console.log("User created: ", user);
+    console.log(`User ${email} signed up successfully.`);
     return NextResponse.json(user);
   } catch (e) {
-    console.error("Signup failed", e);
-    return NextResponse.json({ message: "Signup failed" }, { status: 500 });
+    console.error("Signup failed:", e);
+    return NextResponse.json(
+      { message: "An unexpected error occurred. Please try again." },
+      { status: 500 },
+    );
   }
 }

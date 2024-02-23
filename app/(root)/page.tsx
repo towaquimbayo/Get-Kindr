@@ -8,20 +8,36 @@ const Home = async () => {
 
   const faq_data = [
     {
-      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
-      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
+      question: "Why Kindr and why now?",
+      answer: "In today's fast-paced world, many individuals must balance multiple jobs in a gig economy. Kindr emerges as a beacon of hope, offering the \"Ethical Side Hustle\" by rewarding volunteers for their time. This unique approach frees individuals up time to contribute to causes they care about despite economic pressures."
     },
     {
-      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
-      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
+      question: "How do I get started as a volunteer?",
+      answer: "Kickstart your journey with Kindr by completing your profile. The more details you provide, the better we can tailor volunteer opportunities to match your aspirations, location, and schedule. It's about making an impact where it counts, on your terms."
     },
     {
-      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
-      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
+      question: "How do I get started as an organisation?",
+      answer: "Organisations looking to harness the power of community can start by creating a profile on Kindr. Share your mission and needs; we'll connect you with passionate volunteers ready to make a difference. Your first step? Hosting a volunteer orientation session to welcome new faces to your cause."
     },
     {
-      question: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, beatae?",
-      answer: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, cupiditate et eos laboriosam ipsum in modi voluptate corrupti quod iusto quia. Cupiditate numquam adipisci delectus."
+      question: "How do I get started as a donor?",
+      answer: "Your contributions are vital in driving change. By donating to Kindr, not only do you support meaningful causes, but you also gain visibility into the impact of your generosity. Stay tuned for opportunities to contribute your time, and contact support@getkindr.com for more details."
+    },
+    {
+      question: "How do I get started as a sponsor?",
+      answer: "Sponsors play a crucial role in amplifying our impact. By partnering with Kindr, you help fuel our mission and extend your brand's reach to a community dedicated to positive change. Contact us at support@getkindr.com to explore sponsorship opportunities and how your organisation can contribute to our ecosystem of kindness."
+    },
+    {
+      question: "What can I do with the Kindness Points that I earn?",
+      answer: "The possibilities with Kindness Points are ever-expanding. From redeeming points for discounts and rewards from our partners to converting them into cash, your early involvement ensures a richer rewards experience as our community grows."
+    },
+    {
+      question: "How can I find out if my charity is on Kindr? What if it's not?",
+      answer: "Please browse through our list of participating organisations. If your charity needs to be listed, let them know about the opportunities Kindr offers, or contact us at support@getkindr.com. Your referrals not only expand our community but also earn you Kindness Points."
+    },
+    {
+      question: "Why use Kindr instead of traditional volunteering methods?",
+      answer: "While word-of-mouth has charm, Kindr broadens your horizon by making it easier to discover volunteering opportunities that might otherwise go unnoticed. Also, earning Kindness Points adds an extra reward to your altruistic efforts. Refer friends to amplify your impact and rewards."
     },
   ];
 
@@ -33,11 +49,11 @@ const Home = async () => {
         <div className="absolute inset-0 bg-gradient-to-r from-orange-200 opacity-90 to-transparent z-10"></div>
         <div className="flex items-end w-full z-20">
           <div className="max-w-xl mb-16">
-            <p className="text-md font-bold tracking-widest text-teal-500 uppercase">Give a hand to make</p>
-            <h1 className="py-1 pb-6 text-4xl font-display font-bold leading-snug tracking-tight text-gray-800 md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">the world better</h1>
+            <p className="text-md font-bold tracking-widest text-teal-500 uppercase">earn points with purpose</p>
+            <h1 className="py-1 pb-6 text-4xl font-display font-bold leading-snug tracking-tight text-gray-800 md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">spend with freedom</h1>
 
             <div className="flex flex-col items-start space-y-3 sm:space-x-4 sm:space-y-0 sm:items-center sm:flex-row">
-              <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-orange-600 rounded-2xl">VOLUNTEER NOW</a>
+              <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-primary rounded-2xl uppercase">join us today</a>
             </div>
           </div>
         </div>
@@ -76,7 +92,7 @@ const Home = async () => {
                 <div className="flex-auto">Feb 3, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
-                <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-orange-600 rounded-2xl w-full">VOLUNTEER NOW</a>
+                <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-primary rounded-2xl w-full">VOLUNTEER NOW</a>
               </div>
             </div>
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
@@ -96,7 +112,7 @@ const Home = async () => {
                 <div className="flex-auto">Feb 21, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
-                <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-orange-600 rounded-2xl w-full">VOLUNTEER NOW</a>
+                <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-primary rounded-2xl w-full">VOLUNTEER NOW</a>
               </div>
             </div>
             <div key={123} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
@@ -116,7 +132,7 @@ const Home = async () => {
                 <div className="flex-auto">March 12, 2024</div>
               </div>
               <div className="flex flex-col items-start mt-5 sm:items-center sm:flex-row">
-                <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-orange-600 rounded-2xl w-full">VOLUNTEER NOW</a>
+                <a href="#" className="px-8 py-4 text-sm font-medium text-center tracking-widest text-white bg-primary rounded-2xl w-full">VOLUNTEER NOW</a>
               </div>
             </div>
           </>
@@ -126,7 +142,7 @@ const Home = async () => {
       {/* About */}
       <Container className="flex flex-wrap items-center !p-0 my-10">
         <div className="lg:w-1/2">
-          <SectionTitle title="Together we can make a difference." pretitle="Our Mission" align="left">At KINDR, we believe in the power of individuals to create positive change. We empower socially conscious individuals through flexible and on-demand volunteering opportunities that fit seamlessly into busy lives. Join us in making a difference, one act of kindness at a time!</SectionTitle>
+          <SectionTitle title="Together we can make a difference." pretitle="Why Kindr" align="left">KINDR is not just a rewards program; it&apos;s a movement towards creating a more empathetic and supportive world. By connecting volunteers, charities, sponsors, and donors in a seamless ecosystem, KINDR empowers every participant to make impactful choices. It&apos;s an invitation to live a life of purpose, enjoy the freedom of meaningful rewards, and be part of a community that values actions that make a difference.</SectionTitle>
         </div>
 
         <div className="flex justify-center lg:w-1/2 xl:pl-20">
@@ -135,7 +151,7 @@ const Home = async () => {
       </Container>
 
       {/* FAQ */}
-      <SectionTitle title="Frequently Asked Questions" pretitle="FAQ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium, ad saepe repellat itaque molestiae quo?</SectionTitle>
+      <SectionTitle title="Frequently Asked Questions" pretitle="FAQ">KINDR redefines the concept of rewards by intertwining the spirit of volunteerism with the benefits of a loyalty program. As a platform that celebrates and incentivises acts of kindness, KINDR offers individuals, charities, sponsors, and donors a unique opportunity to engage in meaningful actions that benefit society.</SectionTitle>
       <Container>
         <div className="grid gap-10 md:gap-8 sm:p-3 md:grid-cols-2 lg:px-12 xl:px-32">
           {faq_data.map((faq, index) => (

@@ -27,27 +27,29 @@ export const authOptions: NextAuthOptions = {
         console.log("Login request by user:", credentials);
 
         if (!credentials || !credentials.email || !credentials.password) {
-          console.error("Missing required fields");
-          throw new Error("Please enter an email and password");
+          console.error("Signin failed: Missing email or password");
+          throw new Error("Please enter an email and password.");
         }
+
+        const { email, password } = credentials;
 
         // Check if user exists
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: email },
         });
         if (!user || !user.hashedPassword) {
-          console.error("User not found");
-          throw new Error("User not found");
+          console.error(`Signin failed: User not found for email ${email}`);
+          throw new Error("Incorrect email or password.");
         }
 
         // Check if password is valid
-        const valid = await compare(credentials.password, user.hashedPassword);
+        const valid = await compare(password, user.hashedPassword);
         if (!valid) {
-          console.error("Incorrect password");
-          throw new Error("Incorrect password");
+          console.error(`Signin failed: Incorrect password for email ${email}`);
+          throw new Error("Incorrect email or password.");
         }
 
-        console.log("User logged in:", user);
+        console.log(`User ${email} signed in successfully.`); 
         return user;
       },
     }),
@@ -130,7 +132,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 Days
-    updateAge: 24 * 60 * 60 // 1 Day
+    updateAge: 24 * 60 * 60, // 1 Day
   },
   pages: {
     signIn: "/login",
