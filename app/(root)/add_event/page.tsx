@@ -51,7 +51,7 @@ export default function Add_Event() {
                                 <label htmlFor="Spots" className="font-semibold pl-4 sm:min-w-36">Available Spots</label>
                                 <input type="number" id="Spots" className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder="0"></input>
                             </div>
-                            <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-gray-400 mt-4 md:min-w-34 md:w-1/3 md:h-24 md:pt-1">
+                            <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-gray-400 mt-4 md:w-34 md:w-1/3 md:h-24 md:pt-1">
                                 <div className="mt-2 w-full ml-2">
                                     <input id="Virtual" type="checkbox"
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
