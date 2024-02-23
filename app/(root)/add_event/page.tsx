@@ -1,11 +1,101 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import "../../globals.css";
+import { isForOfStatement } from "typescript";
+
 
 export default function Add_Event() {
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
+    const [placeholderDate, setPlaceValueDate] = useState<string>(formattedDate);
+    const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
+    const [valuePhone, setValuePhone] = useState<string>('');
+    const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
+    const [valueVolNum, setValueVolNum] = useState<string>('');
+    const [valueTags, setTagsValue] = useState<string>('');
+    const formatDate = (event: string) => {
+        if (event.length == 11) {
+            event = event.slice(0, 4) + event.slice(5, 11);
+        }
+        if (event.length == 12) {
+            event = event.slice(0, 4) + event.slice(6, 12);
+        }
+        setPlaceValueDate(event);
+    }
+    const handleInputClickPhone = () => {
+        // Clear the placeholder value when the user clicks on the input field
+        setPlaceValuePhone('');
+    };
+    const handleInputBlurPhone = () => {
+        if (placeholderPhone !== '') return;
+        // Reset the placeholder value when the user clicks outside the input field
+        setPlaceValuePhone('123 - 456 - 7890');
+    }
+    const formatPhone = (event: string) => {
+        // Check for a valid phone number with extra digits at the end
+        if (event.length > 16) {
+            const correctLen = event.slice(0, 16);
+            event = correctLen;
+        }
+        // Remove all non-numeric characters from the input value
+        const cleaned = event.replace(/\D/g, '');
+        // Apply formatting based on the cleaned value
+        const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+        if (match) {
+            // Check if all digits are entered, otherwise, return formatted string with only entered digits
+            event = match[1] ? '(' + match[1] + (match[2] ? ') ' + match[2] + (match[3] ? ' - ' + match[3] : '') : '') : '';
+        } else {
+            event = ''
+        }
+        setValuePhone(event);
+    }
+    const handleInputClickVolNum = () => {
+        // Clear the placeholder value when the user clicks on the input field
+        setPlaceValueVolNum('');
+    };
+
+    const handleInputBlurVolNum = () => {
+        if (placeholderPhone !== '') return;
+        // Reset the placeholder value when the user clicks outside the input field
+        setPlaceValueVolNum('0');
+    }
+    const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value);
+        if (event.target.value.length == 0) {
+            setValueVolNum('0');
+            return;
+        }
+        const newValue = event.target.value;
+        // Validate if the input is a number before updating the state
+        if (newValue.length > 3) {
+            const correctLen = newValue.slice(0, 3);
+            setValueVolNum(correctLen)
+        } else {
+            setValueVolNum(newValue)
+        }
+    }
+    const updateValueTags = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTagsValue(event.target.value);
+    }
+    const formatValueTags = (event: string) => {
+        if (event.length > 0) {
+            const tags = valueTags.split(' ');
+            let formattedTags = '';
+            for (let i = 0; i < tags.length; i++) {
+                if (tags[i].charAt(0) !== "#") {
+                    tags[i] = '#' + tags[i];
+                }
+                if (i === 0) {
+                    formattedTags = tags[i];
+                } else {
+                    formattedTags = formattedTags + ' ' + tags[i];
+                }
+            }
+            setTagsValue(formattedTags);
+        }
+    }
+
     return (
-        console.log(formattedDate),
         <div className="flex flex-1 flex-col items-center w-full bg-blue-100 pb-12">
             <div className="flex flex-col w-10/12">
                 <p className="ext-left font-display text-3xl font-bold text-tertiary mt-16 pl-6">Create Event</p>
@@ -24,13 +114,13 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full mt-8">
                         <div className="flex flex-col w-5/6">
                             <label htmlFor="Supervisor" className="font-semibold pl-4 ">Address</label>
-                            <input id="Supervisor" className="rounded-lg border-2 border border-[#EAEAEA] pl-6 font-semibold text-gray-800 sm:text-lg text-ellipsis" placeholder="555 Seymour St, Vancouver BC V6B 3H6, Canada"></input>
+                            <input id="Supervisor" className="rounded-lg border-2 border border-[#EAEAEA] pl-6 font-semibold text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Address"></input>
                         </div>
                     </div>
                     <div className="flex flex-col mb:flex-row justify-evenly items-center w-full">
                         <div className="flex flex-col w-4/5 mb:w-1/3 mb:min-w-40 mt-8">
                             <label htmlFor="Date" className="font-semibold pl-4">Date</label>
-                            <input type="date" id="Date" className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base" placeholder={formattedDate}></input>
+                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base" value={placeholderDate}></input>
                         </div>
                         <div className="flex flex-col w-4/5 mt-8 mb:w-1/3 mb:min-w-44">
                             <label htmlFor="time" className="font-semibold pl-4">Time</label>
@@ -44,12 +134,12 @@ export default function Add_Event() {
                     <div className="flex flex-col items-center justify-center w-full mt-8 md:flex-row md:justify-evenly">
                         <div className="flex flex-col justify-evenly sm:justify-center w-3/5 sm:w-fit sm:min-w-80 md:w-1/3 md:min-w-0 m-auto md:m-0 md:max-w-56">
                             <label htmlFor="Phone" className="font-semibold pl-4 md:pl-4">Phone</label>
-                            <input type="tel" id="Phone" className="font-semibold rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-center mb:text-lg md:max-w-56" placeholder="(123) - 456 - 7890"></input>
+                            <input type="tel" id="Phone" value={valuePhone} onClick={handleInputClickPhone} onChange={(e) => formatPhone(e.target.value)} onBlur={handleInputBlurPhone} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-center mb:text-lg md:max-w-56" placeholder={placeholderPhone}></input>
                         </div>
                         <div className="flex w-full justify-evenly mt-10 md:w-1/2 md:justify-between md:mt-0">
                             <div className="flex flex-col w-1/2 sm:min-w-36 md:pt-4">
                                 <label htmlFor="Spots" className="font-semibold pl-4 sm:min-w-36">Available Spots</label>
-                                <input type="number" id="Spots" className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder="0"></input>
+                                <input type="number" id="Spots" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder={placeholderVolNum}></input>
                             </div>
                             <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-gray-400 mt-4 md:w-34 md:w-1/3 md:h-24 md:pt-1">
                                 <div className="mt-2 w-full ml-2">
@@ -72,13 +162,13 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full pt-2">
                         <div className="flex flex-col w-4/5">
                             <label htmlFor="Description" className="font-semibold pl-4">Description</label>
-                            <textarea id="Description" rows={6} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44"></textarea>
+                            <textarea id="Description" rows={6} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mt-8">
                         <div className="flex flex-col w-4/5">
                             <label htmlFor="Tags" className="font-semibold pl-4">Tags</label>
-                            <input id="Tags" className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-primary" placeholder="Enter tags related to your event ..."></input>
+                            <input id="Tags" value={valueTags} onInput={updateValueTags} onBlur={(e) => formatValueTags(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-primary" placeholder="Enter tags related to your event ..."></input>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mb-8  mt-12">
