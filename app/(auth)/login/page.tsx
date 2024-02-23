@@ -129,6 +129,11 @@ export default function Login() {
             maxLength={50}
             onChange={() => setErrorMsg("")}
           />
+          <div className="flex w-full text-sm pb-2">
+            <Link href="/forgot-password" className="text-[#858585]">
+              Forgot password?
+            </Link>
+          </div>
           <Button type="submit" loading={loading} text="Login" full />
         </form>
         <p className="pt-6">
