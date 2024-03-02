@@ -23,7 +23,7 @@ const SectionTitle = ({ children, align, pretitle, title }: {
         )}
 
         {children && (
-            <p className="max-w-2xl py-4 text-lg leading-normal text-gray-500 lg:text-xl xl:text-xl">
+            <p className="max-w-2xl py-4 text-lg leading-normal text-gray-500 lg:text-xl xl:text-xl text-left">
                 {children}
             </p>
         )}

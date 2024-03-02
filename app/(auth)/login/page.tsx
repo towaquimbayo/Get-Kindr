@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { InputField } from "@/components/layout/fields";
+import { InputField, PasswordField } from "@/components/layout/fields";
 import { FormEvent, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -116,16 +116,24 @@ export default function Login() {
             name="email"
             type="email"
             label="Email"
+            minLength={3}
+            maxLength={100}
             placeholder="example@email.com"
             onChange={() => setErrorMsg("")}
           />
-          <InputField
+          <PasswordField
             id="password"
             name="password"
-            type="password"
             label="Password"
+            minLength={8}
+            maxLength={50}
             onChange={() => setErrorMsg("")}
           />
+          <div className="flex w-full text-sm pb-2">
+            <Link href="/forgot-password" className="text-[#858585]">
+              Forgot password?
+            </Link>
+          </div>
           <Button type="submit" loading={loading} text="Login" full />
         </form>
         <p className="pt-6">
@@ -135,8 +143,8 @@ export default function Login() {
           </Link>{" "}
         </p>
       </div>
-      <div className="relative hidden h-screen w-1/2 lg:flex">
-        <div className="relative z-10 h-full w-full bg-black bg-opacity-30" />
+      <div className="relative hidden min-h-screen w-1/2 lg:flex">
+        <div className="relative z-10 h-auto w-full bg-black bg-opacity-30" />
         <Image
           src="/auth-support-image.jpg"
           alt="2 females hug each other in support of each other."

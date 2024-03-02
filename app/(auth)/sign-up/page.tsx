@@ -5,7 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { InputField, ToggleField } from "@/components/layout/fields";
+import {
+  InputField,
+  PasswordField,
+  ToggleField,
+} from "@/components/layout/fields";
 import Button from "@/components/layout/button";
 import AlertMessage from "@/components/layout/alertMessage";
 import {
@@ -19,8 +23,9 @@ export default function Signup() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isOrganization, setIsOrganization] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
     if (session && status === "authenticated") router.push("/");
@@ -81,6 +86,7 @@ export default function Signup() {
     setLoading(true);
     setErrorMsg("");
     setFieldErrors({});
+    setSuccessMsg("");
 
     const form = new FormData(e.currentTarget);
     const data = {
@@ -105,7 +111,8 @@ export default function Signup() {
     if (!res) {
       setErrorMsg("An error occurred. Please try again.");
     } else if (res.ok) {
-      router.push("/login");
+      setSuccessMsg("Account created successfully. Redirecting to login...");
+      setTimeout(() => router.push("/login"), 3000);
     } else {
       const error = await res.json();
       setErrorMsg(error.message);
@@ -167,6 +174,7 @@ export default function Signup() {
           <hr className="my-auto h-px w-48 border-0 bg-[#EAEAEA]" />
         </div>
         {errorMsg && <AlertMessage message={errorMsg} />}
+        {successMsg && <AlertMessage message={successMsg} type="success" />}
         <form
           onSubmit={handleSubmit}
           className="flex w-full flex-col space-y-4"
@@ -219,10 +227,9 @@ export default function Signup() {
             onChange={() => clearErrors("email")}
             error={(fieldErrors as { email?: string })?.email}
           />
-          <InputField
+          <PasswordField
             id="password"
             name="password"
-            type="password"
             label="Password"
             minLength={8}
             maxLength={50}
@@ -248,8 +255,8 @@ export default function Signup() {
           </Link>{" "}
         </p>
       </div>
-      <div className="relative hidden h-screen w-1/2 lg:flex">
-        <div className="relative z-10 h-full w-full bg-black bg-opacity-30" />
+      <div className="relative hidden min-h-screen w-1/2 lg:flex">
+        <div className="relative z-10 h-auto w-full bg-black bg-opacity-30" />
         <Image
           src="/auth-support-image.jpg"
           alt="2 females hug each other in support of each other."
