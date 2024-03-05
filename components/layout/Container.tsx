@@ -3,7 +3,7 @@ const Container = ({ children, className }: {
     className?: string;
 }) => {
   return (
-    <div className={`container p-8 mx-auto xl:px-0 ${
+    <div className={`container p-8 mx-auto ${
         className ? className : ''
     }`}>
         {children}
