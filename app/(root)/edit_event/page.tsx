@@ -31,7 +31,7 @@ export default function Add_Event() {
     const [valueDescription, setValueDescription] = useState<string>('');
 
     const url = new URL(window.location.href);
-    const getEvent = url.searchParams.get("eventID");
+    const eventID = url.searchParams.get("eventID");
     const updateValues = (event: object) => {
         setValueName(event.name);
         setValueAddress(event.address);
@@ -64,7 +64,7 @@ export default function Add_Event() {
     }
     const readEvent = async () => {
         console.log("read");
-        const res = await fetch('/api/events/?eventID=' + getEvent, {
+        const res = await fetch('/api/events/?eventID=' + eventID, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -166,6 +166,7 @@ export default function Add_Event() {
         // - valuePosition
         // - valueSupervisor
         const eventInfo = {
+            id: eventID,
             name: valueName,
             description: valueDescription,
             start_time: valueDate + " " + valueStartTime,
@@ -189,13 +190,11 @@ export default function Add_Event() {
             body: data,
         });
 
-        console.log("Response: ", res);
+        console.log("Response: ", res.text());
         if (!res) {
             console.log("An error occurred. Please try again.");
         } else if (res.ok) {
-            console.log("Successfully created event.")
-            const eventData = await res.json();
-            console.log("Returned event: ", eventData);
+            console.log("Successfully created event.");
             window.location.href = "/events";
         } else {
             invalidSubmit();
