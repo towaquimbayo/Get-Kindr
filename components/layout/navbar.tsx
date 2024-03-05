@@ -40,7 +40,8 @@ export default function NavBar({ session }: { session: Session | null }) {
         <div className="flex items-center space-x-8">
           <NavLink href="/about" name="About" />
           <NavLink href="/events" name="Events" />
-          <NavLink href="/add_event" name="Add Event (Temp)" />
+          <NavLink href="/add_event" name="Add Event" />
+          <NavLink href="/edit_event" name="Edit Event (Hide)" />
           {session ? (
             <>
               <NavLink href="/profile" name="Profile" />
