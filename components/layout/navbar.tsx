@@ -5,6 +5,7 @@ import Link from "next/link";
 import useScroll from "@/lib/hooks/use-scroll";
 import UserDropdown from "./user-dropdown";
 import { Session } from "next-auth";
+import Container from "./Container";
 
 export default function NavBar({ session }: { session: Session | null }) {
   const scrolled = useScroll(50);
@@ -26,7 +27,7 @@ export default function NavBar({ session }: { session: Session | null }) {
         scrolled ? "bg-white/50 shadow-md backdrop-blur-xl" : "bg-white/0"
       } z-30 transition-all`}
     >
-      <div className="mx-5 my-1 flex h-16 min-h-16 w-full max-w-screen-xl items-center justify-between">
+      <Container className="flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
             src="/kindr_logo.png"
@@ -51,7 +52,7 @@ export default function NavBar({ session }: { session: Session | null }) {
             <NavLink href="/login" name="Login" />
           )}
         </div>
-      </div>
+      </Container>
     </nav>
   );
 }
