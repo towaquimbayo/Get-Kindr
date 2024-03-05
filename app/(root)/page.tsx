@@ -164,21 +164,44 @@ const Home = async () => {
       </Container>
       
       {/* Footer */}
-      <Container className="">
-        <div className="text-center">
-          <p className="text-gray-500">
-            &copy; 2024{" "}
-            <a
-              className="font-semibold text-gray-600 underline-offset-4 transition-colors hover:underline"
-              href="https://getkindr.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              KINDR
-            </a>
-          </p>
-        </div>
-      </Container>
+      <div className="w-full bg-orange-50">
+        <Container className="">
+          <div>
+            <div className="flex justify-between">
+              <div className="">
+                <Image src="/kindr_logo.png" width="80" height="10" quality={100} alt="Kindr Logo" />
+              </div>
+              <div className="flex gap-30">
+                <div className="flex flex-col">
+                  <p className="text-xs tracking-widest uppercase">Site Map</p>
+                  <a href="https://getkindr.com/" className="text-gray-600 underline-offset-4 transition-colors hover:underline">Home</a>
+                  <a href="https://getkindr.com/about" className="text-gray-600 underline-offset-4 transition-colors hover:underline">About</a>
+                  <a href="https://getkindr.com/events" className="text-gray-600 underline-offset-4 transition-colors hover:underline">Events</a>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-xs tracking-widest uppercase">Email</p>
+                  <a href="#" className="text-gray-600 underline-offset-4 transition-colors hover:underline">info@getkindr.com</a>
+                  <p className="mt-3 text-xs tracking-widest uppercase">Phone</p>
+                  <a href="#" className="text-gray-600 underline-offset-4 transition-colors hover:underline">(604) 123-4567</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-10 flex">
+            <p className="text-gray-500">
+              Copyright &copy; 2024{" "}
+              <a
+                className="font-semibold text-gray-600 underline-offset-4 transition-colors hover:underline"
+                href="https://getkindr.com/"
+                rel="noopener noreferrer"
+              >
+                KINDR
+              </a>
+              . All rights reserved.
+            </p>
+          </div>
+        </Container>
+      </div>
     </>
   );
 }
