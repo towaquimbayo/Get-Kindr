@@ -1,23 +1,23 @@
 import prisma from "@/lib/prisma";
 
 const SEARCH_FIELDS = {
-  name:             "String",
-  description:      "String",
-  start_time:       "DateTime", // Format: "YYYY-MM-DD"
-  end_time:         "DateTime", // Format: "YYYY-MM-DD"
-  organization_id:  "String",
-  organization:     "String",
-  tags:             "String[]",
-  address:          "String",
-  city:             "String",
-  token_bounty:     "Int",
+  name: "String",
+  description: "String",
+  start_time: "DateTime", // Format: "YYYY-MM-DD"
+  end_time: "DateTime", // Format: "YYYY-MM-DD"
+  organization_id: "String",
+  organization: "String",
+  tags: "String[]",
+  address: "String",
+  city: "String",
+  token_bounty: "Int",
 };
 
 const SORT_FIELDS = [
   "start_time",
   "end_time",
   "name",
-  "distance",     // TODO: Implement distance sorting
+  // "distance",     // TODO: Implement distance sorting
   "token_bounty"
 ];
 
@@ -51,7 +51,6 @@ const DEFAULT = {
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    // console.log("url search params", url.searchParams);
 
     const eventID = url.searchParams.get("eventID");
 
@@ -66,8 +65,6 @@ export async function GET(request: Request) {
 
     let sortMode = url.searchParams.get("sortMode");
     sortMode = sortMode && SORT_MODES.includes(sortMode) ? sortMode : DEFAULT.sortMode;
-    // console.log("sortField", sortField);
-    // console.log("sortMode", sortMode);
 
     const currentTime = !allTime ? new Date() : new Date(0);
 
@@ -78,60 +75,17 @@ export async function GET(request: Request) {
         where: { id: eventID },
       });
     } else if (searchMode && searchTerm) { // If searchMode and searchTerm are present, search for events
+      let { searchQuery, timeQuery } = parseQuery(searchMode, searchTerm);
 
-      // TODO: Refactor for cleaner code
-      // checks the datatype of the searchMode to create the correct query
-      let searchQuery = {};
-      let timeQuery = {};
-      if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "String") {
-        searchQuery = {
-          [searchMode]: {
-            contains: searchTerm,
-            mode: "insensitive"
-          }
-        };
-      } else if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "String[]") {
-        searchQuery = {
-          [searchMode]: {
-            hasSome: searchTerm.split(",")
-          }
-        };
-      } else if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "Int") {
-        searchQuery = {
-          [searchMode]: parseInt(searchTerm)
-        };
-      } else {
-        searchQuery = {};
-      }
-
-      if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "DateTime") {
-        timeQuery = {
-          [searchMode]: {
-            gte: new Date(searchTerm + "T00:00:00.000Z"),
-            lte: new Date(searchTerm + "T23:59:59.999Z")
-          }
-        };
-      } else {
-        timeQuery = {
-          start_time: {
-            gte: currentTime
-          }
-        };
-      }
-
-      // console.log("searchMode", searchMode);
-      // console.log("Mode datatype", SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS]);
-      // console.log("searchTerm", searchTerm);
-
-        events = await prisma.event.findMany({
-          where: {
-            ...searchQuery,
-            ...timeQuery
-          },
-          orderBy: {
-            [sortField]: sortMode
-          }
-        });
+      events = await prisma.event.findMany({
+        where: {
+          ...searchQuery,
+          ...timeQuery
+        },
+        orderBy: {
+          [sortField]: sortMode
+        }
+      });
     } else { // Default
       events = await prisma.event.findMany({
         where: {
@@ -148,8 +102,60 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify(events), { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response("Error getting events: " + error, { // TODO: Hide exact error to user
+    return new Response("Server error getting events!", {
       status: 500,
     });
   }
+}
+
+/**
+ * Parses the searchMode and searchTerm to create the Prisma query.
+ * 
+ * @param searchMode The field to search for events. see SEARCH_FIELDS
+ * @param searchTerm The string to use to search.
+ * @returns Formatted query for Prisma.
+ */
+function parseQuery(searchMode: string, searchTerm: string) {
+  let searchQuery = {};
+  if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "String") {
+    searchQuery = {
+      [searchMode]: {
+        contains: searchTerm,
+        mode: "insensitive"
+      }
+    };
+  } else if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "String[]") {
+    searchQuery = {
+      [searchMode]: {
+        hasSome: searchTerm.split(",")
+      }
+    };
+  } else if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "Int") {
+    searchQuery = {
+      [searchMode]: parseInt(searchTerm)
+    };
+  } else {
+    searchQuery = {};
+  }
+
+  let timeQuery = {};
+  if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "DateTime") {
+    timeQuery = {
+      [searchMode]: {
+        gte: new Date(searchTerm + "T00:00:00.000Z"),
+        lte: new Date(searchTerm + "T23:59:59.999Z")
+      }
+    };
+  } else {
+    timeQuery = {
+      start_time: {
+        gte: new Date()
+      }
+    };
+  }
+
+  return {
+    searchQuery,
+    timeQuery
+  };
 }
