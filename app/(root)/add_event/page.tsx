@@ -269,7 +269,7 @@ export default function Add_Event() {
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mb-4  mt-12">
-                        <button className="text-md h-12 w-1/5 rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold"><Link href="/" className="w-fit">Cancel</Link></button>
+                        <Link href="/" className="w-1/5 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold">Cancel</button></Link>
                         <button onClick={submitEvent} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold">Submit</button>
                     </div>
                     <div className="flex flex-col  items-center justify-center w-full mb-4 mt-2 h-fit">
