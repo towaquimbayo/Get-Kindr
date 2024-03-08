@@ -10,6 +10,7 @@ function InputField({
   minLength = 0,
   maxLength = 100,
   onChange = () => {},
+  currentValue = "",
   error = "",
 }) {
   return (
@@ -24,6 +25,7 @@ function InputField({
         placeholder={placeholder}
         minLength={minLength}
         maxLength={maxLength}
+        value={currentValue}
         onChange={onChange}
         className="h-12 w-full rounded-lg border border-[#EAEAEA] px-4"
       />

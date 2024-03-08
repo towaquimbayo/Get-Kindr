@@ -246,7 +246,6 @@ export default function Signup() {
             }}
           />
           <Button type="submit" loading={loading} text="Sign Up" full />
-          <p id="errorMsg" className="text-center text-red-500" />
         </form>
         <p className="pt-6">
           Already have an account?{" "}

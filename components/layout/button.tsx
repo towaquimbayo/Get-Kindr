@@ -31,8 +31,13 @@ export default function Button({
     "rounded-md",
     "focus:outline-none",
     "border-primary",
+    "transition-all",
+    "duration-300",
     full ? "w-full" : "block mr-auto px-4",
-    outline ? "bg-transparent border-2 text-primary" : "bg-primary text-white",
+    outline
+      ? "bg-transparent border-2 text-primary hover:bg-primary hover:text-white"
+      : "bg-primary text-white hover:opacity-80",
+    disabled ? "!bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed" : "",
     className,
   ]
     .filter(Boolean)
