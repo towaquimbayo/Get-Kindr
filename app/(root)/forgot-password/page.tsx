@@ -2,13 +2,10 @@
 import React from "react";
 import "../../globals.css";
 import Link from "next/link";
-import url from "url";
 import recover from "../recover-password/page";
-import nodemailer from "nodemailer";
 
 export default function Recovery() {
   const [email, setEmail] = React.useState("");
-
 
   const updateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -51,19 +48,26 @@ export default function Recovery() {
     if (!validateEmail(email)) {
       return;
     }
+
     const responseElement = document.getElementById('response');
     if (responseElement) {
       responseElement.innerHTML = "Checking for a matching email...";
       responseElement.classList.add('text-secondary');
-      const result = await recover(email);
-      if (result) {
+      const res = await fetch('/api/emails/?email=' + email, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (res.ok) {
+        const result = await recover(email);
         if (result) {
           responseElement.innerHTML = "An email has been sent to your account.";
           responseElement.classList.add('text-tertiary');
-        } else {
-          responseElement.innerHTML = "No account with that email found. Please try again.";
-          responseElement.classList.add('text-primary');;
         }
+      } else {
+        responseElement.innerHTML = "No account with that email found. Please try again.";
+        responseElement.classList.add('text-primary');;
       }
     }
   }
@@ -78,7 +82,7 @@ export default function Recovery() {
           <Link href="/" className="w-1/3 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
           <button onClick={submitEmail} id="submit" className="text-md h-12 w-1/3 rounded-md focus:outline-none border-primary transition-all duration-300 block px-4 bg-primary text-white hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
         </div>
-        <p id="response" className="text-center font-display text-2xl font-bold opacity-100 mt-4 mb-6"></p>
+        <p id="response" className="text-center w-4/5 font-display text-2xl font-bold opacity-100 mt-4 mb-6"></p>
       </div>
     </div>
   );
