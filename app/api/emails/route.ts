@@ -1,18 +1,19 @@
 import prisma from "@/lib/prisma";
 
 /**
- * Endpoint for finding all accounts with matching emails: GET /api/users/emails
+ * Endpoint for finding all accounts with matching emails: GET /api/emails
  * Param: email - The email to check against
  * @param {Request} request - The incoming request
  */
 export async function GET(request: Request) {
     try {
-        
+
         // get the data from the request ?email=...
         const email = request.url.split("=")?.[1];
+        const decodedEmail = decodeURIComponent(email);
 
         const result = await prisma.user.findFirst({
-            where: { email: email }
+            where: { email: decodedEmail }
         })
 
         if (result) {
