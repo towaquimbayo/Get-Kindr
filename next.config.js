@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    serverActions: true,
+  },
   images: {
     domains: ["lh3.googleusercontent.com", "vercel.com", "ui-avatars.com", "api.dicebear.com"],
   },
