@@ -63,6 +63,7 @@ export default function Recovery() {
       setRepPassColor('red');
     }
   }
+  
   const [viewPassIcon, setViewPassIcon] = useState<string>('M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z');
   const [viewPassColor, setViewPassColor] = useState<string>('black');
   const [showPassType, setShowPassType] = useState<string>('password');
@@ -113,7 +114,7 @@ export default function Recovery() {
     <div className="flex flex-1 flex-col items-center place-content-center w-full h-4/5 bg-gradient-to-r from-start to-end">
       <div className="flex flex-col items-center md:w-2/3 w-11/12 h-fit mb-20 md:px-0 px-6 md:mb-8 border-4 rounded-lg border-secondary bg-gray-50 mt-24">
         <p className="md:mb-12 mb-16 mt-6 text-center font-display font-bold text-4xl md:text-5xl">Password Reset?</p>
-        <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold  text-tertiary md:w-2/3 w-full ">Enter your new password.</p>
+        <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold  text-secondary md:w-2/3 w-full ">Enter your new password.</p>
         <div className="md:w-2/3 w-full flex">
           <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" type={showPassType} onBlur={(e) => checkUpdatePassword(e.target.value)} onChange={(e) => setPassword(e.target.value)} placeholder=""></input>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={passColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
@@ -124,7 +125,7 @@ export default function Recovery() {
           <path stroke-linecap="round" stroke-linejoin="round" d={viewPassIcon} />
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
         </svg>
-        <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold  text-tertiary md:w-2/3 w-full ">Repeat your new password.</p>
+        <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold  text-secondary md:w-2/3 w-full ">Repeat your new password.</p>
         <div className="md:w-2/3 w-full flex">
           <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" type={showRepPassType} onChange={(e) => checkRepPassword(e.target.value)} placeholder=""></input>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={repPassColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
@@ -135,7 +136,7 @@ export default function Recovery() {
           <path stroke-linecap="round" stroke-linejoin="round" d={viewRepPassIcon} />
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
         </svg>
-        <p className="flex items-center justify-center w-4/5 gap-1 mt-4 font-sans text-lg antialiased font-bold leading-normal text-secondary mb-10">
+        <p className="flex items-center justify-center w-4/5 gap-1 mt-4 font-sans text-lg antialiased font-bold leading-normal text-tertiary opacity-60 mb-10">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="min-w-10 max-w-10 min-h-10 max-h-10 -mt-px mr-2">
             <path fill-rule="evenodd"
               d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
@@ -144,7 +145,7 @@ export default function Recovery() {
           Use at least 8 characters, one uppercase, and one number or symbol.
         </p>
         <div className="flex justify-evenly w-full md:mb-4 mb-8 mb:mt-0 mt-8">
-          <Link href="/" className="w-1/3"><button className="w-full text-md h-12  rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none hover:opacity-80 transition-all duration-300">Cancel</button></Link>
+          <Link href="/" className="w-1/3"><button className="w-full text-md h-12 rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none hover:opacity-80 transition-all duration-300">Cancel</button></Link>
           <button id="submit" className="text-md h-12 w-1/3 text-md h-12 w-1/3 rounded-md focus:outline-none border-primary transition-all duration-300 block px-4 bg-primary text-white hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed" onClick={resetPassword}>Reset</button>
         </div>
         <p className="text-center font-display text-lg font-bold text-primary opacity-0">Password Reset.</p>
