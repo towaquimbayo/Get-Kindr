@@ -66,6 +66,29 @@ export default function Recovery() {
       }
 
       if (res.ok) {
+        let replaced = false;
+        const replaceRes = await fetch('/api/one-time-pass/replace/?email=' + email, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (replaceRes.ok) {
+          const json = await replaceRes.json();
+          let success = json.success;
+          let OTP = json.one_time_pass;
+          if (success) {
+            const del = await fetch('/api/one-time-pass/delete', {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ OneTimePass: OTP }),
+            });
+          }
+        }
+
         const res = await fetch('/api/one-time-pass/create', {
           method: 'POST',
           headers: {
@@ -87,6 +110,9 @@ export default function Recovery() {
           const result = await recover(email, OTP);
           if (result) {
             responseElement.innerHTML = "An email has been sent to your account.";
+            if (replaced) {
+              responseElement.innerHTML += "A new email has been sent to your account.\n The previous OTP has been is now invalid.";
+            }
             responseElement.classList.add('text-tertiary');
           } else {
             responseElement.innerHTML = "No account with that email found. Please try again.";
