@@ -64,6 +64,9 @@ export default function Recovery() {
         if (result) {
           responseElement.innerHTML = "An email has been sent to your account.";
           responseElement.classList.add('text-tertiary');
+        } else {
+          responseElement.innerHTML = "An error occurred. Please try again.";
+          responseElement.classList.add('text-primary');
         }
       } else {
         responseElement.innerHTML = "No account with that email found. Please try again.";
