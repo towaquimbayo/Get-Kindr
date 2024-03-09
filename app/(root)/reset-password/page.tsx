@@ -154,30 +154,30 @@ export default function Recovery() {
         <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold text-secondary md:w-2/3 w-full ">Enter your new password.</p>
         <div className="md:w-2/3 w-full flex">
           <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" id="password" type={showPassType} onBlur={(e) => checkUpdatePassword(e.target.value)} onChange={(e) => setPassword(e.target.value)} placeholder=""></input>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={passColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
-            <path stroke-linecap="round" stroke-linejoin="round" d={passIcon} />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={passColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
+            <path strokeLinecap="round" strokeLinejoin="round" d={passIcon} />
           </svg>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={viewPassColor} onClick={updatePassView} className="ml-4 md:w-6 md:h-6 w-10 h-10 mt-5 md:mt-3 relative inset-x-1/4 mr-16 mb:mr-8 sm:mr-0 md:mr-20 lg:mr-16 2xl:mr-8 bottom-20 md:bottom-12">
-          <path stroke-linecap="round" stroke-linejoin="round" d={viewPassIcon} />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={viewPassColor} onClick={updatePassView} className="ml-4 md:w-6 md:h-6 w-10 h-10 mt-5 md:mt-3 relative inset-x-1/4 mr-16 mb:mr-8 sm:mr-0 md:mr-20 lg:mr-16 2xl:mr-8 bottom-20 md:bottom-12">
+          <path strokeLinecap="round" strokeLinejoin="round" d={viewPassIcon} />
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
         </svg>
         <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold  text-secondary md:w-2/3 w-full ">Repeat your new password.</p>
         <div className="md:w-2/3 w-full flex">
           <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" id="repPassword" type={showRepPassType} onChange={(e) => checkRepPassword(e.target.value)} placeholder=""></input>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={repPassColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
-            <path stroke-linecap="round" stroke-linejoin="round" d={repPassIcon} />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={repPassColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
+            <path strokeLinecap="round" strokeLinejoin="round" d={repPassIcon} />
           </svg>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={viewRepPassColor} onClick={updateRepPassView} className="ml-4 md:w-6 md:h-6 w-10 h-10 mt-5 md:mt-3 relative inset-x-1/4 mr-16 mb:mr-8 sm:mr-0 md:mr-20 lg:mr-16 2xl:mr-8 bottom-20 md:bottom-12">
-          <path stroke-linecap="round" stroke-linejoin="round" d={viewRepPassIcon} />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke={viewRepPassColor} onClick={updateRepPassView} className="ml-4 md:w-6 md:h-6 w-10 h-10 mt-5 md:mt-3 relative inset-x-1/4 mr-16 mb:mr-8 sm:mr-0 md:mr-20 lg:mr-16 2xl:mr-8 bottom-20 md:bottom-12">
+          <path strokeLinecap="round" strokeLinejoin="round" d={viewRepPassIcon} />
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
         </svg>
         <p className="flex items-center justify-center w-4/5 gap-1 mt-4 font-sans text-lg antialiased font-bold leading-normal text-tertiary opacity-60 mb-10">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="min-w-10 max-w-10 min-h-10 max-h-10 -mt-px mr-2">
-            <path fill-rule="evenodd"
+            <path fillRule="evenodd"
               d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
-              clip-rule="evenodd"></path>
+              clipRule="evenodd"></path>
           </svg>
           Use at least 8 characters, one uppercase, and one number or symbol.
         </p>
