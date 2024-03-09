@@ -8,7 +8,8 @@ import prisma from "@/lib/prisma";
  */
 export async function DELETE(request: Request) {
     try {
-        const { OTP } = await request.json();
+        const otp = await request.json();
+        const OTP = otp.OneTimePass;
         if (!OTP) {
             return new Response("Missing OTP", {
                 status: 400,

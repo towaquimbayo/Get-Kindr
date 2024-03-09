@@ -102,8 +102,9 @@ export default function Recovery() {
 
   const [OTP, setOTP] = useState<string>('password');
   const resetPassword = async () => {
-    const pass = document.getElementsByTagName('input')[0].value;
-    const repPass = document.getElementsByTagName('input')[1].value;
+    const pass = (document.getElementById('password') as HTMLInputElement)?.value;
+    const repPass = (document.getElementById('repPassword') as HTMLInputElement)?.value;
+    console.log(pass, repPass);
     let responseText = "Verifying One Time Passcode..."
     if (pass == repPass) {
       if (checkPassword(pass)) {
@@ -128,7 +129,7 @@ export default function Recovery() {
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ otp: OTP }),
+              body: JSON.stringify({ OneTimePass: OTP }),
             });
             response.innerHTML = "Password Reset.";
             response.classList.add('text-tertiary');
@@ -153,7 +154,7 @@ export default function Recovery() {
         </div>
         <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold text-secondary md:w-2/3 w-full ">Enter your new password.</p>
         <div className="md:w-2/3 w-full flex">
-          <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" type={showPassType} onBlur={(e) => checkUpdatePassword(e.target.value)} onChange={(e) => setPassword(e.target.value)} placeholder=""></input>
+          <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" id="password" type={showPassType} onBlur={(e) => checkUpdatePassword(e.target.value)} onChange={(e) => setPassword(e.target.value)} placeholder=""></input>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={passColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
             <path stroke-linecap="round" stroke-linejoin="round" d={passIcon} />
           </svg>
@@ -164,7 +165,7 @@ export default function Recovery() {
         </svg>
         <p className="mb-4 pl-4 sm:pl-10 font-display text-xl sm:text-2xl font-bold  text-secondary md:w-2/3 w-full ">Repeat your new password.</p>
         <div className="md:w-2/3 w-full flex">
-          <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" type={showRepPassType} onChange={(e) => checkRepPassword(e.target.value)} placeholder=""></input>
+          <input className="md:h-12 h-16 px-6 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA] w-full" id="repPassword" type={showRepPassType} onChange={(e) => checkRepPassword(e.target.value)} placeholder=""></input>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke={repPassColor} className="ml-4 md:w-12 md:h-12 w-20 h-20">
             <path stroke-linecap="round" stroke-linejoin="round" d={repPassIcon} />
           </svg>
