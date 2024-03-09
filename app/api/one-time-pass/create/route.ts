@@ -7,7 +7,7 @@ import prisma from "@/lib/prisma";
  * @endpoint POST /api/one-time-pass/create
  */
 export async function POST(request: Request) {
-    let createdOTP;
+    let one_time_pass;
 
     try {
         // Get all the new OTP info from the request
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
         }
 
         let unique = false;
-        let one_time_pass;
+        
 
         while (!unique) {
             one_time_pass = Math.random().toString(36).slice(2, 10);
@@ -42,11 +42,11 @@ export async function POST(request: Request) {
         const newOTP = {
             userEmail: email,
             OneTimePass: one_time_pass,
-            expires: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
+            expires: new Date(new Date().getTime() + 15 * 60 * 1000).toISOString(),
         };
 
         // Add the new OTP to the database
-        createdOTP = await prisma.OneTimePass.create({
+        await prisma.OneTimePass.create({
             data: newOTP,
         });
 
@@ -58,8 +58,8 @@ export async function POST(request: Request) {
     }
 
     const response = {
-        "one_time_pass": createdOTP,
-        "message": "OTP created successfully.",
+        "one_time_pass": one_time_pass,
+        "success": true
     };
 
     // Return the created OTP

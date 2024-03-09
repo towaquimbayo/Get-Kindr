@@ -104,7 +104,6 @@ export default function Recovery() {
   const resetPassword = async () => {
     const pass = (document.getElementById('password') as HTMLInputElement)?.value;
     const repPass = (document.getElementById('repPassword') as HTMLInputElement)?.value;
-    console.log(pass, repPass);
     let responseText = "Verifying One Time Passcode..."
     if (pass == repPass) {
       if (checkPassword(pass)) {

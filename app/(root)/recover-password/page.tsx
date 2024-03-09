@@ -24,7 +24,7 @@ export default async function Recovery(email: string, OTP: string) {
     from: "coppertalon777@gmail.com",
     to: email,
     subject: 'Nodemailer Setup Test',
-    text: 'This is a test email from Nodemailer. Your one time pass is: ' + OTP + '. It will expire in 15 minutes.'
+    text: 'This is a test email from Nodemailer. Your one time pass is: ' + OTP + '. It will expire in 15 minutes. Use the link to reset your password: http://localhost:3000/reset-password'
   }
 
   return new Promise<RecoveryResult>((resolve, reject) => {

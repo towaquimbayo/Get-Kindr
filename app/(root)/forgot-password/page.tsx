@@ -76,6 +76,7 @@ export default function Recovery() {
 
         let success = false;
         let OTP = "";
+        console.log(res);
 
         if (res.ok) {
           const json = await res.json();
