@@ -123,6 +123,13 @@ export default function Recovery() {
         });
         if (res.ok) {
           if (response) {
+            const del = await fetch('/api/one-time-pass/delete', {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ otp: OTP }),
+            });
             response.innerHTML = "Password Reset.";
             response.classList.add('text-tertiary');
           }
