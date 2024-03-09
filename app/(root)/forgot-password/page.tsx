@@ -59,15 +59,41 @@ export default function Recovery() {
           'Content-Type': 'application/json',
         },
       });
-      if (res.ok) {
-        const result = await recover(email);
-        if (result) {
-          responseElement.innerHTML = "An email has been sent to your account.";
-          responseElement.classList.add('text-tertiary');
-        } else {
-          responseElement.innerHTML = "No account with that email found. Please try again.";
-          responseElement.classList.add('text-primary');;
 
+      const OTPdata = {
+        email: email,
+        expiration_date: new Date(new Date().getTime() + 15 * 60 * 1000).toISOString(),
+      }
+
+      if (res.ok) {
+        const res = await fetch('/api/one-time-pass/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(OTPdata),
+        });
+
+        let success = false;
+        let OTP = "";
+
+        if (res.ok) {
+          const json = await res.json();
+          success = json.success;
+          OTP = json.one_time_pass;
+        }
+        if (success) {
+          const result = await recover(email, OTP);
+          if (result) {
+            responseElement.innerHTML = "An email has been sent to your account.";
+            responseElement.classList.add('text-tertiary');
+          } else {
+            responseElement.innerHTML = "No account with that email found. Please try again.";
+            responseElement.classList.add('text-primary');;
+          }
+        } else {
+          responseElement.innerHTML = "An error occurred. Please try again.";
+          responseElement.classList.add('text-primary');
         }
       } else {
         responseElement.innerHTML = "An error occurred. Please try again.";

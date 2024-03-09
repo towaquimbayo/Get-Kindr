@@ -25,7 +25,7 @@ export async function POST(request: Request) {
                 status: 400,
             });
         }
-        
+
         let unique = false;
         let one_time_pass;
 
@@ -33,16 +33,16 @@ export async function POST(request: Request) {
             one_time_pass = Math.random().toString(36).slice(2, 10);
             const existingOTP = await prisma.OneTimePass.findFirst({
                 where: {
-                    one_time_pass,
+                    OneTimePass: one_time_pass,
                 },
             });
             unique = !existingOTP;
         }
 
         const newOTP = {
-            email,
-            one_time_pass,
-            expiration_date: new Date(expiration_date),
+            userEmail: email,
+            OneTimePass: one_time_pass,
+            expires: new Date(new Date().getTime() + 60 * 60 * 1000).toISOString(),
         };
 
         // Add the new OTP to the database

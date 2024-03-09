@@ -6,7 +6,7 @@ interface RecoveryResult {
   success: boolean;
 }
 
-export default async function Recovery(email: string) {
+export default async function Recovery(email: string, OTP: string) {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -19,33 +19,6 @@ export default async function Recovery(email: string) {
       refreshToken: process.env.OAUTH_REFRESH_TOKEN
     }
   });
-
-  const data = {
-    email: email,
-    expiration_date: new Date(new Date().getTime() + 15 * 60 * 1000).toISOString(),
-  }
-
-  const res = await fetch('/api/one-time-pass/create', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  let success = false;
-  let OTP = "";
-
-  if (res.ok) {
-    const json = await res.json();
-    success = json.success;
-    OTP = json.one_time_pass;
-  } else {
-    return new Promise<RecoveryResult>((resolve, reject) => {
-      reject();
-    });
-  }
-  
 
   let mailOptions = {
     from: "coppertalon777@gmail.com",
