@@ -10,22 +10,33 @@ export async function POST(request: Request) {
     let createdOTP;
 
     try {
-        // Get all the new organization info from the request
+        // Get all the new OTP info from the request
         const {
             email,
-            one_time_pass,
             expiration_date,
         } = await request.json();
 
         // If any of the required fields are missing, return an error
         if (
             !email ||
-            !one_time_pass ||
             !expiration_date
         ) {
             return new Response("Missing required fields", {
                 status: 400,
             });
+        }
+        
+        let unique = false;
+        let one_time_pass;
+
+        while (!unique) {
+            one_time_pass = Math.random().toString(36).slice(2, 10);
+            const existingOTP = await prisma.OneTimePass.findFirst({
+                where: {
+                    one_time_pass,
+                },
+            });
+            unique = !existingOTP;
         }
 
         const newOTP = {
@@ -34,10 +45,11 @@ export async function POST(request: Request) {
             expiration_date: new Date(expiration_date),
         };
 
-        // Add the new event to the database
+        // Add the new OTP to the database
         createdOTP = await prisma.OneTimePass.create({
             data: newOTP,
         });
+
     } catch (error) {
         console.error(error);
         return new Response("Error creating OTP: " + error, {
@@ -45,8 +57,13 @@ export async function POST(request: Request) {
         });
     }
 
-    // Return the created event
-    return new Response(JSON.stringify("OTP created successfully."), {
+    const response = {
+        "one_time_pass": createdOTP,
+        "message": "OTP created successfully.",
+    };
+
+    // Return the created OTP
+    return new Response(JSON.stringify(response), {
         status: 200,
     });
 }
