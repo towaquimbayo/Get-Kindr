@@ -121,17 +121,43 @@ export default function Recovery() {
             'Content-Type': 'application/json',
           },
         });
+        let data = await res.json();
         if (res.ok) {
-          if (response) {
-            const del = await fetch('/api/one-time-pass/delete', {
+          if (data.success) {
+            await fetch('/api/one-time-pass/delete', {
               method: 'DELETE',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({ OneTimePass: OTP }),
             });
-            response.innerHTML = "Password Reset.";
-            response.classList.add('text-tertiary');
+
+            const update = await fetch('/api/one-time-pass/update-pass', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ email: data.email, password: pass }),
+            });
+            let updateData = await update.json();
+            if (update.ok) {
+              if (updateData.success) {
+                if (response) {
+                  response.innerHTML = updateData.result;
+                  response.classList.add('text-tertiary');
+                }
+              } else {
+                if (response) {
+                  response.innerHTML = updateData.result;
+                  response.classList.add('text-primary');
+                }
+              }
+            } else {
+              if (response) {
+                response.innerHTML = "Error updating password.";
+                response.classList.add('text-primary');
+              }
+            }
           }
         } else {
           if (response) {
