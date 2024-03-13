@@ -18,18 +18,23 @@ export async function GET(request: Request) {
         }
 
         const result = await prisma.OneTimePass.findFirst({
-            where: { OneTimePass: one_time_pass}
+            where: { OneTimePass: one_time_pass }
         });
 
         // Check that the current date is before the expiration date
-        if (result && result?.expiration_date < new Date()) {
-            return new Response("One Time Pass has expired", { status: 404 });
+        if (result && result?.expires < new Date()) {
+            return new Response("One Time Pass has expired", { status: 400 });
         }
-
+        let OTP_email = result?.userEmail;
+        let returnDict = {
+            email: OTP_email,
+            success: true
+        }
         if (result) {
-            return new Response(JSON.stringify(true), { status: 200 });
+            return new Response(JSON.stringify(returnDict), { status: 200 });
         } else {
-            return new Response("Invalid One Time Pass", { status: 404 });
+            returnDict.success = false;
+            return new Response(JSON.stringify(returnDict), { status: 400 });
         }
 
     } catch (error) {
