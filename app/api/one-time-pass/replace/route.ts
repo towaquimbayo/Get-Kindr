@@ -29,7 +29,7 @@ export async function GET(request: Request) {
             };
             return new Response(JSON.stringify(response), { status: 200 });
         } else {
-            return new Response("Invalid One Time Pass", { status: 200 });
+            return new Response("Invalid One Time Pass", { status: 400 });
         }
 
     } catch (error) {
