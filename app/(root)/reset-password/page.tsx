@@ -211,7 +211,7 @@ export default function Recovery() {
           <Link href="/" className="w-1/3"><button className="w-full text-md h-12 rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none hover:opacity-80 transition-all duration-300">Cancel</button></Link>
           <button id="submit" className="text-md h-12 w-1/3 text-md h-12 w-1/3 rounded-md focus:outline-none border-primary transition-all duration-300 block px-4 bg-primary text-white hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed" onClick={resetPassword}>Reset</button>
         </div>
-        <p id="response" className="text-center font-display text-2xl font-bold text-secondary mt-6 mb-6 opacity-0 h-0 mb-0 mt-0">Password Reset.</p>
+        <p id="response" className="text-center font-display text-2xl font-bold mt-6 mb-6 opacity-0 h-0 mb-0 mt-0">Password Reset.</p>
       </div>
     </div>
   );
