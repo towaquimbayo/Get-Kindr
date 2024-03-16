@@ -6,7 +6,13 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["lh3.googleusercontent.com", "vercel.com", "ui-avatars.com", "api.dicebear.com"],
+    domains: [
+      "lh3.googleusercontent.com",
+      "vercel.com",
+      "ui-avatars.com",
+      "api.dicebear.com",
+      "avatars.dicebear.com",
+    ],
   },
   async redirects() {
     return [
