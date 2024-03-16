@@ -3,10 +3,16 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { Calendar, LucideBuilding, MapPin } from "lucide-react";
+import { Calendar, Edit, LucideBuilding, MapPin } from "lucide-react";
 import React, { Key, useEffect, useMemo, useState } from "react";
 
-const EventCard = React.memo(function EventCard({ event }: { event: any }) {
+const EventCard = React.memo(function EventCard({
+  event,
+  isOrganization,
+}: {
+  event: any;
+  isOrganization: boolean;
+}) {
   const router = useRouter();
 
   function getDate(date: string) {
@@ -32,10 +38,16 @@ const EventCard = React.memo(function EventCard({ event }: { event: any }) {
     >
       <CardBody
         className="w-full p-6 hover:cursor-pointer md:p-8"
-        onClick={() => router.push(`/events?id=${event.id}`)}
+        onClick={() => {
+          if (isOrganization) router.push(`/edit-event?id=${event.id}`);
+          else router.push(`/events?id=${event.id}`);
+        }}
       >
         <div className="mb-4 flex w-full flex-col items-start justify-between gap-4 md:mb-2 md:flex-row md:items-center md:gap-0">
-          <h1 className="text-xl font-semibold md:text-2xl">{event.name}</h1>
+          <div className="flex w-full items-center gap-4">
+            <h1 className="text-xl font-semibold md:text-2xl">{event.name}</h1>
+            {isOrganization && <Edit size={18} />}
+          </div>
           <div className="rounded-full bg-primary px-4 py-2 text-white">
             <p className="px-1">{event.status}</p>
           </div>
@@ -77,9 +89,10 @@ export default function MyEvents() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  const userTokens = 0;
-  const tabLabels = ["All", "Attended", "Upcoming"];
+  const tabLabels = ["All", "Completed", "Upcoming"];
   const [selectedTab, setSelectedTab] = useState("All");
+  const userTokens = 0;
+  const [isOrganization, setIsOrganization] = useState(true);
 
   useEffect(() => {
     if (!session || status !== "authenticated") router.push("/login");
@@ -97,7 +110,7 @@ export default function MyEvents() {
         organization: "Vancouver School Board",
         tags: ["Education", "Arts", "Children", "Inperson", "Storytelling"],
         location: "Vancouver, BC",
-        status: "Attended",
+        status: "Completed",
       },
       {
         id: 2,
@@ -121,7 +134,7 @@ export default function MyEvents() {
         organization: "Richmond Food Bank",
         tags: ["Community", "Food", "Inperson"],
         location: "Richmond, BC",
-        status: "Attended",
+        status: "Completed",
       },
       {
         id: 4,
@@ -139,8 +152,8 @@ export default function MyEvents() {
 
     return events.filter((event) => {
       if (selectedTab === "All") return true;
-      if (selectedTab === "Attended") {
-        return event.status === "Attended";
+      if (selectedTab === "Completed") {
+        return event.status === "Completed";
       }
       if (selectedTab === "Upcoming") {
         return event.status === "Upcoming";
@@ -175,7 +188,11 @@ export default function MyEvents() {
             <Tab key={label} title={<div className="px-2">{label}</div>}>
               <div className="flex flex-wrap gap-8">
                 {filteredEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    isOrganization={isOrganization}
+                  />
                 ))}
               </div>
             </Tab>
