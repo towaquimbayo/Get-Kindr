@@ -28,17 +28,13 @@ export default function Profile() {
     email,
     image,
     name,
-    tokens,
-    volunteerHours,
   }: {
     email?: string | null;
     image?: string | null;
     name?: string | null;
-    tokens?: number;
-    volunteerHours?: number;
   } = session?.user || {};
-  const userTokens = tokens || 0;
-  const userVolHours = volunteerHours || 0;
+  const userTokens = 0;
+  const userVolHours = 0;
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [infoMsg, setInfoMsg] = useState("");
