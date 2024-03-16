@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -101,7 +101,7 @@ export default function Profile() {
   }: {
     sectionHeading?: string;
     editFields?: boolean;
-    children: React.ReactNode;
+    children: ReactNode;
   }) {
     return (
       <div className="my-4 flex w-full flex-col rounded-lg border border-[#EAEAEA]">
@@ -193,7 +193,7 @@ export default function Profile() {
     return true;
   }
 
-  async function updateAccountDetails(e: React.FormEvent<HTMLFormElement>) {
+  async function updateAccountDetails(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
