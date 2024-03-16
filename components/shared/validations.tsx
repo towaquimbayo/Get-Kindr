@@ -52,6 +52,20 @@ export function validateEmail(
   return true;
 }
 
+export function validatePhone(
+  phone: string,
+  setFieldErrors: (value: (currentErrors: any) => any) => void,
+  fieldName: string,
+) {
+  if (phone && !lengthRangeCheck(phone, 10, 10)) {
+    return setFieldErrors((currentErrors: any) => ({
+      ...currentErrors,
+      [fieldName]: "Please enter a 10 digit phone number.",
+    }));
+  }
+  return true;
+}
+
 export function validatePassword(
   password: string,
   setFieldErrors: (value: (currentErrors: any) => any) => void,
