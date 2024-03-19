@@ -79,7 +79,6 @@ export async function POST(req: Request) {
           : {
               create: {
                 bio: "This is my bio",
-                phoneNumber: "123-456-7890",
               },
             },
         admin: false,
