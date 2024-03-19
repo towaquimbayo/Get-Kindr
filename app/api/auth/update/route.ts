@@ -66,20 +66,7 @@ export async function POST(req: Request) {
         hashedPassword: password
           ? await hash(password, 16)
           : user.hashedPassword,
-        organization: isOrganization
-          ? {
-              update: {
-                phoneNumber: phone,
-              },
-            }
-          : {},
-        volunteer: !isOrganization
-          ? {
-              update: {
-                phoneNumber: phone,
-              },
-            }
-          : {},
+        phoneNumber: phone,
       },
     });
 
