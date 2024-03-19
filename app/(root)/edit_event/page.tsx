@@ -10,14 +10,10 @@ export default function Add_Event() {
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const [valueDate, setPlaceValueDate] = useState<string>(formattedDate);
-    const [placeholderPhone, setPlaceValuePhone] = useState<string>('123-456-7890');
-    const [valuePhone, setValuePhone] = useState<string>('');
     const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
     const [valueVolNum, setValueVolNum] = useState<number>(0);
     const [valueTags, setTagsValue] = useState<string>('');
     const [valueName, setValueName] = useState<string>('');
-    const [valueSupervisor, setValueSupervisor] = useState<string>('');
-    const [valuePosition, setValuePosition] = useState<string>('');
     const [valueAddress, setValueAddress] = useState<string>('');
     const [valueCity, setValueCity] = useState<string>('');
     const [valueStartTime, setValueStartTime] = useState<string>('');
@@ -25,7 +21,6 @@ export default function Add_Event() {
     const [valueRecurring, setValueRecurring] = useState<boolean>(false)
     const [valueOnline, setValueOnline] = useState<boolean>(false)
     const [valueDescription, setValueDescription] = useState<string>('');
-
     
     const url = new URL(window.location.href);
     const eventID = url.searchParams.get("eventID");
@@ -38,11 +33,6 @@ export default function Add_Event() {
         setPlaceValueDate(event.start_time.toString());
         setValueStartTime(event.start_time.toString());
         setValueEndTime(event.start_time.toString());
-
-        // setValuePhone(event.phone);
-        // setValuePosition(event.position);
-        // setValueSupervisor(event.supervisor);
-
         setValueVolNum(event.number_of_spots);
         setValueDescription(event.description ?? "");
         let tagsString = ''
@@ -120,43 +110,13 @@ export default function Add_Event() {
         validateSubmit();
     }
 
-    const handleInputClickPhone = () => {
-        // Clear the placeholder value when the user clicks on the input field
-        setPlaceValuePhone('');
-    };
-
-    const handleInputBlurPhone = () => {
-        if (placeholderPhone !== '') return;
-        // Reset the placeholder value when the user clicks outside the input field
-        setPlaceValuePhone('123-456-7890');
-    }
-
-    const formatPhone = (event: string) => {
-        // Check for a valid phone number with extra digits at the end
-        if (event.length > 16) {
-            const correctLen = event.slice(0, 16);
-            event = correctLen;
-        }
-        // Remove all non-numeric characters from the input value
-        const cleaned = event.replace(/\D/g, '');
-        // Apply formatting based on the cleaned value
-        const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
-        if (match) {
-            // Check if all digits are entered, otherwise, return formatted string with only entered digits
-            event = match[1] ? '(' + match[1] + (match[2] ? ') ' + match[2] + (match[3] ? ' - ' + match[3] : '') : '') : '';
-        } else {
-            event = ''
-        }
-        setValuePhone(event);
-    }
-
     const handleInputClickVolNum = () => {
         // Clear the placeholder value when the user clicks on the input field
         setPlaceValueVolNum('');
     };
 
     const handleInputBlurVolNum = () => {
-        if (placeholderPhone !== '') return;
+        if (placeholderVolNum !== '') return;
         // Reset the placeholder value when the user clicks outside the input field
         setPlaceValueVolNum('0');
     }
@@ -218,7 +178,6 @@ export default function Add_Event() {
                 online: valueOnline,
                 token_bounty: 100,
                 number_of_spots: valueVolNum,
-                phone: valuePhone,
             };
             const data = JSON.stringify(eventInfo);
             console.log(data);
@@ -268,9 +227,6 @@ export default function Add_Event() {
             valid = false;
         }
         if (valueDescription.length === 0) {
-            valid = false;
-        }
-        if (valuePhone.length === 0) {
             valid = false;
         }
         const submitButton = document.getElementById('submit');
