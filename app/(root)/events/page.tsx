@@ -1,22 +1,89 @@
+"use client"
+
 import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
-import { LucideSearch, LucideMapPin } from "lucide-react";
+import { LucideSearch, LucideMapPin, LucideHeart } from "lucide-react";
 import Link from "next/link";
+import Map from "react-map-gl";
 
 export default function Events() {
+
+  const events = [
+    {
+      id: 1,
+      name: "School Outreach Activity Leader",
+      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
+      start_time: "FRI 09 FEB",
+      end_time: "9:00 AM - 2:00 PM",
+      organization: {
+        name: "Vancouver Arts Society",
+        location: "1234 Charles St. Vancouver, BC",
+      },
+      tags: ["arts", "children", "storytelling"],
+    },
+    {
+      id: 2,
+      name: "School Outreach Activity Leader",
+      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
+      start_time: "FRI 09 FEB",
+      end_time: "9:00 AM - 2:00 PM",
+      organization: {
+        name: "Vancouver Arts Society",
+        location: "1234 Charles St. Vancouver, BC",
+      },
+      tags: ["arts", "children", "storytelling"],
+    },
+    {
+      id: 3,
+      name: "School Outreach Activity Leader",
+      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
+      start_time: "FRI 09 FEB",
+      end_time: "9:00 AM - 2:00 PM",
+      organization: {
+        name: "Vancouver Arts Society",
+        location: "1234 Charles St. Vancouver, BC",
+      },
+      tags: ["arts", "children", "storytelling"],
+    },
+    {
+      id: 4,
+      name: "School Outreach Activity Leader",
+      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
+      start_time: "FRI 09 FEB",
+      end_time: "9:00 AM - 2:00 PM",
+      organization: {
+        name: "Vancouver Arts Society",
+        location: "1234 Charles St. Vancouver, BC",
+      },
+      tags: ["arts", "children", "storytelling"],
+    },
+    {
+      id: 5,
+      name: "School Outreach Activity Leader",
+      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
+      start_time: "FRI 09 FEB",
+      end_time: "9:00 AM - 2:00 PM",
+      organization: {
+        name: "Vancouver Arts Society",
+        location: "1234 Charles St. Vancouver, BC",
+      },
+      tags: ["arts", "children", "storytelling"],
+    },
+  ];
+
   return (
-    <>
+    <div className="mt-16">
       <SectionTitle title="Apply and make an impact today." pretitle="volunteer events" align="left" />
 
       {/* Search and Filter */}
       <Container>
         <div className="h-[50px] rounded-xl flex divide-x shadow-[0_6px_25px_rgb(0,0,0,0.08)]">
           <div className="size-full px-2 pl-3 rounded-s-xl flex items-center">
-            <LucideSearch size={20} color="#ff5656" />
+            <LucideSearch size={20} color="#000000" />
             <input className="w-full appearance-none bg-transparent border-none placeholder-gray-400 focus:ring-0" type="text" placeholder="Search opportunities" />
           </div>
           <div className="size-full px-2 pl-3 flex items-center">
-            <LucideMapPin size={20} color="#ff5656" />
+            <LucideMapPin size={20} color="#000000" />
             <input className="w-full appearance-none bg-transparent border-none placeholder-gray-400 focus:ring-0" type="text" placeholder="Vancouver, BC" />
           </div>
           <div className="size-full px-2 flex items-center">
@@ -27,6 +94,72 @@ export default function Events() {
           </div>
         </div>
       </Container>
-    </>
+
+      {/* Info and Sort */}
+      <Container className="flex items-center justify-between !py-0">
+          <p className="text-xl font-semibold text-gray-800">Showing <span id="numEvents">28</span> events</p>
+          <div className="flex items-center text-gray-400">
+            <p>Sort by:</p>
+            <select className="appearance-none bg-transparent border-none focus:ring-0">
+              <option>Most Recent</option>
+              <option>Oldest</option>
+            </select>
+          </div>
+      </Container>
+
+      {/* Events (left) + Map (right) */}
+      <Container className="flex gap-8">
+        {/* Events List */}
+        <div className="flex-1 overflow-y-auto max-h-[500px] no-scrollbar">
+          {/* Event Card */}
+          {events.map((event) => (
+            <div key={event.id} className="bg-white rounded-xl border border-[#EAEAEA] p-6 mb-6 !transition-all duration-300 ease-in-out hover:shadow-md">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex items-start gap-3">
+                  <div className="bg-primary bg-opacity-10 rounded-lg px-4 py-2 text-center">
+                    <p className="text-xs text-primary">{event.start_time.split(' ')[0]}</p>
+                    <p className="text-xl text-primary font-semibold">{event.start_time.split(' ')[1]}</p>
+                    <p className="text-xs text-primary">{event.start_time.split(' ')[2]}</p>
+                  </div>
+                  <div>
+                    <p className="text-lg font-semibold">{event.name}</p>
+                    <p className="text-gray-600">{event.organization.name}</p>
+                    <p className="text-gray-600">{event.organization.location} - {event.end_time}</p>
+                  </div>
+                </div>
+                <Link href="#" className="">
+                  <LucideHeart size={20} color="#cccccc" />
+                </Link>
+              </div>
+              <p className="text-gray-500 mb-6">{event.description}</p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  {event.tags.map((tag) => (
+                    <span key={tag} className="inline-block bg-primary bg-opacity-10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">#{tag}</span>
+                  ))}
+                </div>
+                <Link href="#" className="bg-primary text-white px-4 py-2 rounded-lg">Apply</Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Map Embed */}
+        <div className="flex-1">
+          <div className="rounded-3xl overflow-hidden">
+            <Map
+              mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
+              initialViewState={{
+                longitude: -123.05,
+                latitude: 49.27,
+                zoom: 10
+              }}
+              style={{width: '100%', height: 500, borderRadius: '1.5rem'}}
+              mapStyle="mapbox://styles/mapbox/streets-v9"
+            />
+          </div>
+        </div>
+      </Container>
+    </div>
   );
 }

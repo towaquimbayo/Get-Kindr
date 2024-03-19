@@ -1,4 +1,5 @@
 import NextAuth, { DefaultSession } from "next-auth";
+import { AccountType } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session {
@@ -7,5 +8,9 @@ declare module "next-auth" {
       email: string | undefined | null;
       name: string | undefined | null;
     } & DefaultSession["user"];
+  }
+
+  interface User extends DefaultSession["user"] {
+    accountType: AccountType;
   }
 }
