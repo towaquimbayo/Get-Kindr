@@ -341,7 +341,7 @@ export default function Add_Event() {
                         <div className="flex w-full justify-evenly mt-10 md:w-1/2 md:justify-between md:mt-0">
                             <div className="flex flex-col w-1/2 sm:min-w-36 md:pt-4">
                                 <label htmlFor="Spots" className=" pl-4 text-lg sm:min-w-36">Available Spots <span className="text-primary">*</span></label>
-                                <input value={valueVolNum} type="number" id="Spots" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder={placeholderVolNum}></input>
+                                <input value={valueVolNum} type="number" id="Spots" onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder={placeholderVolNum}></input>
                             </div>
                             <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 md:w-36 md:w-1/3 md:h-24 md:pt-1">
                                 <div className="mt-2 w-full ml-2">
