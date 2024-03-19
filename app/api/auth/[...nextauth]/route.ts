@@ -49,7 +49,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Incorrect email or password.");
         }
 
-        console.log(`User ${email} signed in successfully.`); 
+        console.log(`User ${email} signed in successfully.`);
         return user;
       },
     }),
@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, session, trigger }) {
-      console.log("JWT Callback: ", { token, user, session, trigger });
+      // console.log("JWT Callback: ", { token, user, session, trigger });
 
       // Trigger is used to update the token with new data
       if (trigger === "update" && session.name) {
@@ -99,6 +99,7 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (user) {
+        token.accountType = user.accountType;
         return {
           ...token,
           id: user.id,
@@ -116,7 +117,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      console.log("Session Callback: ", { session, token, user });
+      // console.log("Session Callback: ", { session, token, user });
       return {
         ...session,
         user: {
@@ -131,8 +132,12 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 Days
-    updateAge: 24 * 60 * 60, // 1 Day
+    // maxAge: 30 * 24 * 60 * 60, // 30 Days
+    // updateAge: 24 * 60 * 60, // 1 Day
+    
+    maxAge: 60,
+    updateAge: 0,
+
   },
   pages: {
     signIn: "/login",
