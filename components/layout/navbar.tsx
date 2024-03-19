@@ -51,11 +51,11 @@ export default function NavBar({ session }: { session: Session | null }) {
         </Link>
         <div className="flex items-center space-x-8">
           <NavLink href="/events" name="Events" />
-          <NavLink href="/my-events" name="My Events" />
-          <NavLink href="/add_event" name="Add Event" />
-          <NavLink href="/edit_event" name="Edit Event (Hide)" />
           {session ? (
             <>
+              <NavLink href="/my-events" name="My Events" />
+              <NavLink href="/add_event" name="Add Event" />
+              <NavLink href="/edit_event" name="Edit Event (Hide)" />
               <NavLink href="/profile" name="Profile" />
               <UserDropdown session={session} />
             </>
