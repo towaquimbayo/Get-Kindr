@@ -34,12 +34,12 @@ export async function POST(request: Request) {
 
     const newOTP = {
       userEmail: email,
-      OneTimePass: one_time_pass,
+      OneTimePass: one_time_pass ?? "",
       expires: new Date(new Date().getTime() + 15 * 60 * 1000).toISOString(),
     };
 
     // Add the new OTP to the database
-    await prisma.OneTimePass.create({
+    await prisma.oneTimePass.create({
       data: newOTP,
     });
   } catch (error) {
