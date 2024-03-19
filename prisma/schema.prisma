@@ -48,6 +48,7 @@ model User {
   name            String?
   email           String?   @unique
   emailVerified   DateTime?
+  phoneNumber     String?
   image           String
   accounts        Account[]
   sessions        Session[]
@@ -73,6 +74,7 @@ model Event {
   online            Boolean
   token_bounty      Int
   number_of_spots   Int
+  status            String
   event_volunteers  EventVolunteer[]
 }
 
@@ -90,7 +92,6 @@ model Volunteer {
   userId          String
   user            User     @relation(fields: [userId], references: [id])
   bio             String
-  phoneNumber     String
   volunteerEvents EventVolunteer[]
   @@unique([userId])
 }
@@ -101,7 +102,6 @@ model Organization {
   user            User     @relation(fields: [userId], references: [id])
   name            String
   description     String?
-  phoneNumber     String?
   address         String?
   events          Event[]
   @@unique([userId])
