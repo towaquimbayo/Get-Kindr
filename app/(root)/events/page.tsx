@@ -97,7 +97,7 @@ export default function Events() {
 
       {/* Info and Sort */}
       <Container className="flex items-center justify-between !py-0">
-          <p className="text-xl font-semibold text-gray-800">Showing <span id="numEvents">28</span> events</p>
+          <p className="text-xl font-semibold text-gray-800">Showing <span id="numEvents">{events.length}</span> events</p>
           <div className="flex items-center text-gray-400">
             <p>Sort by:</p>
             <select className="appearance-none bg-transparent border-none focus:ring-0">
