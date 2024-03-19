@@ -38,7 +38,7 @@ export default function NavBar({ session }: { session: Session | null }) {
         scrolled ? "bg-white/50 shadow-md backdrop-blur-xl" : "bg-white/0"
       } z-30 transition-all`}
     >
-      <Container className="flex items-center justify-between">
+      <Container className="flex items-center justify-between !py-4">
         <Link href="/" className="flex items-center">
           <Image
             src="/kindr_logo.png"
