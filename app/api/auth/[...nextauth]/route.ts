@@ -118,6 +118,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token, user }) {
       // console.log("Session Callback: ", { session, token, user });
+
       return {
         ...session,
         user: {
@@ -126,6 +127,7 @@ export const authOptions: NextAuthOptions = {
           email: token.email,
           name: token.name,
         },
+        accountType: token.accountType,
       };
     },
   },
