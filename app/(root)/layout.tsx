@@ -8,7 +8,7 @@ export default async function RootLayout({
   return (
     <>
       <Nav />
-      <main className="flex min-h-screen w-full flex-col items-center justify-center">
+      <main className="flex min-h-screen w-full flex-col items-center justify-start">
         {children}
       </main>
     </>
