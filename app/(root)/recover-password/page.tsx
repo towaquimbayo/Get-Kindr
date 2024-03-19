@@ -6,7 +6,7 @@ interface RecoveryResult {
   success: boolean;
 }
 
-export default async function recover(email: string, OTP: string): Promise<RecoveryResult> {
+export default async function recover(email: any, OTP: any): Promise<RecoveryResult> {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
