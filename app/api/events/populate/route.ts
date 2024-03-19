@@ -17,7 +17,7 @@ const dummyEvents = [
     event_volunteers: {
       create: [],
     },
-    status: "PENDING",
+    status: "UPCOMING",
   },
   {
     name: "Event 4",
@@ -35,7 +35,7 @@ const dummyEvents = [
     event_volunteers: {
       create: [],
     },
-    status: "PENDING",
+    status: "UPCOMING",
   },
 ];
 

@@ -6,41 +6,38 @@ import prisma from "@/lib/prisma";
  * @returns {Response} - The response to the incoming request
  */
 export async function GET(request: Request) {
-    try {
-        const one_time_pass = request.url.split("=")?.[1];
-        // If any of the required fields are missing, return an error
-        if (
-            !one_time_pass
-        ) {
-            return new Response("Missing required fields", {
-                status: 400,
-            });
-        }
-
-        const result = await prisma.OneTimePass.findFirst({
-            where: { OneTimePass: one_time_pass }
-        });
-
-        // Check that the current date is before the expiration date
-        if (result && result?.expires < new Date()) {
-            return new Response("One Time Pass has expired", { status: 400 });
-        }
-        let OTP_email = result?.userEmail;
-        let returnDict = {
-            email: OTP_email,
-            success: true
-        }
-        if (result) {
-            return new Response(JSON.stringify(returnDict), { status: 200 });
-        } else {
-            returnDict.success = false;
-            return new Response(JSON.stringify(returnDict), { status: 400 });
-        }
-
-    } catch (error) {
-        console.error(error);
-        return new Response("Error checking OneTimePass: " + error, {
-            status: 500,
-        });
+  try {
+    const one_time_pass = request.url.split("=")?.[1];
+    // If any of the required fields are missing, return an error
+    if (!one_time_pass) {
+      return new Response("Missing required fields", {
+        status: 400,
+      });
     }
+
+    const result = await prisma.oneTimePass.findFirst({
+      where: { OneTimePass: one_time_pass },
+    });
+
+    // Check that the current date is before the expiration date
+    if (result && result?.expires < new Date()) {
+      return new Response("One Time Pass has expired", { status: 400 });
+    }
+    let OTP_email = result?.userEmail;
+    let returnDict = {
+      email: OTP_email,
+      success: true,
+    };
+    if (result) {
+      return new Response(JSON.stringify(returnDict), { status: 200 });
+    } else {
+      returnDict.success = false;
+      return new Response(JSON.stringify(returnDict), { status: 400 });
+    }
+  } catch (error) {
+    console.error(error);
+    return new Response("Error checking OneTimePass: " + error, {
+      status: 500,
+    });
+  }
 }

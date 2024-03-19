@@ -56,6 +56,7 @@ export async function POST(request: Request) {
       online,
       token_bounty,
       number_of_spots,
+      status: "UPCOMING", // Default initial status
       event_volunteers: { create: [] }, // Add an empty array for event_volunteers
     };
 
