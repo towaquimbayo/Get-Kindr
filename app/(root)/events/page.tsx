@@ -112,19 +112,19 @@ export default function Events() {
       {/* Search and Filter */}
       <Container>
         <div className="h-[50px] rounded-xl flex divide-x shadow-[0_6px_25px_rgb(0,0,0,0.08)]">
-          <div className="size-full px-2 pl-3 rounded-s-xl flex items-center">
+          <div className="w-full h-full px-2 pl-3 rounded-s-xl flex items-center">
             <LucideSearch size={20} color="#000000" />
             <input className="w-full appearance-none bg-transparent border-none placeholder-gray-400 focus:ring-0" type="text" placeholder="Search opportunities" />
           </div>
-          <div className="size-full px-2 pl-3 flex items-center">
+          <div className="w-full h-full px-2 pl-3 flex items-center">
             <LucideMapPin size={20} color="#000000" />
             <input className="w-full appearance-none bg-transparent border-none placeholder-gray-400 focus:ring-0" type="text" placeholder="Vancouver, BC" />
           </div>
-          <div className="size-full px-2 flex items-center">
+          <div className="w-full h-full px-2 flex items-center">
             <input className="w-full appearance-none bg-transparent border-none placeholder-gray-400 focus:ring-0" type="text" placeholder="Filter Tags" />
           </div>
           <div className="flex-none w-[125px] h-full bg-primary rounded-e-xl">
-            <Link href="#" className="size-full text-white flex items-center justify-center rounded-e-xl">Find Events</Link>
+            <Link href="#" className="w-full h-full text-white flex items-center justify-center rounded-e-xl">Find Events</Link>
           </div>
         </div>
       </Container>
