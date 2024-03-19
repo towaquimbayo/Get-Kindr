@@ -1,24 +1,29 @@
 import plugin from "tailwindcss/plugin";
 import tailwindcss from "tailwindcss";
+const { nextui } = require("@nextui-org/react");
 
 module.exports = {
-  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+  ],
   future: {
     hoverOnlyWhenSupported: true,
   },
   theme: {
     screens: {
-      'mb': '480px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
+      mb: "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
     },
     extend: {
       spacing: {
-        '30': '120px',
-        '34': '136px',
+        30: "120px",
+        34: "136px",
       },
       colors: {
         primary: "#FF5656",
@@ -86,5 +91,7 @@ module.exports = {
       addVariant("radix-side-top", '&[data-side="top"]');
       addVariant("radix-side-bottom", '&[data-side="bottom"]');
     }),
+    nextui(),
   ],
+  darkMode: "class",
 };

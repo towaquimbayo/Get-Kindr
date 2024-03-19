@@ -1,5 +1,5 @@
 import { LucideEye, LucideEyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function InputField({
   id = "",
@@ -9,14 +9,17 @@ function InputField({
   label = "",
   minLength = 0,
   maxLength = 100,
+  defaultValue = "",
   onChange = () => {},
-  currentValue = "",
   error = "",
+  disabled = false,
+  optional = false,
 }) {
   return (
     <div className="flex w-full flex-col space-y-2">
       <label htmlFor={name} className="text-sm text-[#4B4B4B]">
         {label}
+        {optional && <span className="text-[#858585]"> (Optional)</span>}
       </label>
       <input
         type={type}
@@ -25,9 +28,12 @@ function InputField({
         placeholder={placeholder}
         minLength={minLength}
         maxLength={maxLength}
-        value={currentValue}
+        disabled={disabled}
+        defaultValue={defaultValue}
         onChange={onChange}
-        className="h-12 w-full rounded-lg border border-[#EAEAEA] px-4"
+        className={`h-12 w-full rounded-lg border border-[#EAEAEA] px-4 ${
+          disabled ? "cursor-not-allowed bg-[#F5F5F5] text-[#858585]" : ""
+        }`}
       />
       {error && <span className="text-sm text-red-500">{error}</span>}
     </div>
@@ -41,8 +47,10 @@ function PasswordField({
   label = "",
   minLength = 0,
   maxLength = 100,
+  defaultValue = "",
   onChange = () => {},
   error = "",
+  disabled = false,
 }) {
   const [hidePassword, setHidePassword] = useState(true);
   return (
@@ -58,8 +66,12 @@ function PasswordField({
           placeholder={placeholder}
           minLength={minLength}
           maxLength={maxLength}
+          disabled={disabled}
+          defaultValue={defaultValue}
           onChange={onChange}
-          className="h-12 w-full rounded-lg border border-[#EAEAEA] px-4 pr-8"
+          className={`h-12 w-full rounded-lg border border-[#EAEAEA] px-4 pr-8 ${
+            disabled ? "cursor-not-allowed bg-[#F5F5F5] text-[#858585]" : ""
+          }`}
         />
         {hidePassword ? (
           <LucideEye
@@ -100,4 +112,81 @@ function ToggleField({ id = "", name = "", label = "", onChange = () => {} }) {
   );
 }
 
-export { InputField, PasswordField, ToggleField };
+function formatPhoneNumber(value: string) {
+  // Remove all non-numeric characters from the input value
+  const cleaned = value.replace(/\D/g, "");
+
+  // Apply formatting based on the cleaned value
+  const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+  if (match) {
+    // Check if all digits are entered, otherwise, return formatted string with only entered digits
+    return match[1]
+      ? "(" +
+          match[1] +
+          (match[2] ? ") " + match[2] + (match[3] ? " - " + match[3] : "") : "")
+      : "";
+  }
+
+  // If no match is found, return an empty string
+  return "";
+}
+
+function PhoneField({
+  id = "",
+  name = "",
+  placeholder = "",
+  label = "",
+  minLength = 0,
+  maxLength = 100,
+  defaultValue = "",
+  onChange = (e: React.ChangeEvent<HTMLInputElement>) => {},
+  error = "",
+  optional = false,
+  disabled = false,
+}) {
+  const [phone, setPhone] = useState(
+    defaultValue ? formatPhoneNumber(defaultValue) : "",
+  );
+
+  useEffect(() => {
+    if (defaultValue) setPhone(formatPhoneNumber(defaultValue));
+  }, [defaultValue]);
+
+  return (
+    <div className="flex w-full flex-col space-y-2">
+      <label htmlFor={name} className="text-sm text-[#4B4B4B]">
+        {label}
+        {optional && <span className="text-[#858585]"> (Optional)</span>}
+      </label>
+      <input
+        type="tel"
+        id={id}
+        name={name}
+        placeholder={placeholder}
+        minLength={minLength}
+        maxLength={maxLength}
+        value={phone}
+        disabled={disabled}
+        onChange={(e) => {
+          const numericValue = e.target.value.replace(/\D/g, "").slice(0, 10);
+          const formattedValue = formatPhoneNumber(numericValue);
+          setPhone(formattedValue);
+          if (onChange) {
+            onChange({
+              ...e,
+              target: { ...e.target, name: name, value: numericValue },
+            });
+          } else {
+            e.preventDefault();
+          }
+        }}
+        className={`h-12 w-full rounded-lg border border-[#EAEAEA] px-4 ${
+          disabled ? "cursor-not-allowed bg-[#F5F5F5] text-[#858585]" : ""
+        }`}
+      />
+      {error && <span className="text-sm text-red-500">{error}</span>}
+    </div>
+  );
+}
+
+export { InputField, PasswordField, ToggleField, PhoneField };

@@ -1,20 +1,31 @@
 "use client";
 
+import { useEffect } from "react";
+import { Session } from "next-auth";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import useScroll from "@/lib/hooks/use-scroll";
 import UserDropdown from "./user-dropdown";
-import { Session } from "next-auth";
 import Container from "./Container";
 
 export default function NavBar({ session }: { session: Session | null }) {
   const scrolled = useScroll(50);
 
   function NavLink({ href = "", name = "" }) {
+    const path = usePathname();
+    const active = path === href;
+
+    useEffect(() => {
+      if (active) document.title = `KINDR - ${name}`;
+    }, [active, name]);
+
     return (
       <Link
         href={href}
-        className="hidden transition-all ease-in-out hover:text-primary sm:block"
+        className={`hidden items-center transition-all duration-300 ease-in-out  hover:opacity-50 sm:block ${
+          active ? "font-semibold text-primary" : "text-black"
+        }`}
       >
         {name}
       </Link>
@@ -39,8 +50,8 @@ export default function NavBar({ session }: { session: Session | null }) {
           />
         </Link>
         <div className="flex items-center space-x-8">
-          <NavLink href="/about" name="About" />
           <NavLink href="/events" name="Events" />
+          <NavLink href="/my-events" name="My Events" />
           <NavLink href="/add_event" name="Add Event" />
           <NavLink href="/edit_event" name="Edit Event (Hide)" />
           {session ? (

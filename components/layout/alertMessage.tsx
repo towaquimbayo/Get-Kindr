@@ -1,14 +1,14 @@
-import { LucideAlertCircle } from "lucide-react";
+import {  CheckCircle2, AlertCircle, InfoIcon } from "lucide-react";
 
 export default function AlertMessage({ message = "", type = "error" }) {
   function getIcon() {
     switch (type) {
       case "error":
-        return <LucideAlertCircle size={24} className="m-2" />;
+        return <AlertCircle size={24} className="m-2" />;
       case "success":
-        return <LucideAlertCircle size={24} className="m-2" />;
+        return <CheckCircle2 size={24} className="m-2" />;
       case "info":
-        return <LucideAlertCircle size={24} className="m-2" />;
+        return <InfoIcon size={24} className="m-2" />;
       default:
         return null;
     }
