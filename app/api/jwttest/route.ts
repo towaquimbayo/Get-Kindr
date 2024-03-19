@@ -1,18 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-    const session = await getSession({ req });
+export async function POST(req: NextRequest, res: NextResponse) {
     const token = await getToken({ req });
-
-    // console.log("\n\n\n***** Raw req data *****\n", req);
-
-    if (session) {
-        console.log("Valid Session, Received Sessiob: ", session);
-    } else {
-        console.log("Invalid Session, Received Session: ", session);
-    }
 
     if (token) {
         console.log("Valid Token, Received Token: ", token);
