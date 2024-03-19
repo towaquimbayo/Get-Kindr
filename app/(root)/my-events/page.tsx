@@ -111,6 +111,7 @@ export default function MyEvents() {
         tags: ["Education", "Arts", "Children", "Inperson", "Storytelling"],
         location: "Vancouver, BC",
         status: "Completed",
+        isFavourite: false,
       },
       {
         id: 2,
@@ -123,6 +124,7 @@ export default function MyEvents() {
         tags: ["Gardening", "Community", "Outdoors", "Inperson"],
         location: "Burnaby, BC",
         status: "Upcoming",
+        isFavourite: true,
       },
       {
         id: 3,
@@ -135,6 +137,7 @@ export default function MyEvents() {
         tags: ["Community", "Food", "Inperson"],
         location: "Richmond, BC",
         status: "Completed",
+        isFavourite: true,
       },
       {
         id: 4,
@@ -147,6 +150,7 @@ export default function MyEvents() {
         tags: ["Community", "Food", "Inperson"],
         location: "North Vancouver, BC",
         status: "Upcoming",
+        isFavourite: false,
       },
     ];
 
