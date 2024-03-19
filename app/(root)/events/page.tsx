@@ -1,14 +1,16 @@
 "use client"
 
+import { useState, useEffect, useMemo, useRef } from "react";
 import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
 import { LucideSearch, LucideMapPin, LucideHeart } from "lucide-react";
 import Link from "next/link";
-import Map from "react-map-gl";
+import Map, { Marker } from "react-map-gl";
+
+type Coordinates = [number, number];
 
 export default function Events() {
-
-  const events = [
+  const events = useMemo(() => [
     {
       id: 1,
       name: "School Outreach Activity Leader",
@@ -69,7 +71,39 @@ export default function Events() {
       },
       tags: ["arts", "children", "storytelling"],
     },
-  ];
+  ], []);
+
+  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
+  const [markerCoordinates, setMarkerCoordinates] = useState<Coordinates[]>([]);
+
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (mapContainerRef.current) {
+      const { width, height } = mapContainerRef.current.getBoundingClientRect();
+      setMapDimensions({ width, height });
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchMarkerCoordinates = async () => {
+      const coordinates = await Promise.all(
+        events.map(async (event) => {
+          const response = await fetch(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+              event.organization.location
+            )}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`
+          );
+          const data = await response.json();
+          return data.features[0].center as Coordinates;
+        })
+      );
+      
+      setMarkerCoordinates(coordinates);
+    };
+
+    fetchMarkerCoordinates();
+  }, [events]);
 
   return (
     <div className="mt-16">
@@ -146,17 +180,29 @@ export default function Events() {
 
         {/* Map Embed */}
         <div className="flex-1">
-          <div className="rounded-3xl overflow-hidden">
+          <div className="rounded-3xl overflow-hidden" ref={mapContainerRef}>
             <Map
               mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
               initialViewState={{
                 longitude: -123.05,
-                latitude: 49.27,
+                latitude: 49.24,
                 zoom: 10
               }}
               style={{width: '100%', height: 500, borderRadius: '1.5rem'}}
-              mapStyle="mapbox://styles/mapbox/streets-v9"
-            />
+              mapStyle="mapbox://styles/mapbox/light-v10"
+            >
+              {markerCoordinates.map((coordinates, index) => (
+                <Marker
+                  key={index}
+                  longitude={coordinates[0]}
+                  latitude={coordinates[1]}
+                  anchor="center"
+                  offset={[mapDimensions.width / 2, -mapDimensions.height]}
+                >
+                  <div className="bg-primary w-2 h-2 rounded-full"></div>
+                </Marker>
+              ))}
+            </Map>
           </div>
         </div>
       </Container>
