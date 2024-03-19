@@ -25,21 +25,6 @@ export async function GET(request: Request) {
     }
 
     const isOrganization = user.accountType?.toLowerCase() === "organization";
-
-    // find phone number based on account type
-    let phone = "";
-    if (isOrganization) {
-      const organization = await prisma.organization.findUnique({
-        where: { userId: user.id },
-      });
-      if (organization) phone = organization.phoneNumber || "";
-    } else {
-      const volunteer = await prisma.volunteer.findUnique({
-        where: { userId: user.id },
-      });
-      if (volunteer) phone = volunteer.phoneNumber || "";
-    }
-
     console.log("Successfully fetched user: ", user);
     return NextResponse.json({
       status: 200,
@@ -48,7 +33,7 @@ export async function GET(request: Request) {
         lastName: isOrganization ? "" : user.name?.split(" ")[1],
         organizationName: isOrganization ? user.name : "",
         email: user.email,
-        phone: phone,
+        phone: user.phoneNumber,
         isOrganization: isOrganization,
         password: "",
       },
