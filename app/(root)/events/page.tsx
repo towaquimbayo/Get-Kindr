@@ -144,7 +144,7 @@ export default function Events() {
       {/* Events (left) + Map (right) */}
       <Container className="flex gap-8">
         {/* Events List */}
-        <div className="flex-1 overflow-y-auto max-h-[500px] no-scrollbar">
+        <div className="flex-1 overflow-y-auto max-h-[500px]">
           {/* Event Card */}
           {events.map((event) => (
             <div key={event.id} className="bg-white rounded-xl border border-[#EAEAEA] p-6 mb-6 !transition-all duration-300 ease-in-out hover:shadow-md">
