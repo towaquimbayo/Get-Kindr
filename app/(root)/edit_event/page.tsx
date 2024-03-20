@@ -165,6 +165,7 @@ export default function Add_Event() {
             // Removed Elements:
             // - valuePosition
             // - valueSupervisor
+            // - valuePhone
             const eventInfo = {
                 name: valueName,
                 description: valueDescription,
@@ -250,65 +251,49 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full mt-4">
                         <div className="flex flex-col w-5/6">
                             <label htmlFor="Name" className=" text-lg pl-4 ">Event Name <span className="text-primary">*</span></label>
-                            <input value={valueName} id="Name" onChange={(e) => updateNameHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
+                            <input id="Name" onChange={(e) => updateNameHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
                         </div>
                     </div>
-{/*                     
-                    <div className="flex justify-evenly w-full pt-12">
-                        <div className="flex flex-col w-5/12">
-                            <label htmlFor="Position" className="text-lg pl-4">Position</label>
-                            <input value={valuePosition} id="Position" onChange={(e) => setValuePosition(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Volunteer Title"></input>
-                        </div>
-                        <div className="flex flex-col w-5/12">
-                            <label htmlFor="Supervisor" className="text-lg pl-4">Supervisor</label>
-                            <input value={valueSupervisor} id="Supervisor" onChange={(e) => setValueSupervisor(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Coordinator"></input>
-                        </div>
-                    </div> */}
-                
                     <div className="flex justify-evenly w-full pt-12">
                         <div className="flex flex-col w-5/12">
                             <label htmlFor="Position" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
-                            <input value={valueAddress} id="Position" onChange={(e) => updateAddressHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event Address"></input>
+                            <input id="Position" onChange={(e) => updateAddressHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event Address"></input>
                         </div>
                         <div className="flex flex-col w-5/12">
-                            <label htmlFor="City" className="text-lg pl-4">City <span className="text-primary">*</span></label>
-                            <input value={valueCity} id="City" onChange={(e) => updateCityHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event City"></input>
+                            <label htmlFor="Supervisor" className="text-lg pl-4">City <span className="text-primary">*</span></label>
+                            <input id="Supervisor" onChange={(e) => updateCityHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event City"></input>
                         </div>
                     </div>
                     <div className="flex flex-col mb:flex-row justify-evenly items-center w-full">
                         <div className="flex flex-col w-4/5 mb:w-1/3 mb:min-w-40 mt-8">
                             <label htmlFor="Date" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
-                            <input value={valueDate} type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base"></input>
+                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base" value={valueDate}></input>
                         </div>
                         <div className="flex flex-col w-4/5 mt-8 mb:w-1/3 mb:min-w-44">
                             <label htmlFor="time" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input value={valueStartTime} type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
                                 <h1 className="text-xl mt-0.5 mb:text-2xl">-</h1>
-                                <input value={valueEndTime} type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-center w-full mt-8 md:flex-row md:justify-evenly">
-                        {/* <div className="flex flex-col justify-evenly sm:justify-center w-3/5 sm:w-fit sm:min-w-80 md:w-1/3 md:min-w-0 m-auto md:m-0 md:max-w-56">
-                            <label htmlFor="Phone" className="pl-4 text-lg md:pl-4">Phone</label>
-                            <input value={valuePhone} type="tel" id="Phone" onClick={handleInputClickPhone} onChange={(e) => formatPhone(e.target.value)} onBlur={handleInputBlurPhone} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-center mb:text-lg md:max-w-56" placeholder={placeholderPhone}></input>
-                        </div> */}
-                        <div className="flex w-full justify-evenly mt-10 md:w-1/2 md:justify-between md:mt-0">
-                            <div className="flex flex-col w-1/2 sm:min-w-36 md:pt-4">
+                        <div className="flex w-full justify-between mt-10 md:w-4/5 md:justify-between md:mt-0">
+                            <div className="flex flex-col w-1/3 sm:min-w-36 md:pt-4 ml-10">
                                 <label htmlFor="Spots" className=" pl-4 text-lg sm:min-w-36">Available Spots <span className="text-primary">*</span></label>
-                                <input value={valueVolNum} type="number" id="Spots" onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder={placeholderVolNum}></input>
+                                <input type="number" id="Spots" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder={placeholderVolNum}></input>
                             </div>
-                            <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 md:w-36 md:w-1/3 md:h-24 md:pt-1">
+                            <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 mr-10 md:w-36 md:w-1/3 md:h-24 md:pt-1 ">
                                 <div className="mt-2 w-full ml-2">
-                                    <input checked={valueOnline} id="Virtual" type="checkbox" onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
+                                    <input id="Virtual" type="checkbox" onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Virtual">
                                         Virtual
                                     </label>
                                 </div>
                                 <div className="mt-2 w-full ml-2">
-                                    <input checked={valueRecurring} id="Recurring" type="checkbox" onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
+                                    <input id="Recurring" type="checkbox" onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Recurring">
                                         Recurring
@@ -320,7 +305,7 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full pt-2">
                         <div className="flex flex-col w-4/5">
                             <label htmlFor="Description" className=" text-lg pl-4">Description <span className="text-primary">*</span></label>
-                            <textarea value={valueDescription} id="Description" rows={6} onChange={(e) => updateDescriptionHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
+                            <textarea id="Description" rows={6} onChange={(e) => updateDescriptionHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mt-8">
@@ -331,10 +316,15 @@ export default function Add_Event() {
                     </div>
                     <div className="flex justify-evenly w-full mb-8 mt-12">
                         <Link href="/" className="w-1/5 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
-                        <button id="submit" onClick={submitEvent} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Confirm</button>
+                        <button id="submit" onClick={submitEvent} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
                     </div>
                 </div>
             </div>
         </div>
+        // Deprecated phone number input
+        // <div className="flex flex-col justify-evenly sm:justify-center w-3/5 sm:w-fit sm:min-w-80 md:w-1/3 md:min-w-0 m-auto md:m-0 md:max-w-56">
+        //     <label htmlFor="Phone" className="pl-4 text-lg md:pl-4">Phone</label>
+        //     <input type="tel" id="Phone" value={valuePhone} onClick={handleInputClickPhone} onChange={(e) => formatPhone(e.target.value)} onBlur={handleInputBlurPhone} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-center mb:text-lg md:max-w-56" placeholder={placeholderPhone}></input>
+        // </div>
     );
 }
