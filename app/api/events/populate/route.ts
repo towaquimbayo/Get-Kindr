@@ -2,10 +2,10 @@ import prisma from "@/lib/prisma";
 
 const dummyEvents = [
   {
-    name: "Event 3",
+    name: "Testing Event 1",
     description: "This is the third event",
-    start_time: new Date(),
-    end_time: new Date(),
+    start_time: new Date("2025-01-01T00:00:00Z"),
+    end_time: new Date("2025-03-01T04:00:00Z"),
     organization_id: "cltyp30v10001qke0j5c80jhm",
     tags: ["tag1", "tag2", "tag3"],
     address: "123 Main St",
@@ -20,10 +20,10 @@ const dummyEvents = [
     status: "UPCOMING",
   },
   {
-    name: "Event 4",
+    name: "Testing Event 2",
     description: "This is the fourth event",
-    start_time: new Date(),
-    end_time: new Date(),
+    start_time: new Date("2024-06-01T00:00:00Z"),
+    end_time: new Date("2024-09-01T08:00:00Z"),
     organization_id: "cltyp30v10001qke0j5c80jhm",
     tags: ["tag1"],
     address: "123 Main St",
