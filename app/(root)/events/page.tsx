@@ -6,72 +6,66 @@ import SectionTitle from "@/components/shared/SectionTitle";
 import { LucideSearch, LucideMapPin, LucideHeart } from "lucide-react";
 import Link from "next/link";
 import Map, { Marker } from "react-map-gl";
+import { Event } from "@prisma/client";
 
 type Coordinates = [number, number];
 
 export default function Events() {
-  const events = useMemo(() => [
-    {
-      id: 1,
-      name: "School Outreach Activity Leader",
-      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
-      start_time: "FRI 09 FEB",
-      end_time: "9:00 AM - 2:00 PM",
-      organization: {
-        name: "Vancouver Arts Society",
-        location: "1234 Charles St. Vancouver, BC",
-      },
-      tags: ["arts", "children", "storytelling"],
-    },
-    {
-      id: 2,
-      name: "School Outreach Activity Leader",
-      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
-      start_time: "FRI 09 FEB",
-      end_time: "9:00 AM - 2:00 PM",
-      organization: {
-        name: "Vancouver Arts Society",
-        location: "1234 Charles St. Vancouver, BC",
-      },
-      tags: ["arts", "children", "storytelling"],
-    },
-    {
-      id: 3,
-      name: "School Outreach Activity Leader",
-      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
-      start_time: "FRI 09 FEB",
-      end_time: "9:00 AM - 2:00 PM",
-      organization: {
-        name: "Vancouver Arts Society",
-        location: "1234 Charles St. Vancouver, BC",
-      },
-      tags: ["arts", "children", "storytelling"],
-    },
-    {
-      id: 4,
-      name: "School Outreach Activity Leader",
-      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
-      start_time: "FRI 09 FEB",
-      end_time: "9:00 AM - 2:00 PM",
-      organization: {
-        name: "Vancouver Arts Society",
-        location: "1234 Charles St. Vancouver, BC",
-      },
-      tags: ["arts", "children", "storytelling"],
-    },
-    {
-      id: 5,
-      name: "School Outreach Activity Leader",
-      description: "Every year, we bring arts and culture to classrooms across Vancouver. Through craft workshops and storytelling, we learn about the diverse cultures that make up our ...",
-      start_time: "FRI 09 FEB",
-      end_time: "9:00 AM - 2:00 PM",
-      organization: {
-        name: "Vancouver Arts Society",
-        location: "1234 Charles St. Vancouver, BC",
-      },
-      tags: ["arts", "children", "storytelling"],
-    },
-  ], []);
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    async function fetchEvents() {
+    // Query backend for events
+      await fetch("/api/events", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(async (res) => {
+        const events = await res.json()
+        const formattedEvents = events.map((event: any) => {
+          return {
+            ...event,
+            ...convertTimeFormat(event),
+          };
+        });
+        setEvents(formattedEvents as any || []);
+        console.log("events: ", formattedEvents);
+        return events
+      }).catch((error) => {
+        console.error("Error fetching events: ", error)
+      });
+    }
+
+    fetchEvents();
+  }, []);
+
+  function convertTimeFormat(event: any): any {
+    const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+    const startDate = new Date(event.start_time);
+    const endDate = new Date(event.end_time);
+
+    // Format start date
+    const startDay = startDate.getUTCDate();
+    const startMonth = months[startDate.getUTCMonth()];
+    const startYear = startDate.getUTCFullYear();
+    const startDateFormatted = `${startMonth} ${startDay < 10 ? '0' + startDay : startDay} ${startYear}`;
+
+    // Format time range
+    const startTimeHours = ('0' + startDate.getUTCHours()).slice(-2);
+    const startTimeMinutes = ('0' + startDate.getUTCMinutes()).slice(-2);
+    const endTimeHours = ('0' + endDate.getUTCHours()).slice(-2);
+    const endTimeMinutes = ('0' + endDate.getUTCMinutes()).slice(-2);
+    const timeRangeFormatted = `${startTimeHours}:${startTimeMinutes} AM - ${endTimeHours}:${endTimeMinutes} AM`;
+
+    const result = {
+        start_time: startDateFormatted,
+        end_time: timeRangeFormatted,
+    };
+
+    return result;
+}
 
   const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
   const [markerCoordinates, setMarkerCoordinates] = useState<Coordinates[]>([]);
@@ -91,7 +85,7 @@ export default function Events() {
         events.map(async (event) => {
           const response = await fetch(
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-              event.organization.location
+              (event as any).organization?.location
             )}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`
           );
           const data = await response.json();
@@ -151,14 +145,14 @@ export default function Events() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start gap-3">
                   <div className="bg-primary bg-opacity-10 rounded-lg px-4 py-2 text-center">
-                    <p className="text-xs text-primary">{event.start_time.split(' ')[0]}</p>
-                    <p className="text-xl text-primary font-semibold">{event.start_time.split(' ')[1]}</p>
-                    <p className="text-xs text-primary">{event.start_time.split(' ')[2]}</p>
+                    <p className="text-xs text-primary">{event.start_time.toString().split(' ')[0]}</p>
+                    <p className="text-xl text-primary font-semibold">{event.start_time.toString().split(' ')[1]}</p>
+                    <p className="text-xs text-primary">{event.start_time.toString().split(' ')[2]}</p>
                   </div>
                   <div>
                     <p className="text-lg font-semibold">{event.name}</p>
-                    <p className="text-gray-600">{event.organization.name}</p>
-                    <p className="text-gray-600">{event.organization.location} - {event.end_time}</p>
+                    <p className="text-gray-600">{(event as any).organization.name}</p>
+                    <p className="text-gray-600">{event.city} - {event.end_time.toString()}</p>
                   </div>
                 </div>
                 <Link href="#" className="">
