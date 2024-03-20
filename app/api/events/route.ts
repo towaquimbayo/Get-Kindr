@@ -18,24 +18,21 @@ const SORT_FIELDS = [
   "end_time",
   "name",
   // "distance",     // TODO: Implement distance sorting
-  "token_bounty"
+  "token_bounty",
 ];
 
-const SORT_MODES = [
-  "asc",
-  "desc"
-];
+const SORT_MODES = ["asc", "desc"];
 
 const DEFAULT = {
   sortField: "start_time",
   sortMode: "asc",
   searchMode: null,
-  timeAll: false
+  timeAll: false,
 };
 
 /**
  * Endpoint for getting events: GET /api/events
- * 
+ *
  * request parameters (optional):
  * - eventID: an event ID within the database
  * - searchMode: field to search for events. see SEARCH_FIELDS
@@ -43,9 +40,9 @@ const DEFAULT = {
  * - all: boolean to include all events, regardless of time
  * - sortBy: field to use for sorting. see SORT_FIELDS
  * - sortOrder: order to sort by. see SORT_MODES
- * 
+ *
  * Default behavior for invalid parameters: see DEFAULT
- * 
+ *
  * @param {Request} request - The incoming request
  */
 export async function GET(request: Request) {
@@ -55,47 +52,86 @@ export async function GET(request: Request) {
     const eventID = url.searchParams.get("eventID");
 
     let searchMode = url.searchParams.get("searchMode");
-    searchMode = searchMode && searchMode in SEARCH_FIELDS ? searchMode : DEFAULT.searchMode;
-    const searchTerm = url.searchParams.get("search") ? url.searchParams.get("search") : null;
+    searchMode =
+      searchMode && searchMode in SEARCH_FIELDS
+        ? searchMode
+        : DEFAULT.searchMode;
+    const searchTerm = url.searchParams.get("search")
+      ? url.searchParams.get("search")
+      : null;
 
-    const allTime = url.searchParams.get("all") === "true" ? true : DEFAULT.timeAll;
+    const allTime =
+      url.searchParams.get("all") === "true" ? true : DEFAULT.timeAll;
 
     let sortField = url.searchParams.get("sortField");
-    sortField = sortField && SORT_FIELDS.includes(sortField) ? sortField : DEFAULT.sortField;
+    sortField =
+      sortField && SORT_FIELDS.includes(sortField)
+        ? sortField
+        : DEFAULT.sortField;
 
     let sortMode = url.searchParams.get("sortMode");
-    sortMode = sortMode && SORT_MODES.includes(sortMode) ? sortMode : DEFAULT.sortMode;
+    sortMode =
+      sortMode && SORT_MODES.includes(sortMode) ? sortMode : DEFAULT.sortMode;
 
     const currentTime = !allTime ? new Date() : new Date(0);
 
-    let events = null;
+    let events;
 
-    if (eventID) { // If eventID is present, get event by ID
+    // If no parameters are present, return all upcoming events
+
+    if (eventID) {
+      // If eventID is present, get event by ID
+      // Stitch in the entire organization object
       events = await prisma.event.findUnique({
-        where: { id: eventID },
+        where: {
+          id: eventID,
+        },
+        include: {
+          organization: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
-    } else if (searchMode && searchTerm) { // If searchMode and searchTerm are present, search for events
+    } else if (searchMode && searchTerm) {
+      // If searchMode and searchTerm are present, search for events
       let { searchQuery, timeQuery } = parseQuery(searchMode, searchTerm);
 
       events = await prisma.event.findMany({
         where: {
           ...searchQuery,
-          ...timeQuery
+          ...timeQuery,
         },
         orderBy: {
-          [sortField]: sortMode
-        }
+          [sortField]: sortMode,
+        },
+        include: {
+          organization: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
-    } else { // Default
+    } else {
+      // Default: get all upcoming events
       events = await prisma.event.findMany({
         where: {
           start_time: {
-            gte: currentTime
-          }
+            gte: currentTime,
+          },
         },
         orderBy: {
-          [sortField]: sortMode
-        }
+          [sortField]: sortMode,
+        },
+        include: {
+          organization: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
     }
 
@@ -110,7 +146,7 @@ export async function GET(request: Request) {
 
 /**
  * Parses the searchMode and searchTerm to create the Prisma query.
- * 
+ *
  * @param searchMode The field to search for events. see SEARCH_FIELDS
  * @param searchTerm The string to use to search.
  * @returns Formatted query for Prisma.
@@ -121,18 +157,22 @@ function parseQuery(searchMode: string, searchTerm: string) {
     searchQuery = {
       [searchMode]: {
         contains: searchTerm,
-        mode: "insensitive"
-      }
+        mode: "insensitive",
+      },
     };
-  } else if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "String[]") {
+  } else if (
+    SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "String[]"
+  ) {
     searchQuery = {
       [searchMode]: {
-        hasSome: searchTerm.split(",")
-      }
+        hasSome: searchTerm.split(","),
+      },
     };
-  } else if (SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "Int") {
+  } else if (
+    SEARCH_FIELDS[searchMode as keyof typeof SEARCH_FIELDS] === "Int"
+  ) {
     searchQuery = {
-      [searchMode]: parseInt(searchTerm)
+      [searchMode]: parseInt(searchTerm),
     };
   } else {
     searchQuery = {};
@@ -143,19 +183,19 @@ function parseQuery(searchMode: string, searchTerm: string) {
     timeQuery = {
       [searchMode]: {
         gte: new Date(searchTerm + "T00:00:00.000Z"),
-        lte: new Date(searchTerm + "T23:59:59.999Z")
-      }
+        lte: new Date(searchTerm + "T23:59:59.999Z"),
+      },
     };
   } else {
     timeQuery = {
       start_time: {
-        gte: new Date()
-      }
+        gte: new Date(),
+      },
     };
   }
 
   return {
     searchQuery,
-    timeQuery
+    timeQuery,
   };
 }
