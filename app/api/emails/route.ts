@@ -19,7 +19,7 @@ export async function GET(request: Request) {
         if (result) {
             return new Response(JSON.stringify(true), { status: 200 });
         } else {
-            return new Response("No matching emails found", { status: 404 });
+            return new Response(JSON.stringify(false), { status: 200 });
         }
 
     } catch (error) {

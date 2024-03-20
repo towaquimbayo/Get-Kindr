@@ -113,6 +113,9 @@ export default function Recovery() {
           response.classList.remove('h-0');
           response.classList.remove('mt-0');
           response.classList.remove('mb-0');
+          response.classList.add('text-secondary');
+          response.classList.remove('text-primary');
+          response.classList.remove('text-tertiary');
           response.innerHTML = responseText;
         }
         const res = await fetch('/api/one-time-pass/verify/?otp=' + OTP, {
@@ -144,17 +147,20 @@ export default function Recovery() {
               if (updateData.success) {
                 if (response) {
                   response.innerHTML = updateData.result;
+                  response.classList.remove('text-secondary');
                   response.classList.add('text-tertiary');
                 }
               } else {
                 if (response) {
                   response.innerHTML = updateData.result;
+                  response.classList.remove('text-secondary');
                   response.classList.add('text-primary');
                 }
               }
             } else {
               if (response) {
                 response.innerHTML = "Error updating password.";
+                response.classList.remove('text-secondary');
                 response.classList.add('text-primary');
               }
             }
@@ -162,6 +168,7 @@ export default function Recovery() {
         } else {
           if (response) {
             response.innerHTML = "Invalid One Time Passcode.";
+            response.classList.remove('text-secondary');
             response.classList.add('text-primary');
           }
         }
