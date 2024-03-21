@@ -25,12 +25,12 @@ export default async function RootLayout({
   }
   return (
     <html lang="en" className="light">
-      <Provider session={session}>
-        <body className={cx(inter.variable, playfairDisplay.variable)}>
+      <body className={cx(inter.variable, playfairDisplay.variable)}>
+        <Provider session={session}>
           {children}
           <Analytics />
-        </body>
-      </Provider>
+        </Provider>
+      </body>
     </html>
   );
 }

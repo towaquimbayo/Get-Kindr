@@ -13,9 +13,7 @@ export default function Provider({
 }) {
   return (
     <SessionProvider session={session}>
-      <Suspense>
-        <NextUIProvider>{children}</NextUIProvider>
-      </Suspense>
+      <NextUIProvider>{children}</NextUIProvider>
     </SessionProvider>
   );
 }
