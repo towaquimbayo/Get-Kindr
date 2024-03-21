@@ -24,7 +24,7 @@ export default async function RootLayout({
     console.log(`User signed in with email: ${session.user.email}`);
   }
   return (
-    <html lang="en">
+    <html lang="en" className="light">
       <Provider session={session}>
         <body className={cx(inter.variable, playfairDisplay.variable)}>
           {children}
