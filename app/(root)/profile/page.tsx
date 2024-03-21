@@ -40,7 +40,9 @@ export default function Profile() {
   const [infoMsg, setInfoMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
-  const [isOrganization, setIsOrganization] = useState(false);
+  const [isOrganization, setIsOrganization] = useState(
+    session?.accountType.toLowerCase() === "organization",
+  );
   const [fieldErrors, setFieldErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
