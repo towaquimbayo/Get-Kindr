@@ -96,8 +96,12 @@ export default function Add_Event() {
             }
         });
         const result = (await res.json())
-        await validateUser(result.organization_id);
-        updateValues(result);
+        if (result === null) {
+            router.push("/");
+        } else {
+            await validateUser(result.organization_id);
+            updateValues(result);
+        }
     }
 
     readEvent();
@@ -252,6 +256,20 @@ export default function Add_Event() {
                 formattedLocation = formattedLocation + splitAddress[i] + ', ';
             }
         }
+
+        let splitTags = valueTags.split(' ');
+        let strippedTags = "";
+        for (let i = 0; i < splitTags.length; i++) {
+            console.log("Tag: ", splitTags[i]);
+            if (splitTags[i].slice(1).length != 0) {
+                if (strippedTags.length == 0) {
+                    strippedTags = splitTags[i].slice(1);
+                } else {
+                    strippedTags += " " + splitTags[i].slice(1);
+                }
+            }
+        }
+
         if (validateSubmit()) {
             // Removed Elements:
             // - valuePosition
@@ -264,7 +282,7 @@ export default function Add_Event() {
                 start_time: valueDate + " " + valueStartTime,
                 end_time: valueDate + " " + valueEndTime,
                 organization_id: org_ID,
-                tags: valueTags.split(' '),
+                tags: strippedTags,
                 address: valueAddress,
                 city: formattedLocation,
                 coordinates: valueCoordinates,
