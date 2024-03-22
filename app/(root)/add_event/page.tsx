@@ -70,7 +70,7 @@ export default function Add_Event() {
     const updateLocationHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(event.target.value);
         setValueLocation(event.target.value);
-        if (event.target.value.length > 5) {
+        if (event.target.value.length > 4) {
             setAddressButtonValue('Select an Address');
             handleSearch();
         } else {
@@ -236,8 +236,8 @@ export default function Add_Event() {
 
     const submitEvent = async () => {
         let splitAddress = valueAddress.split(',');
-        let formattedLocation = ""
-        for (let i = 0; i < splitAddress.length; i++) {
+        let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
+        for (let i = 2; i < splitAddress.length; i++) {
             if (i + 2 < splitAddress.length) {
                 formattedLocation = formattedLocation + splitAddress[i] + ', ';
             }
