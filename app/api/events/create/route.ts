@@ -24,7 +24,11 @@ export async function POST(request: Request) {
       online,
       token_bounty,
       number_of_spots,
+      coordinates,
     } = await request.json();
+
+    // Extract the latitude and longitude from the coordinates
+    const [latitude, longitude] = coordinates;
 
     // If any of the required fields are missing, return an error
     if (
@@ -35,7 +39,9 @@ export async function POST(request: Request) {
       !address ||
       !city ||
       !token_bounty ||
-      !number_of_spots
+      !number_of_spots ||
+      !latitude ||
+      !longitude
     ) {
       return new Response("Missing required fields", {
         status: 400,
@@ -56,6 +62,8 @@ export async function POST(request: Request) {
       online,
       token_bounty,
       number_of_spots,
+      latitude,
+      longitude,
       status: "UPCOMING", // Default initial status
       event_volunteers: { create: [] }, // Add an empty array for event_volunteers
     };
