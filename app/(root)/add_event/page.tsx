@@ -1,15 +1,46 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../globals.css";
 import Link from "next/link";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+let load = 0;
+let orgID = "";
 
 export default function Add_Event() {
+
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    const isOrganization = session?.accountType.toLowerCase() === "organization";
+
+    useEffect(() => {
+        if (!session || status !== "authenticated" || !isOrganization) router.push("/login");
+    }, [session, status, router]);
+
+    const validateUser = async () => {
+        const userID = session?.user.id;
+        const res = await fetch('/api/organizations/find-by-user?userID=' + userID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+        orgID = data.id;
+    }
+
+    // Only check the organizationID once.
+    if (load === 0) {
+        validateUser();
+        load = 1;
+    }
+
     // Removed Fields
-    const [valueSupervisor, setValueSupervisor] = useState<string>('');
-    const [valuePosition, setValuePosition] = useState<string>('');
-    const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
-    const [valuePhone, setValuePhone] = useState<string>('');
+    // const [valueSupervisor, setValueSupervisor] = useState<string>('');
+    // const [valuePosition, setValuePosition] = useState<string>('');
+    // const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
+    // const [valuePhone, setValuePhone] = useState<string>('');
 
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
@@ -62,13 +93,12 @@ export default function Add_Event() {
     };
 
     const handleInputBlurVolNum = () => {
-        if (placeholderPhone !== '') return;
+        if (placeholderVolNum !== '') return;
         // Reset the placeholder value when the user clicks outside the input field
         setPlaceValueVolNum('0');
     }
 
     const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
         if (event.target.value.length == 0) {
             setValueVolNum(0);
             return;
@@ -159,7 +189,7 @@ export default function Add_Event() {
                 description: valueDescription,
                 start_time: valueDate + " " + valueStartTime,
                 end_time: valueDate + " " + valueEndTime,
-                organization_id: "clsn6cghj0001vbewrz1qrso4",
+                organization_id: orgID,
                 tags: valueTags.split(' '),
                 address: valueAddress,
                 city: valueCity,
@@ -169,7 +199,6 @@ export default function Add_Event() {
                 number_of_spots: valueVolNum,
             };
             const data = JSON.stringify(eventInfo);
-            console.log(data);
             const res = await fetch('/api/events/create', {
                 method: 'POST',
                 headers: {
@@ -187,6 +216,7 @@ export default function Add_Event() {
                 console.log("Returned event: ", eventData);
                 window.location.href = "/events";
             } else {
+                console.log("Response: ", res)
                 console.log("Rejected event creation. Please try again.")
             }
         }
