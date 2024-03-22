@@ -1,12 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../globals.css";
 import Link from "next/link";
 import { Event } from "@prisma/client";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 let load = 0;
 
 export default function Add_Event() {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    const isOrganization = session?.accountType.toLowerCase() === "organization";
+
+    useEffect(() => {
+        if (!session || status !== "authenticated" || !isOrganization) router.push("/login");
+    }, [session, status, router]);
+
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const [valueDate, setPlaceValueDate] = useState<string>(formattedDate);
@@ -21,36 +31,55 @@ export default function Add_Event() {
     const [valueRecurring, setValueRecurring] = useState<boolean>(false)
     const [valueOnline, setValueOnline] = useState<boolean>(false)
     const [valueDescription, setValueDescription] = useState<string>('');
-    
+
     const url = new URL(window.location.href);
     const eventID = url.searchParams.get("eventID");
-    
+
     const updateValues = (event: Event) => {
-        console.log("Event: ", event)
-        setValueName(event.name);
-        setValueAddress(event.address);
-        setValueCity(event.city);
-        setPlaceValueDate(event.start_time.toString());
-        setValueStartTime(event.start_time.toString());
-        setValueEndTime(event.start_time.toString());
-        setValueVolNum(event.number_of_spots);
-        setValueDescription(event.description ?? "");
-        let tagsString = ''
-        for (let i = 0; i < event.tags.length; i++) {
-            tagsString = tagsString + event.tags[i] + ' ';
+        if (load === 0) {
+            load = 1;
+            console.log("Event: ", event)
+            setValueName(event.name);
+            setValueAddress(event.address);
+            setValueCity(event.city);
+            setPlaceValueDate(event.start_time.toString());
+            setValueStartTime(event.start_time.toString());
+            setValueEndTime(event.start_time.toString());
+            setValueVolNum(event.number_of_spots);
+            setValueDescription(event.description ?? "");
+            let tagsString = ''
+            for (let i = 0; i < event.tags.length; i++) {
+                tagsString = tagsString + event.tags[i] + ' ';
+            }
+            setTagsValue(tagsString);
+            let start_date = event.start_time;
+            let end_date = event.end_time;
+            let date = start_date.toString().slice(0, 10);
+            setPlaceValueDate(date);
+            let start_time = start_date.toString().slice(11, 16);
+            let end_time = end_date.toString().slice(11, 16);
+            setValueStartTime(start_time);
+            setValueEndTime(end_time);
+            setValueOnline(event.online);
+            setValueRecurring(event.recurring);
         }
-        setTagsValue(tagsString);
-        let start_date = event.start_time;
-        let end_date = event.end_time;
-        let date = start_date.toString().slice(0, 10);
-        setPlaceValueDate(date);
-        let start_time = start_date.toString().slice(11, 16);
-        let end_time = end_date.toString().slice(11, 16);
-        setValueStartTime(start_time);
-        setValueEndTime(end_time);
-        setValueOnline(event.online);
-        setValueRecurring(event.recurring);
     }
+
+    const validateUser = async (event_org_ID: any) => {
+        const userID = session?.user.id;
+        const res = await fetch('/api/organizations/find-by-user?userID=' + userID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+        const org_ID = data.id;
+        if (event_org_ID !== org_ID) {
+            router.push("/");
+        }
+    }
+
     const readEvent = async () => {
         const res = await fetch('/api/events?eventID=' + eventID, {
             method: 'GET',
@@ -59,15 +88,11 @@ export default function Add_Event() {
             }
         });
         const result = (await res.json())
+        await validateUser(result.organization_id);
         updateValues(result);
-        return 1;
     }
 
-    // Only load the event once.
-    if (load === 0) {
-        readEvent();
-        load = 1;
-    }
+    readEvent();
 
     const updateNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValueName(event.target.value);
@@ -122,7 +147,6 @@ export default function Add_Event() {
     }
 
     const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
         if (event.target.value.length == 0) {
             setValueVolNum(0);
             return;
@@ -181,7 +205,6 @@ export default function Add_Event() {
                 number_of_spots: valueVolNum,
             };
             const data = JSON.stringify(eventInfo);
-            console.log(data);
             const res = await fetch('/api/events/update', {
                 method: 'POST',
                 headers: {
@@ -251,7 +274,7 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full mt-4">
                         <div className="flex flex-col w-5/6">
                             <label htmlFor="Name" className=" text-lg pl-4 ">Event Name <span className="text-primary">*</span></label>
-                            <input id="Name" onChange={(e) => updateNameHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
+                            <input id="Name" onChange={(e) => updateNameHandler(e)} value={valueName} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full pt-12">
@@ -272,9 +295,9 @@ export default function Add_Event() {
                         <div className="flex flex-col w-4/5 mt-8 mb:w-1/3 mb:min-w-44">
                             <label htmlFor="time" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
                                 <h1 className="text-xl mt-0.5 mb:text-2xl">-</h1>
-                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
                             </div>
                         </div>
                     </div>
@@ -286,14 +309,14 @@ export default function Add_Event() {
                             </div>
                             <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 mr-10 md:w-36 md:w-1/3 md:h-24 md:pt-1 ">
                                 <div className="mt-2 w-full ml-2">
-                                    <input id="Virtual" type="checkbox" onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
+                                    <input id="Virtual" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Virtual">
                                         Virtual
                                     </label>
                                 </div>
                                 <div className="mt-2 w-full ml-2">
-                                    <input id="Recurring" type="checkbox" onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
+                                    <input id="Recurring" type="checkbox" checked={valueRecurring} onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Recurring">
                                         Recurring
@@ -305,7 +328,7 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full pt-2">
                         <div className="flex flex-col w-4/5">
                             <label htmlFor="Description" className=" text-lg pl-4">Description <span className="text-primary">*</span></label>
-                            <textarea id="Description" rows={6} onChange={(e) => updateDescriptionHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
+                            <textarea id="Description" rows={6} onChange={(e) => updateDescriptionHandler(e)} value={valueDescription} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mt-8">
