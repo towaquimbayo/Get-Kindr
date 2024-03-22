@@ -90,7 +90,7 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
-    async jwt({ token, user, session, trigger }) {
+    async jwt({ token, user, session, trigger, account }) {
       // console.log("JWT Callback: ", { token, user, session, trigger });
 
       // Trigger is used to update the token with new data
@@ -100,6 +100,7 @@ export const authOptions: NextAuthOptions = {
 
       if (user) {
         token.accountType = user.accountType;
+        token.accountProvider = account ? account.provider : null;
         return {
           ...token,
           id: user.id,
@@ -128,6 +129,7 @@ export const authOptions: NextAuthOptions = {
           name: token.name,
         },
         accountType: token.accountType,
+        accountProvider: token.accountProvider,
       };
     },
   },
