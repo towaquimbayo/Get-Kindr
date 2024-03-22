@@ -126,6 +126,7 @@ export default function Add_Event() {
             document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
         }, 150);
+        validateSubmit();
     }
 
     const updateStartTimeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
