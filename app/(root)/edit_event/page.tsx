@@ -27,7 +27,7 @@ export default function Add_Event() {
     const [valueName, setValueName] = useState<string>('');
     const [valueAddress, setValueAddress] = useState<string>('');
     const [valueLocation, setValueLocation] = useState<string>('');
-    const [valueCoordinates, setValueCoordinates] = useState<string>('');
+    const [valueCoordinates, setValueCoordinates] = useState<string[]>(['', '']);
     const [addressButtonValue, setAddressButtonValue] = useState<string>('Search for a Location');
     const [searchValue, setSearchValue] = useState('');
     const [valueStartTime, setValueStartTime] = useState<string>('');
@@ -48,6 +48,8 @@ export default function Add_Event() {
             setValueName(event.name);
             setValueAddress(event.address);
             setValueLocation(event.city);
+            let coordinates = [String(event.latitude), String(event.longitude)];
+            setValueCoordinates(coordinates);
             setPlaceValueDate(event.start_time.toString());
             setValueStartTime(event.start_time.toString());
             setValueEndTime(event.start_time.toString());
@@ -256,6 +258,7 @@ export default function Add_Event() {
             // - valueSupervisor
             // - valuePhone
             const eventInfo = {
+                id: eventID,
                 name: valueName,
                 description: valueDescription,
                 start_time: valueDate + " " + valueStartTime,
@@ -272,7 +275,7 @@ export default function Add_Event() {
             };
             const data = JSON.stringify(eventInfo);
             const res = await fetch('/api/events/update', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -288,6 +291,7 @@ export default function Add_Event() {
                 console.log("Returned event: ", eventData);
                 window.location.href = "/events";
             } else {
+                console.log(res)
                 console.log("Rejected event update. Please try again.")
             }
         }
