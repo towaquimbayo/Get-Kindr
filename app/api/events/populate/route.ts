@@ -18,6 +18,8 @@ const dummyEvents = [
       create: [],
     },
     status: "UPCOMING",
+    latitude: 37.7749,
+    longitude: -122.4194,
   },
   {
     name: "Testing Event 2",
@@ -36,6 +38,8 @@ const dummyEvents = [
       create: [],
     },
     status: "UPCOMING",
+    latitude: 37.7749,
+    longitude: -122.4194,
   },
 ];
 
