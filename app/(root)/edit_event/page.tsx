@@ -14,7 +14,7 @@ export default function Add_Event() {
     const isOrganization = session?.accountType.toLowerCase() === "organization";
 
     useEffect(() => {
-        if (!session || status !== "authenticated" || !isOrganization) router.push("/login");
+        if (!session || status !== "authenticated" || !isOrganization) router.push("/");
     }, [session, status, router]);
 
     const currentDate = new Date();
