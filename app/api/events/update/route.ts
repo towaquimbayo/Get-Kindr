@@ -22,6 +22,7 @@ export async function PUT(request: Request) {
       online,
       token_bounty,
       number_of_spots,
+      coordinates
     } = await request.json();
 
     if (!id) {
@@ -29,6 +30,8 @@ export async function PUT(request: Request) {
         status: 400,
       });
     }
+
+    const [latitude, longitude] = coordinates;
 
     if (
       !name ||
@@ -38,7 +41,9 @@ export async function PUT(request: Request) {
       !address ||
       !city ||
       !token_bounty ||
-      !number_of_spots
+      !number_of_spots ||
+      !latitude ||
+      !longitude
     ) {
       return new Response("Missing required fields", {
         status: 400,
@@ -60,6 +65,8 @@ export async function PUT(request: Request) {
         online,
         token_bounty,
         number_of_spots,
+        latitude,
+        longitude,
       },
     });
     return new Response(JSON.stringify(updatedEvent), { status: 200 });
