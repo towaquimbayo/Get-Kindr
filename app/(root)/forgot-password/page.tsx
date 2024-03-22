@@ -52,6 +52,8 @@ export default function Recovery() {
     const responseElement = document.getElementById('response');
     if (responseElement) {
       responseElement.innerHTML = "Checking for a matching email...";
+      responseElement.classList.remove('text-primary');
+      responseElement.classList.remove('text-tertiary');
       responseElement.classList.add('text-secondary');
       const res = await fetch('/api/emails/?email=' + email, {
         method: 'GET',
@@ -64,8 +66,8 @@ export default function Recovery() {
         email: email,
         expiration_date: new Date(new Date().getTime() + 15 * 60 * 1000).toISOString(),
       }
-
-      if (res.ok) {
+      let found = await res.json();
+      if (found) {
         let replaced = false;
         const replaceRes = await fetch('/api/one-time-pass/replace/?email=' + email, {
           method: 'GET',
@@ -99,7 +101,6 @@ export default function Recovery() {
 
         let success = false;
         let OTP = "";
-        console.log(res);
 
         if (res.ok) {
           const json = await res.json();
@@ -108,7 +109,7 @@ export default function Recovery() {
         }
         if (success) {
           const result = await recover(email, OTP);
-          if (result) {
+          if (result.success) {
             responseElement.innerHTML = "An email has been sent to your account.";
             if (replaced) {
               responseElement.innerHTML += "A new email has been sent to your account.\n The previous OTP has been is now invalid.";
@@ -116,14 +117,17 @@ export default function Recovery() {
             responseElement.classList.add('text-tertiary');
           } else {
             responseElement.innerHTML = "No account with that email found. Please try again.";
+            responseElement.classList.remove('text-secondary');
             responseElement.classList.add('text-primary');;
           }
         } else {
           responseElement.innerHTML = "An error occurred. Please try again.";
+          responseElement.classList.remove('text-secondary');
           responseElement.classList.add('text-primary');
         }
       } else {
-        responseElement.innerHTML = "An error occurred. Please try again.";
+        responseElement.innerHTML = "No account with that email found. Please try again.";
+        responseElement.classList.remove('text-secondary');
         responseElement.classList.add('text-primary');
       }
     }

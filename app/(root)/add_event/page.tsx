@@ -1,21 +1,54 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../globals.css";
 import Link from "next/link";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+let load = 0;
+let orgID = "";
 
 export default function Add_Event() {
+
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    const isOrganization = session?.accountType.toLowerCase() === "organization";
+
+    useEffect(() => {
+        if (!session || status !== "authenticated" || !isOrganization) router.push("/login");
+    }, [session, status, router]);
+
+    const validateUser = async () => {
+        const userID = session?.user.id;
+        const res = await fetch('/api/organizations/find-by-user?userID=' + userID, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+        orgID = data.id;
+    }
+
+    // Only check the organizationID once.
+    if (load === 0) {
+        validateUser();
+        load = 1;
+    }
+
+    // Removed Fields
+    // const [valueSupervisor, setValueSupervisor] = useState<string>('');
+    // const [valuePosition, setValuePosition] = useState<string>('');
+    // const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
+    // const [valuePhone, setValuePhone] = useState<string>('');
+
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const [valueDate, setPlaceValueDate] = useState<string>(formattedDate);
-    const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
-    const [valuePhone, setValuePhone] = useState<string>('');
     const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
     const [valueVolNum, setValueVolNum] = useState<number>(0);
     const [valueTags, setTagsValue] = useState<string>('');
     const [valueName, setValueName] = useState<string>('');
-    const [valueSupervisor, setValueSupervisor] = useState<string>('');
-    const [valuePosition, setValuePosition] = useState<string>('');
     const [valueAddress, setValueAddress] = useState<string>('');
     const [valueCity, setValueCity] = useState<string>('');
     const [valueStartTime, setValueStartTime] = useState<string>('');
@@ -54,60 +87,18 @@ export default function Add_Event() {
         validateSubmit();
     }
 
-    const formatDate = (event: string) => {
-        if (event.length == 11) {
-            event = event.slice(0, 4) + event.slice(5, 11);
-        }
-        if (event.length == 12) {
-            event = event.slice(0, 4) + event.slice(6, 12);
-        }
-        setPlaceValueDate(event);
-        validateSubmit();
-    }
-
-    const handleInputClickPhone = () => {
-        // Clear the placeholder value when the user clicks on the input field
-        setPlaceValuePhone('');
-    };
-
-    const handleInputBlurPhone = () => {
-        if (placeholderPhone !== '') return;
-        // Reset the placeholder value when the user clicks outside the input field
-        setPlaceValuePhone('123 - 456 - 7890');
-    }
-
-    const formatPhone = (event: string) => {
-        // Check for a valid phone number with extra digits at the end
-        if (event.length > 16) {
-            const correctLen = event.slice(0, 16);
-            event = correctLen;
-        }
-        // Remove all non-numeric characters from the input value
-        const cleaned = event.replace(/\D/g, '');
-        // Apply formatting based on the cleaned value
-        const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
-        if (match) {
-            // Check if all digits are entered, otherwise, return formatted string with only entered digits
-            event = match[1] ? '(' + match[1] + (match[2] ? ') ' + match[2] + (match[3] ? ' - ' + match[3] : '') : '') : '';
-        } else {
-            event = ''
-        }
-        setValuePhone(event);
-    }
-
     const handleInputClickVolNum = () => {
         // Clear the placeholder value when the user clicks on the input field
         setPlaceValueVolNum('');
     };
 
     const handleInputBlurVolNum = () => {
-        if (placeholderPhone !== '') return;
+        if (placeholderVolNum !== '') return;
         // Reset the placeholder value when the user clicks outside the input field
         setPlaceValueVolNum('0');
     }
 
     const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
         if (event.target.value.length == 0) {
             setValueVolNum(0);
             return;
@@ -145,17 +136,60 @@ export default function Add_Event() {
         }
     }
 
+    const formatDate = (event: string) => {
+        if (event.length == 11) {
+            event = event.slice(0, 4) + event.slice(5, 11);
+        }
+        if (event.length == 12) {
+            event = event.slice(0, 4) + event.slice(6, 12);
+        }
+        setPlaceValueDate(event);
+        validateSubmit();
+    }
+
+    // // Deprecated as phone number moved to user info
+    // const handleInputClickPhone = () => {
+    //     // Clear the placeholder value when the user clicks on the input field
+    //     setPlaceValuePhone('');
+    // };
+
+    // const handleInputBlurPhone = () => {
+    //     if (placeholderPhone !== '') return;
+    //     // Reset the placeholder value when the user clicks outside the input field
+    //     setPlaceValuePhone('123 - 456 - 7890');
+    // }
+
+    // const formatPhone = (event: string) => {
+    //     // Check for a valid phone number with extra digits at the end
+    //     if (event.length > 16) {
+    //         const correctLen = event.slice(0, 16);
+    //         event = correctLen;
+    //     }
+    //     // Remove all non-numeric characters from the input value
+    //     const cleaned = event.replace(/\D/g, '');
+    //     // Apply formatting based on the cleaned value
+    //     const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+    //     if (match) {
+    //         // Check if all digits are entered, otherwise, return formatted string with only entered digits
+    //         event = match[1] ? '(' + match[1] + (match[2] ? ') ' + match[2] + (match[3] ? ' - ' + match[3] : '') : '') : '';
+    //     } else {
+    //         event = ''
+    //     }
+    //     setValuePhone(event);
+    // }
+
     const submitEvent = async () => {
         if (validateSubmit()) {
             // Removed Elements:
             // - valuePosition
             // - valueSupervisor
+            // - valuePhone
             const eventInfo = {
                 name: valueName,
                 description: valueDescription,
                 start_time: valueDate + " " + valueStartTime,
                 end_time: valueDate + " " + valueEndTime,
-                organization_id: "clsn6cghj0001vbewrz1qrso4",
+                organization_id: orgID,
                 tags: valueTags.split(' '),
                 address: valueAddress,
                 city: valueCity,
@@ -165,7 +199,6 @@ export default function Add_Event() {
                 number_of_spots: valueVolNum,
             };
             const data = JSON.stringify(eventInfo);
-            console.log(data);
             const res = await fetch('/api/events/create', {
                 method: 'POST',
                 headers: {
@@ -183,6 +216,7 @@ export default function Add_Event() {
                 console.log("Returned event: ", eventData);
                 window.location.href = "/events";
             } else {
+                console.log("Response: ", res)
                 console.log("Rejected event creation. Please try again.")
             }
         }
@@ -240,16 +274,6 @@ export default function Add_Event() {
                     </div>
                     <div className="flex justify-evenly w-full pt-12">
                         <div className="flex flex-col w-5/12">
-                            <label htmlFor="Position" className="text-lg pl-4">Position</label>
-                            <input id="Position" onChange={(e) => setValuePosition(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Volunteer Title"></input>
-                        </div>
-                        <div className="flex flex-col w-5/12">
-                            <label htmlFor="Supervisor" className="text-lg pl-4">Supervisor</label>
-                            <input id="Supervisor" onChange={(e) => setValueSupervisor(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Coordinator"></input>
-                        </div>
-                    </div>
-                    <div className="flex justify-evenly w-full pt-12">
-                        <div className="flex flex-col w-5/12">
                             <label htmlFor="Position" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
                             <input id="Position" onChange={(e) => updateAddressHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event Address"></input>
                         </div>
@@ -273,16 +297,12 @@ export default function Add_Event() {
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-center w-full mt-8 md:flex-row md:justify-evenly">
-                        <div className="flex flex-col justify-evenly sm:justify-center w-3/5 sm:w-fit sm:min-w-80 md:w-1/3 md:min-w-0 m-auto md:m-0 md:max-w-56">
-                            <label htmlFor="Phone" className="pl-4 text-lg md:pl-4">Phone</label>
-                            <input type="tel" id="Phone" value={valuePhone} onClick={handleInputClickPhone} onChange={(e) => formatPhone(e.target.value)} onBlur={handleInputBlurPhone} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-center mb:text-lg md:max-w-56" placeholder={placeholderPhone}></input>
-                        </div>
-                        <div className="flex w-full justify-evenly mt-10 md:w-1/2 md:justify-between md:mt-0">
-                            <div className="flex flex-col w-1/2 sm:min-w-36 md:pt-4">
+                        <div className="flex w-full justify-between mt-10 md:w-4/5 md:justify-between md:mt-0">
+                            <div className="flex flex-col w-1/3 sm:min-w-36 md:pt-4 ml-10">
                                 <label htmlFor="Spots" className=" pl-4 text-lg sm:min-w-36">Available Spots <span className="text-primary">*</span></label>
                                 <input type="number" id="Spots" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder={placeholderVolNum}></input>
                             </div>
-                            <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 md:w-36 md:w-1/3 md:h-24 md:pt-1">
+                            <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 mr-10 md:w-36 md:w-1/3 md:h-24 md:pt-1 ">
                                 <div className="mt-2 w-full ml-2">
                                     <input id="Virtual" type="checkbox" onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
@@ -319,5 +339,10 @@ export default function Add_Event() {
                 </div>
             </div>
         </div>
+        // Deprecated phone number input
+        // <div className="flex flex-col justify-evenly sm:justify-center w-3/5 sm:w-fit sm:min-w-80 md:w-1/3 md:min-w-0 m-auto md:m-0 md:max-w-56">
+        //     <label htmlFor="Phone" className="pl-4 text-lg md:pl-4">Phone</label>
+        //     <input type="tel" id="Phone" value={valuePhone} onClick={handleInputClickPhone} onChange={(e) => formatPhone(e.target.value)} onBlur={handleInputBlurPhone} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-center mb:text-lg md:max-w-56" placeholder={placeholderPhone}></input>
+        // </div>
     );
 }

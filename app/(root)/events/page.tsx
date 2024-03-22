@@ -113,7 +113,7 @@ export default function Events() {
   }, [events]);
 
   return (
-    <div className="mt-12">
+    <div className="my-12 w-full">
       <SectionTitle title="Apply and make an impact today." pretitle="volunteer events" align="left" />
 
       {/* Search and Filter */}

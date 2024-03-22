@@ -92,7 +92,7 @@ export default function MyEvents() {
   const tabLabels = ["All", "Completed", "Upcoming"];
   const [selectedTab, setSelectedTab] = useState("All");
   const userTokens = 0;
-  const [isOrganization, setIsOrganization] = useState(true);
+  const isOrganization = session?.accountType.toLowerCase() === "organization";
 
   useEffect(() => {
     if (!session || status !== "authenticated") router.push("/login");

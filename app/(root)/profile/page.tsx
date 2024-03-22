@@ -40,7 +40,7 @@ export default function Profile() {
   const [infoMsg, setInfoMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
-  const [isOrganization, setIsOrganization] = useState(false);
+  const isOrganization = session?.accountType.toLowerCase() === "organization";
   const [fieldErrors, setFieldErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
@@ -81,7 +81,6 @@ export default function Profile() {
       }
 
       // set account type and user data
-      setIsOrganization(userInfo.isOrganization);
       setUserData(userInfo);
       setIsFetching(false);
     }

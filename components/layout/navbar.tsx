@@ -23,9 +23,8 @@ export default function NavBar({ session }: { session: Session | null }) {
     return (
       <Link
         href={href}
-        className={`hidden items-center transition-all duration-300 ease-in-out  hover:opacity-50 sm:block ${
-          active ? "font-semibold text-primary" : "text-black"
-        }`}
+        className={`hidden items-center transition-all duration-300 ease-in-out  hover:opacity-50 sm:block ${active ? "font-semibold text-primary" : "text-black"
+          }`}
       >
         {name}
       </Link>
@@ -34,9 +33,8 @@ export default function NavBar({ session }: { session: Session | null }) {
 
   return (
     <nav
-      className={`fixed top-0 flex w-full justify-center ${
-        scrolled ? "bg-white/50 shadow-md backdrop-blur-xl" : "bg-white/0"
-      } z-30 transition-all`}
+      className={`fixed top-0 flex w-full justify-center ${scrolled ? "bg-white/50 shadow-md backdrop-blur-xl" : "bg-white/0"
+        } z-30 transition-all`}
     >
       <Container className="flex items-center justify-between !py-4">
         <Link href="/" className="flex items-center">
@@ -51,17 +49,22 @@ export default function NavBar({ session }: { session: Session | null }) {
         </Link>
         <div className="flex items-center space-x-8">
           <NavLink href="/events" name="Events" />
-          {session ? (
+          {session && session.accountType.toLowerCase() === "organization" && (
             <>
               <NavLink href="/my-events" name="My Events" />
               <NavLink href="/add_event" name="Add Event" />
-              <NavLink href="/edit_event" name="Edit Event (Hide)" />
               <NavLink href="/profile" name="Profile" />
               <UserDropdown session={session} />
             </>
-          ) : (
-            <NavLink href="/login" name="Login" />
           )}
+          {session && session.accountType.toLowerCase() === "volunteer" && (
+            <>
+              <NavLink href="/my-events" name="My Events" />
+              <NavLink href="/profile" name="Profile" />
+              <UserDropdown session={session} />
+            </>
+          )}
+          {!session && <NavLink href="/login" name="Login" />}
         </div>
       </Container>
     </nav>
