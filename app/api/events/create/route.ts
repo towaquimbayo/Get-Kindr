@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       data: newEvent,
     });
   } catch (error) {
-    console.error(error);
+    console.log("error" + error);
     return new Response("Error adding dummy events: " + error, {
       status: 500,
     });
