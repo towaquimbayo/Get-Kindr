@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 
 /**
- * Endpoint for getting all organizations: GET /api/organizations
+ * Endpoint for getting all organizations: GET /api/organizations/find-by-id
  * Param: organization_id - The organization id (optional)
  * @param {Request} request - The incoming request
  */
