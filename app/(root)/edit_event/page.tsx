@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Event } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+let load = 0;
 // TODO: Test without and remove
-// let load = 0;
 // let org_ID = "";
 
 export default function Add_Event() {
@@ -14,6 +14,7 @@ export default function Add_Event() {
     const router = useRouter();
 
     const isOrganization = session?.accountType.toLowerCase() === "organization";
+    const organizationID = session?.organizationID;
 
     useEffect(() => {
         if (!session || status !== "authenticated" || !isOrganization) router.push("/");
@@ -98,10 +99,11 @@ export default function Add_Event() {
             }
         });
         const result = (await res.json())
-        if (result === null) {
+
+        if (result === null ||
+            result.organization_id !== organizationID) {
             router.push("/");
         } else {
-            await validateUser(result.organization_id);
             updateValues(result);
         }
     }
