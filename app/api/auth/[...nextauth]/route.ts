@@ -36,6 +36,10 @@ export const authOptions: NextAuthOptions = {
         // Check if user exists
         const user = await prisma.user.findUnique({
           where: { email: email },
+          include: { 
+            organization: true, 
+            volunteer: true 
+          },
         });
         if (!user || !user.hashedPassword) {
           console.error(`Signin failed: User not found for email ${email}`);
@@ -101,6 +105,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.accountType = user.accountType;
         token.accountProvider = account ? account.provider : null;
+        token.organizationID = user.organization ? user.organization.id : null;
+        token.volunteerID = user.volunteer ? user.volunteer.id : null;
         return {
           ...token,
           id: user.id,
@@ -130,6 +136,8 @@ export const authOptions: NextAuthOptions = {
         },
         accountType: token.accountType,
         accountProvider: token.accountProvider,
+        organizationID : token.organizationID,
+        volunteerID : token.volunteerID,
       };
     },
   },
