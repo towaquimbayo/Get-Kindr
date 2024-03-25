@@ -9,8 +9,8 @@ declare module "next-auth" {
       name: string | undefined | null;
     } & DefaultSession["user"];
     accountType: AccountType;
-    organization: Organization | null;
-    volunteer: Volunteer | null;
+    organizationID: string | null;
+    volunteerID: string | null;
   }
 
   interface User extends DefaultSession["user"] {
