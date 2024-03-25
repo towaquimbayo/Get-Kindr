@@ -171,7 +171,6 @@ export default function Add_Event() {
                 description: valueDescription,
                 start_time: valueDate + " " + valueStartTime,
                 end_time: valueDate + " " + valueEndTime,
-                organization_id: "clsn6cghj0001vbewrz1qrso4",
                 tags: valueTags.split(' '),
                 address: valueAddress,
                 city: valueCity,
