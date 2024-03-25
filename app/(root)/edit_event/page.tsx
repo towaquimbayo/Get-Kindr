@@ -5,8 +5,10 @@ import Link from "next/link";
 import { Event } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+let load = 0;
+
 // TODO: Test without and remove
-// let load = 0;
+
 // let org_ID = "";
 
 export default function Add_Event() {
@@ -101,7 +103,7 @@ export default function Add_Event() {
         if (result === null) {
             router.push("/");
         } else {
-            await validateUser(result.organization_id);
+            // await validateUser(result.organization_id);
             updateValues(result);
         }
     }
