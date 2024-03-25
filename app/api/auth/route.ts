@@ -34,7 +34,6 @@ export async function GET(request: Request) {
         organizationName: isOrganization ? user.name : "",
         email: user.email,
         phone: user.phoneNumber,
-        isOrganization: isOrganization,
         password: "",
       },
     });

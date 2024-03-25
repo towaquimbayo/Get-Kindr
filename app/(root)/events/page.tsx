@@ -5,12 +5,18 @@ import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
 import { LucideSearch, LucideMapPin, LucideHeart } from "lucide-react";
 import Link from "next/link";
+import Button from "@/components/layout/button";
 import Map, { Marker } from "react-map-gl";
 import { Event } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Coordinates = [number, number];
 
 export default function Events() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [events, setEvents] = useState<Event[]>([]);
 
   useEffect(() => {
@@ -66,6 +72,13 @@ export default function Events() {
 
     return result;
 }
+
+  function applyToEvent() {
+    // If user is not logged in, redirect to login page'
+    if (!session) {
+      router.push("/login");
+    }
+  }
 
   const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
   const [markerCoordinates, setMarkerCoordinates] = useState<Coordinates[]>([]);
@@ -166,7 +179,8 @@ export default function Events() {
                     <span key={tag} className="inline-block bg-primary bg-opacity-10 text-primary text-xs font-medium px-2.5 py-0.5 rounded">#{tag}</span>
                   ))}
                 </div>
-                <Link href="#" className="bg-primary text-white px-4 py-2 rounded-lg">Apply</Link>
+                {/* Align the button to the left */}
+                <Button onClick={applyToEvent} className="bg-primary text-white px-4 py-2 rounded-lg mr-0">Apply</Button>
               </div>
             </div>
           ))}

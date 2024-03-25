@@ -76,6 +76,8 @@ model Event {
   number_of_spots   Int
   status            String
   event_volunteers  EventVolunteer[]
+  latitude          Float
+  longitude         Float
 }
 
 model EventVolunteer {

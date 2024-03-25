@@ -1,12 +1,24 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../globals.css";
 import Link from "next/link";
 import { Event } from "@prisma/client";
-
-let load = 0;
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+// TODO: Test without and remove
+// let load = 0;
+// let org_ID = "";
 
 export default function Add_Event() {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    const isOrganization = session?.accountType.toLowerCase() === "organization";
+
+    useEffect(() => {
+        if (!session || status !== "authenticated" || !isOrganization) router.push("/");
+    }, [session, status, router]);
+
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const [valueDate, setPlaceValueDate] = useState<string>(formattedDate);
@@ -15,42 +27,69 @@ export default function Add_Event() {
     const [valueTags, setTagsValue] = useState<string>('');
     const [valueName, setValueName] = useState<string>('');
     const [valueAddress, setValueAddress] = useState<string>('');
-    const [valueCity, setValueCity] = useState<string>('');
+    const [valueLocation, setValueLocation] = useState<string>('');
+    const [valueCoordinates, setValueCoordinates] = useState<string[]>(['', '']);
+    const [addressButtonValue, setAddressButtonValue] = useState<string>('Search for a Location');
+    const [searchValue, setSearchValue] = useState('');
     const [valueStartTime, setValueStartTime] = useState<string>('');
     const [valueEndTime, setValueEndTime] = useState<string>('');
     const [valueRecurring, setValueRecurring] = useState<boolean>(false)
     const [valueOnline, setValueOnline] = useState<boolean>(false)
     const [valueDescription, setValueDescription] = useState<string>('');
-    
+    const [searchData, updateSearchData] = useState('');
+    let showAddress = false;
+
     const url = new URL(window.location.href);
     const eventID = url.searchParams.get("eventID");
-    
+
     const updateValues = (event: Event) => {
-        console.log("Event: ", event)
-        setValueName(event.name);
-        setValueAddress(event.address);
-        setValueCity(event.city);
-        setPlaceValueDate(event.start_time.toString());
-        setValueStartTime(event.start_time.toString());
-        setValueEndTime(event.start_time.toString());
-        setValueVolNum(event.number_of_spots);
-        setValueDescription(event.description ?? "");
-        let tagsString = ''
-        for (let i = 0; i < event.tags.length; i++) {
-            tagsString = tagsString + event.tags[i] + ' ';
+        if (load === 0) {
+            load = 1;
+            console.log("Event: ", event)
+            setValueName(event.name);
+            setValueAddress(event.address);
+            setValueLocation(event.city);
+            let coordinates = [String(event.latitude), String(event.longitude)];
+            setValueCoordinates(coordinates);
+            setPlaceValueDate(event.start_time.toString());
+            setValueStartTime(event.start_time.toString());
+            setValueEndTime(event.start_time.toString());
+            setValueVolNum(event.number_of_spots);
+            setValueDescription(event.description ?? "");
+            let tagsString = ''
+            for (let i = 0; i < event.tags.length; i++) {
+                tagsString = tagsString + event.tags[i] + ' ';
+            }
+            setTagsValue(tagsString);
+            let start_date = event.start_time;
+            let end_date = event.end_time;
+            let date = start_date.toString().slice(0, 10);
+            setPlaceValueDate(date);
+            let start_time = start_date.toString().slice(11, 16);
+            let end_time = end_date.toString().slice(11, 16);
+            setValueStartTime(start_time);
+            setValueEndTime(end_time);
+            setValueOnline(event.online);
+            setValueRecurring(event.recurring);
         }
-        setTagsValue(tagsString);
-        let start_date = event.start_time;
-        let end_date = event.end_time;
-        let date = start_date.toString().slice(0, 10);
-        setPlaceValueDate(date);
-        let start_time = start_date.toString().slice(11, 16);
-        let end_time = end_date.toString().slice(11, 16);
-        setValueStartTime(start_time);
-        setValueEndTime(end_time);
-        setValueOnline(event.online);
-        setValueRecurring(event.recurring);
     }
+
+    // TODO: Test without and remove
+    // const validateUser = async (event_org_ID: any) => {
+    //     const userID = session?.user.id;
+    //     const res = await fetch('/api/organizations/find-by-user?userID=' + userID, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     });
+    //     const data = await res.json();
+    //     org_ID = data.id;
+    //     if (event_org_ID !== org_ID) {
+    //         router.push("/");
+    //     }
+    // }
+
     const readEvent = async () => {
         const res = await fetch('/api/events?eventID=' + eventID, {
             method: 'GET',
@@ -59,28 +98,80 @@ export default function Add_Event() {
             }
         });
         const result = (await res.json())
-        updateValues(result);
-        return 1;
+        if (result === null) {
+            router.push("/");
+        } else {
+            await validateUser(result.organization_id);
+            updateValues(result);
+        }
     }
 
-    // Only load the event once.
-    if (load === 0) {
-        readEvent();
-        load = 1;
+    readEvent();
+
+    const updateLocationHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+        setValueLocation(event.target.value);
+        if (event.target.value.length > 4) {
+            setAddressButtonValue('Select an Address');
+            handleSearch();
+        } else {
+            updateSearchData('');
+            setAddressButtonValue('Search for a Location');
+            document.getElementById('addressDropdown')?.classList.add('h-0');
+            document.getElementById('addressDropdown')?.classList.add('ring-0');
+            showAddress = false;
+        }
+        validateSubmit();
+    }
+
+    const handleSearch = () => {
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${searchValue}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`)
+            .then((response) => response.json())
+            .then((data) => {
+                updateSearchData(data.features);
+                console.log(data)
+                for (let i = 1; i <= 5; i++) {
+                    const menuItem = document.getElementById('menu-item-' + i);
+                    if (menuItem) {
+                        menuItem.textContent = (data.features[i - 1] as any).place_name;
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching geocoding API:', error);
+            });
+    };
+
+    const showAddresses = () => {
+        if (searchData.length > 0 && !showAddress) {
+            document.getElementById('addressDropdown')?.classList.remove('h-0');
+            document.getElementById('addressDropdown')?.classList.add('ring-1');
+            showAddress = true;
+        } else {
+            document.getElementById('addressDropdown')?.classList.add('h-0');
+            document.getElementById('addressDropdown')?.classList.remove('ring-1');
+            showAddress = false;
+        }
+    }
+
+    const setAddress = (index: number) => {
+        for (let i = 1; i <= 5; i++) {
+            document.getElementById('dropdown-' + i)?.classList.remove('bg-tertiary');
+        }
+        document.getElementById('dropdown-' + index)?.classList.add('bg-tertiary');
+        setValueCoordinates((searchData[index - 1] as any).center);
+        setValueLocation((searchData[index - 1] as any).place_name);
+        setValueAddress((searchData[index - 1] as any).place_name);
+        setTimeout(() => {
+            document.getElementById('addressDropdown')?.classList.add('h-0');
+            document.getElementById('addressDropdown')?.classList.remove('ring-1');
+            showAddress = false;
+        }, 150);
+        validateSubmit();
     }
 
     const updateNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValueName(event.target.value);
-        validateSubmit();
-    }
-
-    const updateAddressHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValueAddress(event.target.value);
-        validateSubmit();
-    }
-
-    const updateCityHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValueCity(event.target.value);
         validateSubmit();
     }
 
@@ -122,7 +213,6 @@ export default function Add_Event() {
     }
 
     const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.value);
         if (event.target.value.length == 0) {
             setValueVolNum(0);
             return;
@@ -161,28 +251,52 @@ export default function Add_Event() {
     }
 
     const submitEvent = async () => {
+        let splitAddress = valueAddress.split(',');
+        let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
+        for (let i = 2; i < splitAddress.length; i++) {
+            if (i + 2 < splitAddress.length) {
+                formattedLocation = formattedLocation + splitAddress[i] + ', ';
+            }
+        }
+
+        let splitTags = valueTags.split(' ');
+        let strippedTags = "";
+        for (let i = 0; i < splitTags.length; i++) {
+            console.log("Tag: ", splitTags[i]);
+            if (splitTags[i].slice(1).length != 0) {
+                if (strippedTags.length == 0) {
+                    strippedTags = splitTags[i].slice(1);
+                } else {
+                    strippedTags += " " + splitTags[i].slice(1);
+                }
+            }
+        }
+
         if (validateSubmit()) {
             // Removed Elements:
             // - valuePosition
             // - valueSupervisor
             // - valuePhone
             const eventInfo = {
+                id: eventID,
                 name: valueName,
                 description: valueDescription,
                 start_time: valueDate + " " + valueStartTime,
                 end_time: valueDate + " " + valueEndTime,
-                tags: valueTags.split(' '),
+                // TODO: Test without and remove
+                // organization_id: org_ID,
+                tags: strippedTags,
                 address: valueAddress,
-                city: valueCity,
+                city: formattedLocation,
+                coordinates: valueCoordinates,
                 recurring: valueRecurring,
                 online: valueOnline,
                 token_bounty: 100,
-                number_of_spots: valueVolNum,
+                number_of_spots: valueVolNum
             };
             const data = JSON.stringify(eventInfo);
-            console.log(data);
             const res = await fetch('/api/events/update', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -198,6 +312,7 @@ export default function Add_Event() {
                 console.log("Returned event: ", eventData);
                 window.location.href = "/events";
             } else {
+                console.log(res)
                 console.log("Rejected event update. Please try again.")
             }
         }
@@ -211,7 +326,10 @@ export default function Add_Event() {
         if (valueAddress.length === 0) {
             valid = false;
         }
-        if (valueCity.length === 0) {
+        if (valueLocation.length === 0) {
+            valid = false;
+        }
+        if (valueCoordinates.length === 0) {
             valid = false;
         }
         if (valueDate.length === 0) {
@@ -250,17 +368,40 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full mt-4">
                         <div className="flex flex-col w-5/6">
                             <label htmlFor="Name" className=" text-lg pl-4 ">Event Name <span className="text-primary">*</span></label>
-                            <input id="Name" onChange={(e) => updateNameHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
+                            <input id="Name" onChange={(e) => updateNameHandler(e)} value={valueName} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full pt-12">
-                        <div className="flex flex-col w-5/12">
-                            <label htmlFor="Position" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
-                            <input id="Position" onChange={(e) => updateAddressHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event Address"></input>
+                        <div className="flex flex-col w-1/3 pl-2 md:pl-6">
+                            <label htmlFor="Position" className="text-lg pl-4">Location <span className="text-primary">*</span></label>
+                            <input id="Position" onChange={(e) => updateLocationHandler(e)} value={valueLocation} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm pl-6 min-w-30 sm:text-lg" placeholder="Event Address"></input>
                         </div>
-                        <div className="flex flex-col w-5/12">
-                            <label htmlFor="Supervisor" className="text-lg pl-4">City <span className="text-primary">*</span></label>
-                            <input id="Supervisor" onChange={(e) => updateCityHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event City"></input>
+                        <div className="flex flex-col w-1/2 px-6">
+                            <label htmlFor="Position" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
+                            <button type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white text-sm sm:text-lg py-2.5 px-4 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={showAddresses}>
+                                {addressButtonValue}
+                                <svg className="-mr-1 h-8 w-8 my-auto text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="addressDropdown" className="z-10 mt-2 w-11/12 mx-auto divide-y-1 divide-gray-300 rounded-md bg-white shadow-lg ring-black ring-opacity-5 focus:outline-none h-0 overflow-hidden ring-0" aria-orientation="vertical" aria-labelledby="menu-button">
+                                <div className="p-1 overflow-hidden" id="dropdown-1" onClick={() => setAddress(1)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-1">1</button>
+                                </div>
+                                <div className="py-1" id="dropdown-2" onClick={() => setAddress(2)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-2">2</button>
+                                </div>
+                                <div className="py-1" id="dropdown-3" onClick={() => setAddress(3)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-3">3</button>
+                                </div>
+                                <div className="py-1" id="dropdown-4" onClick={() => setAddress(4)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-4">4</button>
+                                </div>
+                                <div className="py-1" id="dropdown-5" onClick={() => setAddress(5)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-5">5</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col mb:flex-row justify-evenly items-center w-full">
@@ -271,9 +412,9 @@ export default function Add_Event() {
                         <div className="flex flex-col w-4/5 mt-8 mb:w-1/3 mb:min-w-44">
                             <label htmlFor="time" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
                                 <h1 className="text-xl mt-0.5 mb:text-2xl">-</h1>
-                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
                             </div>
                         </div>
                     </div>
@@ -285,14 +426,14 @@ export default function Add_Event() {
                             </div>
                             <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 mr-10 md:w-36 md:w-1/3 md:h-24 md:pt-1 ">
                                 <div className="mt-2 w-full ml-2">
-                                    <input id="Virtual" type="checkbox" onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
+                                    <input id="Virtual" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Virtual">
                                         Virtual
                                     </label>
                                 </div>
                                 <div className="mt-2 w-full ml-2">
-                                    <input id="Recurring" type="checkbox" onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
+                                    <input id="Recurring" type="checkbox" checked={valueRecurring} onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
                                     <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Recurring">
                                         Recurring
@@ -304,7 +445,7 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full pt-2">
                         <div className="flex flex-col w-4/5">
                             <label htmlFor="Description" className=" text-lg pl-4">Description <span className="text-primary">*</span></label>
-                            <textarea id="Description" rows={6} onChange={(e) => updateDescriptionHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
+                            <textarea id="Description" rows={6} onChange={(e) => updateDescriptionHandler(e)} value={valueDescription} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full mt-8">

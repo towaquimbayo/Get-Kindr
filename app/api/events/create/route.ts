@@ -32,10 +32,14 @@ export async function POST(request: NextRequest) {
         online,
         token_bounty,
         number_of_spots,
-      } = await request.json();
+        coordinates,
+    } = await request.json();
 
       const organization_id = token.organizationID ? token.organizationID as string : null;
   
+    // Extract the latitude and longitude from the coordinates
+    const [latitude, longitude] = coordinates;
+
       // If any of the required fields are missing, return an error
       if (
         !name ||
@@ -45,7 +49,9 @@ export async function POST(request: NextRequest) {
         !address ||
         !city ||
         !token_bounty ||
-        !number_of_spots
+        !number_of_spots ||
+        !latitude ||
+        !longitude
       ) {
         return new Response("Missing required fields", {
           status: 400,
@@ -66,6 +72,8 @@ export async function POST(request: NextRequest) {
         online,
         token_bounty,
         number_of_spots,
+        latitude,
+        longitude,
         status: "UPCOMING", // Default initial status
         event_volunteers: { create: [] }, // Add an empty array for event_volunteers
       };
@@ -75,8 +83,8 @@ export async function POST(request: NextRequest) {
         data: newEvent,
       });
     } catch (error) {
-      console.error(error);
-      return new Response("Error adding dummy events: " + error, {
+      console.log("error" + error);
+      return new Response("Error adding events: " + error, {
         status: 500,
       });
     }

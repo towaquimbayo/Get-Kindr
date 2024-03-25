@@ -30,7 +30,8 @@ export async function PUT(request: NextRequest) {
         online,
         token_bounty,
         number_of_spots,
-      } = await request.json();
+        coordinates
+    } = await request.json();
   
       if (!id) {
         return new Response("Missing eventID", {
@@ -40,6 +41,8 @@ export async function PUT(request: NextRequest) {
       
       const organization_id = token.organizationID ? token.organizationID as string : null;
   
+      const [latitude, longitude] = coordinates;
+
       if (
         !name ||
         !start_time ||
@@ -48,7 +51,9 @@ export async function PUT(request: NextRequest) {
         !address ||
         !city ||
         !token_bounty ||
-        !number_of_spots
+        !number_of_spots ||
+        !latitude ||
+        !longitude
       ) {
         return new Response("Missing required fields", {
           status: 400,
@@ -78,6 +83,8 @@ export async function PUT(request: NextRequest) {
             online,
             token_bounty,
             number_of_spots,
+            latitude,
+            longitude,
           },
         });
         return new Response(JSON.stringify(updatedEvent), { status: 200 });
