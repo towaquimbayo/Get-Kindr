@@ -364,7 +364,7 @@ export default function Profile() {
             />
           </div>
           <h1 className="my-4 flex text-xl">
-            Hello, <span className="font-semibold text-primary">{name}!</span>
+            Hello,&nbsp;<span className="font-semibold text-primary">{name}!</span>
           </h1>
           <div className="mb-6 flex">
             <div className="flex w-full justify-between">
