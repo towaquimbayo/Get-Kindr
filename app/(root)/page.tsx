@@ -133,7 +133,7 @@ const Home = async () => {
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-orange-200 to-transparent opacity-90"></div>
         <div className="z-20 flex w-full items-end">
           <div className="mb-16 max-w-xl">
-            <p className="text-xl font-bold uppercase tracking-widest text-teal-500">
+            <p className="text-md font-bold uppercase tracking-widest text-teal-500 drop-shadow-[0_0_3px_rgb(255,255,255)]">
               earn points with purpose
             </p>
             <h1 className="py-1 pb-6 font-display text-4xl font-bold leading-snug tracking-tight text-gray-800 md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">
