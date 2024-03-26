@@ -36,7 +36,6 @@ export default function Events() {
           };
         });
         setEvents(formattedEvents as any || []);
-        console.log("events: ", formattedEvents);
         return events
       }).catch((error) => {
         console.error("Error fetching events: ", error)
@@ -66,8 +65,8 @@ export default function Events() {
     const timeRangeFormatted = `${startTimeHours}:${startTimeMinutes} AM - ${endTimeHours}:${endTimeMinutes} AM`;
 
     const result = {
-        start_time: startDateFormatted,
-        end_time: timeRangeFormatted,
+      start_time: startDateFormatted,
+      end_time: timeRangeFormatted,
     };
 
     return result;
@@ -96,9 +95,10 @@ export default function Events() {
     const fetchMarkerCoordinates = async () => {
       const coordinates = await Promise.all(
         events.map(async (event) => {
+          const address = `${event.address}, ${event.city}`;
           const response = await fetch(
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-              (event as any).organization?.location
+              address
             )}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`
           );
           const data = await response.json();
@@ -205,7 +205,7 @@ export default function Events() {
                   longitude={coordinates[0]}
                   latitude={coordinates[1]}
                   anchor="center"
-                  offset={[mapDimensions.width / 2, -mapDimensions.height]}
+                  offset={[mapDimensions.width / 2, -mapDimensions.height - 20]}
                 >
                   <div className="bg-primary w-2 h-2 rounded-full"></div>
                 </Marker>
