@@ -17,7 +17,7 @@ export default function Add_Event() {
 
     useEffect(() => {
         if (!session || status !== "authenticated" || !isOrganization) router.push("/login");
-    }, [session, status, router]);
+    }, [session, status, router, isOrganization]);
 
     // TODO: Test without this function and remove
     // const validateUser = async () => {
