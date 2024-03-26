@@ -259,7 +259,7 @@ const Home = async () => {
               <div className="">
                 <Image
                   src="/kindr_logo.png"
-                  width="80"
+                  width="110"
                   height="10"
                   quality={100}
                   alt="Kindr Logo"
@@ -273,12 +273,6 @@ const Home = async () => {
                     className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                   >
                     Home
-                  </a>
-                  <a
-                    href="https://getkindr.com/about"
-                    className="text-gray-600 underline-offset-4 transition-colors hover:underline"
-                  >
-                    About
                   </a>
                   <a
                     href="https://getkindr.com/events"
@@ -318,7 +312,7 @@ const Home = async () => {
               >
                 KINDR
               </a>
-              . All rights reserved. Last Updated: 2024-03-19 13:00:00
+              . All rights reserved. Last Updated: 2024-03-25 17:25:36
             </p>
           </div>
         </Container>

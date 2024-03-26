@@ -12,6 +12,9 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: { prompt: "select_account",  },
+      },
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID as string,
@@ -36,6 +39,10 @@ export const authOptions: NextAuthOptions = {
         // Check if user exists
         const user = await prisma.user.findUnique({
           where: { email: email },
+          include: { 
+            organization: true, 
+            volunteer: true 
+          },
         });
         if (!user || !user.hashedPassword) {
           console.error(`Signin failed: User not found for email ${email}`);
@@ -63,6 +70,20 @@ export const authOptions: NextAuthOptions = {
         email,
         credentials,
       });
+
+      if (account?.provider === "google") {
+        // Check if user already exists
+        const userExist = await prisma.user.findUnique({
+          where: { email: user.email ?? undefined },
+        });
+
+        // If user does not exist, create a new user
+        // if (!userExist) {
+          
+        // }
+    
+        return true;
+      }
 
       // Check if this sign in callback is being called in the credentials authentication flow. If so, use the next-auth adapter to create a session entry in the database (SignIn is called after authorize so we can safely assume the user is valid and already authenticated).
       // if (
@@ -101,6 +122,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.accountType = user.accountType;
         token.accountProvider = account ? account.provider : null;
+        token.organizationID = user.organization ? user.organization.id : null;
+        token.volunteerID = user.volunteer ? user.volunteer.id : null;
         return {
           ...token,
           id: user.id,
@@ -130,6 +153,8 @@ export const authOptions: NextAuthOptions = {
         },
         accountType: token.accountType,
         accountProvider: token.accountProvider,
+        organizationID : token.organizationID,
+        volunteerID : token.volunteerID,
       };
     },
   },

@@ -180,7 +180,7 @@ export default function Events() {
                   ))}
                 </div>
                 {/* Align the button to the left */}
-                <Button onClick={applyToEvent} className="bg-primary text-white px-4 py-2 rounded-lg mr-0">Apply</Button>
+                <Button onClick={applyToEvent} className="bg-primary text-white px-4 py-2 rounded-lg !mr-0">Apply</Button>
               </div>
             </div>
           ))}

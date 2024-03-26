@@ -6,12 +6,15 @@ import { Event } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 let load = 0;
+// TODO: Test without and remove
+// let org_ID = "";
 
 export default function Add_Event() {
     const { data: session, status } = useSession();
     const router = useRouter();
 
     const isOrganization = session?.accountType.toLowerCase() === "organization";
+    const organizationID = session?.organizationID;
 
     useEffect(() => {
         if (!session || status !== "authenticated" || !isOrganization) router.push("/");
@@ -25,12 +28,17 @@ export default function Add_Event() {
     const [valueTags, setTagsValue] = useState<string>('');
     const [valueName, setValueName] = useState<string>('');
     const [valueAddress, setValueAddress] = useState<string>('');
-    const [valueCity, setValueCity] = useState<string>('');
+    const [valueLocation, setValueLocation] = useState<string>('');
+    const [valueCoordinates, setValueCoordinates] = useState<string[]>(['', '']);
+    const [addressButtonValue, setAddressButtonValue] = useState<string>('Search for a Location');
+    const [searchValue, setSearchValue] = useState('');
     const [valueStartTime, setValueStartTime] = useState<string>('');
     const [valueEndTime, setValueEndTime] = useState<string>('');
     const [valueRecurring, setValueRecurring] = useState<boolean>(false)
     const [valueOnline, setValueOnline] = useState<boolean>(false)
     const [valueDescription, setValueDescription] = useState<string>('');
+    const [searchData, updateSearchData] = useState('');
+    let showAddress = false;
 
     const url = new URL(window.location.href);
     const eventID = url.searchParams.get("eventID");
@@ -41,7 +49,9 @@ export default function Add_Event() {
             console.log("Event: ", event)
             setValueName(event.name);
             setValueAddress(event.address);
-            setValueCity(event.city);
+            setValueLocation(event.city);
+            let coordinates = [String(event.latitude), String(event.longitude)];
+            setValueCoordinates(coordinates);
             setPlaceValueDate(event.start_time.toString());
             setValueStartTime(event.start_time.toString());
             setValueEndTime(event.start_time.toString());
@@ -65,20 +75,21 @@ export default function Add_Event() {
         }
     }
 
-    const validateUser = async (event_org_ID: any) => {
-        const userID = session?.user.id;
-        const res = await fetch('/api/organizations/find-by-user?userID=' + userID, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        const data = await res.json();
-        const org_ID = data.id;
-        if (event_org_ID !== org_ID) {
-            router.push("/");
-        }
-    }
+    // TODO: Test without and remove
+    // const validateUser = async (event_org_ID: any) => {
+    //     const userID = session?.user.id;
+    //     const res = await fetch('/api/organizations/find-by-user?userID=' + userID, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //     });
+    //     const data = await res.json();
+    //     org_ID = data.id;
+    //     if (event_org_ID !== org_ID) {
+    //         router.push("/");
+    //     }
+    // }
 
     const readEvent = async () => {
         const res = await fetch('/api/events?eventID=' + eventID, {
@@ -88,24 +99,81 @@ export default function Add_Event() {
             }
         });
         const result = (await res.json())
-        await validateUser(result.organization_id);
-        updateValues(result);
+
+        if (result === null ||
+            result.organization_id !== organizationID) {
+            router.push("/");
+        } else {
+            updateValues(result);
+        }
     }
 
     readEvent();
 
+    const updateLocationHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+        setValueLocation(event.target.value);
+        if (event.target.value.length > 4) {
+            setAddressButtonValue('Select an Address');
+            handleSearch();
+        } else {
+            updateSearchData('');
+            setAddressButtonValue('Search for a Location');
+            document.getElementById('addressDropdown')?.classList.add('h-0');
+            document.getElementById('addressDropdown')?.classList.add('ring-0');
+            showAddress = false;
+        }
+        validateSubmit();
+    }
+
+    const handleSearch = () => {
+        fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${searchValue}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`)
+            .then((response) => response.json())
+            .then((data) => {
+                updateSearchData(data.features);
+                console.log(data)
+                for (let i = 1; i <= 5; i++) {
+                    const menuItem = document.getElementById('menu-item-' + i);
+                    if (menuItem) {
+                        menuItem.textContent = (data.features[i - 1] as any).place_name;
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching geocoding API:', error);
+            });
+    };
+
+    const showAddresses = () => {
+        if (searchData.length > 0 && !showAddress) {
+            document.getElementById('addressDropdown')?.classList.remove('h-0');
+            document.getElementById('addressDropdown')?.classList.add('ring-1');
+            showAddress = true;
+        } else {
+            document.getElementById('addressDropdown')?.classList.add('h-0');
+            document.getElementById('addressDropdown')?.classList.remove('ring-1');
+            showAddress = false;
+        }
+    }
+
+    const setAddress = (index: number) => {
+        for (let i = 1; i <= 5; i++) {
+            document.getElementById('dropdown-' + i)?.classList.remove('bg-tertiary');
+        }
+        document.getElementById('dropdown-' + index)?.classList.add('bg-tertiary');
+        setValueCoordinates((searchData[index - 1] as any).center);
+        setValueLocation((searchData[index - 1] as any).place_name);
+        setValueAddress((searchData[index - 1] as any).place_name);
+        setTimeout(() => {
+            document.getElementById('addressDropdown')?.classList.add('h-0');
+            document.getElementById('addressDropdown')?.classList.remove('ring-1');
+            showAddress = false;
+        }, 150);
+        validateSubmit();
+    }
+
     const updateNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValueName(event.target.value);
-        validateSubmit();
-    }
-
-    const updateAddressHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValueAddress(event.target.value);
-        validateSubmit();
-    }
-
-    const updateCityHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValueCity(event.target.value);
         validateSubmit();
     }
 
@@ -185,28 +253,52 @@ export default function Add_Event() {
     }
 
     const submitEvent = async () => {
+        let splitAddress = valueAddress.split(',');
+        let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
+        for (let i = 2; i < splitAddress.length; i++) {
+            if (i + 2 < splitAddress.length) {
+                formattedLocation = formattedLocation + splitAddress[i] + ', ';
+            }
+        }
+
+        let splitTags = valueTags.split(' ');
+        let strippedTags = "";
+        for (let i = 0; i < splitTags.length; i++) {
+            console.log("Tag: ", splitTags[i]);
+            if (splitTags[i].slice(1).length != 0) {
+                if (strippedTags.length == 0) {
+                    strippedTags = splitTags[i].slice(1);
+                } else {
+                    strippedTags += " " + splitTags[i].slice(1);
+                }
+            }
+        }
+
         if (validateSubmit()) {
             // Removed Elements:
             // - valuePosition
             // - valueSupervisor
             // - valuePhone
             const eventInfo = {
+                id: eventID,
                 name: valueName,
                 description: valueDescription,
                 start_time: valueDate + " " + valueStartTime,
                 end_time: valueDate + " " + valueEndTime,
-                organization_id: "clsn6cghj0001vbewrz1qrso4",
-                tags: valueTags.split(' '),
+                // TODO: Test without and remove
+                // organization_id: org_ID,
+                tags: strippedTags,
                 address: valueAddress,
-                city: valueCity,
+                city: formattedLocation,
+                coordinates: valueCoordinates,
                 recurring: valueRecurring,
                 online: valueOnline,
                 token_bounty: 100,
-                number_of_spots: valueVolNum,
+                number_of_spots: valueVolNum
             };
             const data = JSON.stringify(eventInfo);
             const res = await fetch('/api/events/update', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -222,6 +314,7 @@ export default function Add_Event() {
                 console.log("Returned event: ", eventData);
                 window.location.href = "/events";
             } else {
+                console.log(res)
                 console.log("Rejected event update. Please try again.")
             }
         }
@@ -235,7 +328,10 @@ export default function Add_Event() {
         if (valueAddress.length === 0) {
             valid = false;
         }
-        if (valueCity.length === 0) {
+        if (valueLocation.length === 0) {
+            valid = false;
+        }
+        if (valueCoordinates.length === 0) {
             valid = false;
         }
         if (valueDate.length === 0) {
@@ -278,13 +374,36 @@ export default function Add_Event() {
                         </div>
                     </div>
                     <div className="flex justify-evenly w-full pt-12">
-                        <div className="flex flex-col w-5/12">
-                            <label htmlFor="Position" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
-                            <input id="Position" onChange={(e) => updateAddressHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event Address"></input>
+                        <div className="flex flex-col w-1/3 pl-2 md:pl-6">
+                            <label htmlFor="Position" className="text-lg pl-4">Location <span className="text-primary">*</span></label>
+                            <input id="Position" onChange={(e) => updateLocationHandler(e)} value={valueLocation} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm pl-6 min-w-30 sm:text-lg" placeholder="Event Address"></input>
                         </div>
-                        <div className="flex flex-col w-5/12">
-                            <label htmlFor="Supervisor" className="text-lg pl-4">City <span className="text-primary">*</span></label>
-                            <input id="Supervisor" onChange={(e) => updateCityHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA]  text-gray-800 text-sm pl-4 min-w-30 sm:text-lg" placeholder="Event City"></input>
+                        <div className="flex flex-col w-1/2 px-6">
+                            <label htmlFor="Position" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
+                            <button type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white text-sm sm:text-lg py-2.5 px-4 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={showAddresses}>
+                                {addressButtonValue}
+                                <svg className="-mr-1 h-8 w-8 my-auto text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="addressDropdown" className="z-10 mt-2 w-11/12 mx-auto divide-y-1 divide-gray-300 rounded-md bg-white shadow-lg ring-black ring-opacity-5 focus:outline-none h-0 overflow-hidden ring-0" aria-orientation="vertical" aria-labelledby="menu-button">
+                                <div className="p-1 overflow-hidden" id="dropdown-1" onClick={() => setAddress(1)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-1">1</button>
+                                </div>
+                                <div className="py-1" id="dropdown-2" onClick={() => setAddress(2)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-2">2</button>
+                                </div>
+                                <div className="py-1" id="dropdown-3" onClick={() => setAddress(3)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-3">3</button>
+                                </div>
+                                <div className="py-1" id="dropdown-4" onClick={() => setAddress(4)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-4">4</button>
+                                </div>
+                                <div className="py-1" id="dropdown-5" onClick={() => setAddress(5)}>
+                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-5">5</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col mb:flex-row justify-evenly items-center w-full">
