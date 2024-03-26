@@ -138,13 +138,9 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify(events), { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response(
-      JSON.stringify({
-        message: "Server error getting events!",
-        status: 500,
-        error: error,
-      }),
-    );
+    return new Response("Server error getting events!", {
+      status: 500,
+    });
   }
 }
 
