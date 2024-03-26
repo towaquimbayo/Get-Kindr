@@ -12,6 +12,9 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: { prompt: "select_account",  },
+      },
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID as string,
@@ -67,6 +70,20 @@ export const authOptions: NextAuthOptions = {
         email,
         credentials,
       });
+
+      if (account?.provider === "google") {
+        // Check if user already exists
+        const userExist = await prisma.user.findUnique({
+          where: { email: user.email ?? undefined },
+        });
+
+        // If user does not exist, create a new user
+        // if (!userExist) {
+          
+        // }
+    
+        return true;
+      }
 
       // Check if this sign in callback is being called in the credentials authentication flow. If so, use the next-auth adapter to create a session entry in the database (SignIn is called after authorize so we can safely assume the user is valid and already authenticated).
       // if (
