@@ -33,6 +33,13 @@ export default function Profile() {
     image?: string | null;
     name?: string | null;
   } = session?.user || {};
+  const {
+    accountProvider,
+    accountType,
+  }: {
+    accountProvider?: string | null;
+    accountType?: string | null;
+  } = session || {};
   const userTokens = 0;
   const userVolHours = 0;
   const [errorMsg, setErrorMsg] = useState("");
@@ -40,7 +47,7 @@ export default function Profile() {
   const [infoMsg, setInfoMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
-  const isOrganization = session?.accountType.toLowerCase() === "organization";
+  const isOrganization = accountType?.toLowerCase() === "organization";
   const [fieldErrors, setFieldErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState({
@@ -323,16 +330,18 @@ export default function Profile() {
             disabled={!isEditing}
             optional
           />
-          <PasswordField
-            id="password"
-            name="password"
-            label="Password"
-            minLength={8}
-            maxLength={50}
-            defaultValue={userData.password}
-            error={(fieldErrors as { password?: string })?.password}
-            disabled={!isEditing}
-          />
+          {accountProvider === "credentials" && (
+            <PasswordField
+              id="password"
+              name="password"
+              label="Password"
+              minLength={8}
+              maxLength={50}
+              defaultValue={userData.password}
+              error={(fieldErrors as { password?: string })?.password}
+              disabled={!isEditing}
+            />
+          )}
           {isEditing && (
             <Button type="submit" loading={loading} text="Save Changes" />
           )}
