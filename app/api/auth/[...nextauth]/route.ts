@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { Awaitable, NextAuthOptions } from "next-auth";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import GoogleProvider from "next-auth/providers/google";
@@ -13,7 +13,21 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       authorization: {
-        params: { prompt: "select_account",  },
+        params: { prompt: "select_account" },
+      },
+      profile(profile, tokens): Awaitable<any> {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          accountType: "VOLUNTEER",
+          volunteer: {
+            create: {
+              bio: "",
+            },
+          },
+        };
       },
     }),
     FacebookProvider({
@@ -39,9 +53,9 @@ export const authOptions: NextAuthOptions = {
         // Check if user exists
         const user = await prisma.user.findUnique({
           where: { email: email },
-          include: { 
-            organization: true, 
-            volunteer: true 
+          include: {
+            organization: true,
+            volunteer: true,
           },
         });
         if (!user || !user.hashedPassword) {
@@ -70,20 +84,6 @@ export const authOptions: NextAuthOptions = {
         email,
         credentials,
       });
-
-      if (account?.provider === "google") {
-        // Check if user already exists
-        const userExist = await prisma.user.findUnique({
-          where: { email: user.email ?? undefined },
-        });
-
-        // If user does not exist, create a new user
-        // if (!userExist) {
-          
-        // }
-    
-        return true;
-      }
 
       // Check if this sign in callback is being called in the credentials authentication flow. If so, use the next-auth adapter to create a session entry in the database (SignIn is called after authorize so we can safely assume the user is valid and already authenticated).
       // if (
@@ -153,8 +153,8 @@ export const authOptions: NextAuthOptions = {
         },
         accountType: token.accountType,
         accountProvider: token.accountProvider,
-        organizationID : token.organizationID,
-        volunteerID : token.volunteerID,
+        organizationID: token.organizationID,
+        volunteerID: token.volunteerID,
       };
     },
   },
