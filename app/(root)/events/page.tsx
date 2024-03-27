@@ -18,6 +18,13 @@ export default function Events() {
   const router = useRouter();
 
   const [events, setEvents] = useState<Event[]>([]);
+  const [user, setUser] = useState<any>(session?.user); // User details
+
+  const {
+    email,
+  }: {
+    email?: string | null;
+  } = session?.user || {};
 
   useEffect(() => {
     async function fetchEvents() {
@@ -111,6 +118,35 @@ export default function Events() {
 
     fetchMarkerCoordinates();
   }, [events]);
+
+  useEffect(() => {
+    async function getUserDetails() {
+      const url = encodeURIComponent(email || "");
+      const res = await fetch(`/api/auth?email=${url}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      console.log("GET Response Details: ", res);
+
+      if (!res.ok) {
+        const error = await res.json();
+        console.error("Error fetching user details: ", error);
+        return;
+      }
+
+      const jsonRes = await res.json();
+      const userInfo = jsonRes.user;
+      console.log("User Details: ", userInfo);
+
+      if (!userInfo) {
+        console.error("User not found");
+        return;
+      }
+      setUser(userInfo);
+    }
+
+    if (email) getUserDetails();
+  }, [email]);
 
   return (
     <div className="my-12 w-full">
