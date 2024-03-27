@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
 import { LucideSearch, LucideMapPin, LucideHeart } from "lucide-react";
@@ -14,7 +14,8 @@ import { useRouter } from "next/navigation";
 type Coordinates = [number, number];
 
 export default function Events() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+
   const router = useRouter();
 
   const [events, setEvents] = useState<Event[]>([]);
@@ -79,10 +80,27 @@ export default function Events() {
     return result;
 }
 
-  function applyToEvent() {
+  function applyToEvent(eventId: string) {
     // If user is not logged in, redirect to login page'
     if (!session) {
       router.push("/login");
+    } else {
+      const volunteerId = user.volunteerId;
+      const data = { volunteerId, eventId };
+      fetch("/api/events/attendees", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }).then(async (res) => {
+        if (res.ok) {
+          const response = await res.json();
+          console.log("Attendee added successfully: ", response);
+        } else {
+          console.error("Error adding attendee: ", res);
+        }
+      });
     }
   }
 
@@ -216,7 +234,7 @@ export default function Events() {
                   ))}
                 </div>
                 {/* Align the button to the left */}
-                <Button onClick={applyToEvent} className="bg-primary text-white px-4 py-2 rounded-lg !mr-0">Apply</Button>
+                <Button onClick={() => applyToEvent(event.id)} className="bg-primary text-white px-4 py-2 rounded-lg !mr-0">Apply</Button>
               </div>
             </div>
           ))}
