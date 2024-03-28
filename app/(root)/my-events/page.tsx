@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 import { Calendar, Edit, LucideBuilding, MapPin } from "lucide-react";
 import React, { Key, useEffect, useMemo, useState } from "react";
+import { getDate, getTime } from "@/components/shared/utils";
 
 const EventCard = React.memo(function EventCard({
   event,
@@ -14,22 +15,6 @@ const EventCard = React.memo(function EventCard({
   isOrganization: boolean;
 }) {
   const router = useRouter();
-
-  function getDate(date: string) {
-    return new Date(date).toLocaleDateString("en-US", {
-      timeZone: "UTC",
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-  }
-
-  function getTime(date: string) {
-    return new Date(date).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-    });
-  }
 
   // Title case the status
   const statusName =
@@ -44,7 +29,7 @@ const EventCard = React.memo(function EventCard({
         className="w-full p-6 hover:cursor-pointer md:p-8"
         onClick={() => {
           if (isOrganization) router.push(`/edit-event?id=${event.id}`);
-          else router.push(`/events?id=${event.id}`);
+          else router.push(`/event?id=${event.id}`);
         }}
       >
         <div className="mb-4 flex w-full flex-col items-start justify-between gap-4 md:mb-2 md:flex-row md:items-center md:gap-0">
@@ -79,7 +64,7 @@ const EventCard = React.memo(function EventCard({
               key={tag}
               className="rounded-full bg-primary bg-opacity-10 px-4 py-1 text-sm text-primary"
             >
-              {tag}
+              #{tag}
             </div>
           ))}
         </div>
