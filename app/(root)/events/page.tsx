@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
-import { LucideSearch, LucideMapPin, LucideHeart } from "lucide-react";
+import { LucideSearch, LucideMapPin, LucideHeart, LucideHeartHandshake, LucideGem } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/layout/button";
 import Map, { Marker } from "react-map-gl";
@@ -306,6 +306,17 @@ export default function Events() {
                     </Link>
                   </div>
                   <p className="mb-6 text-gray-500">{event.description}</p>
+                  {/* Display number of volunteers and token bounty as two inline pills */}
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <LucideHeartHandshake size={20} color="#444" />
+                      <p className="text-gray-600">{event.event_volunteers.length}/{event.number_of_spots}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <LucideGem size={20} color="#444" />
+                      <p className="text-gray-600">{event.token_bounty}</p>
+                    </div>
+                  </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       {event.tags.map((tag: string) => (
@@ -328,9 +339,10 @@ export default function Events() {
                         <Button
                           onClick={() => applyToEvent(event.id)}
                           className="!mr-0 rounded-lg bg-primary px-4 py-2 text-white"
-                          disabled={event.applied}
+                          disabled={event.applied || event.event_volunteers.length >= event.number_of_spots}
                         >
-                          {event.applied ? "Applied" : "Apply"}
+                          {/* If user has already applied, show "Applied", if event is full, show "Full", otherwise, show Apply */}
+                          {event.applied ? "Applied" : event.event_volunteers.length >= event.number_of_spots ? "Full" : "Apply"}
                         </Button>
                     )}
                     
