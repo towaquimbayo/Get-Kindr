@@ -119,6 +119,7 @@ export default function Events() {
     if (!session) {
       router.push("/login");
     } else {
+      setIsApplying(true);
       const volunteerId = user.volunteerId;
       const data = { volunteerId, eventId };
       fetch("/api/events/attendees", {
@@ -132,10 +133,12 @@ export default function Events() {
           const response = await res.json();
           console.log("Attendee added successfully: ", response);
           // TODO: must redirect to the event page
+          // Refresh the page to update the applied status (temp)
+          window.location.reload();
         } else {
           console.error("Error adding attendee: ", res);
         }
-      });
+      }).finally(() => setIsApplying(false));
     }
   }
 
@@ -261,7 +264,7 @@ export default function Events() {
 
       {/* Events (left) + Map (right) */}
       <Container className="flex gap-8">
-        {isFetching ? (
+        {isFetchingEvents ? (
           <p className="animate-pulse text-[#858585] transition-all">
             Loading events...
           </p>
@@ -305,7 +308,7 @@ export default function Events() {
                   <p className="mb-6 text-gray-500">{event.description}</p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      {event.tags.map((tag) => (
+                      {event.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="inline-block rounded bg-primary bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-primary"
@@ -314,14 +317,23 @@ export default function Events() {
                         </span>
                       ))}
                     </div>
-                    {/* Align the button to the left */}
-                    <Button
-                      onClick={() => applyToEvent(event.id)}
-                      className="!mr-0 rounded-lg bg-primary px-4 py-2 text-white"
-                      disabled={event.applied}
-                    >
-                      {event.applied ? "Applied" : "Apply"}
-                    </Button>
+                    {/* Render spinner if fetching volunteers, otherwise apply button */}
+                    {isFetchingVolunteers || isApplying ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
+                        <div className="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
+                        <div className="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
+                      </div>
+                      ) : (
+                        <Button
+                          onClick={() => applyToEvent(event.id)}
+                          className="!mr-0 rounded-lg bg-primary px-4 py-2 text-white"
+                          disabled={event.applied}
+                        >
+                          {event.applied ? "Applied" : "Apply"}
+                        </Button>
+                    )}
+                    
                   </div>
                 </div>
               ))}
