@@ -92,11 +92,8 @@ export default function MyEvents() {
 
   useEffect(() => {
     async function fetchEvents() {
-      await fetch("/api/events", {
+      await fetch("/api/events/myevents", {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       })
         .then(async (res) => {
           const events = await res.json();
