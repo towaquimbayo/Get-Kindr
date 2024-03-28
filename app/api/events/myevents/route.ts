@@ -3,7 +3,7 @@ import { getToken } from 'next-auth/jwt';
 import { NextRequest } from 'next/server';
 
 /**
- * Endpoint for getting user specific events: POST /api/events/myevents
+ * Endpoint for getting user specific events: GET /api/events/myevents
  * 
  * request parameters are taken from the JWT.
  * Nothing should be passed in the body for security,
@@ -11,7 +11,7 @@ import { NextRequest } from 'next/server';
  *
  * @param {NextRequest} request - The incoming request
  */
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
   const token = await getToken({ req });
 
   if (token) {
