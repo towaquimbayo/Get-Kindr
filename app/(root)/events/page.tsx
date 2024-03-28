@@ -265,9 +265,16 @@ export default function Events() {
       {/* Events (left) + Map (right) */}
       <Container className="flex gap-8">
         {isFetchingEvents ? (
-          <p className="animate-pulse text-[#858585] transition-all">
-            Loading events...
-          </p>
+          <div>
+            <p className="animate-pulse text-[#858585] transition-all mb-4">
+              Loading events...
+            </p>
+            <div className='flex space-x-2 justify-center items-center bg-white dark:invert'>
+              <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+              <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+              <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce'></div>
+            </div>
+          </div>
         ) : (
           <>
             {/* Events List */}
@@ -309,11 +316,11 @@ export default function Events() {
                   {/* Display number of volunteers and token bounty as two inline pills */}
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center space-x-2">
-                      <LucideHeartHandshake size={20} color="#444" />
+                      <LucideHeartHandshake size={20} className="text-secondary" />
                       <p className="text-gray-600">{event.event_volunteers.length}/{event.number_of_spots}</p>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <LucideGem size={20} color="#444" />
+                      <LucideGem size={20} className="text-primary" />
                       <p className="text-gray-600">{event.token_bounty}</p>
                     </div>
                   </div>
@@ -330,10 +337,10 @@ export default function Events() {
                     </div>
                     {/* Render spinner if fetching volunteers, otherwise apply button */}
                     {isFetchingVolunteers || isApplying ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
-                        <div className="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
-                        <div className="w-4 h-4 bg-gray-300 rounded-full animate-pulse"></div>
+                      <div className='flex space-x-2 justify-center items-center bg-white dark:invert'>
+                        <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                        <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                        <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce'></div>
                       </div>
                       ) : (
                         <Button
