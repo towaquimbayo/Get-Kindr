@@ -20,7 +20,9 @@ export default function Events() {
 
   const [events, setEvents] = useState<any[]>([]);
   const [user, setUser] = useState<any>(session?.user); // User details
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetchingEvents, setIsFetchingEvents] = useState(true);
+  const [isFetchingVolunteers, setIsFetchingVolunteers] = useState(true);
+  const [isApplying, setIsApplying] = useState(false);
 
   const {
     email,
@@ -30,8 +32,12 @@ export default function Events() {
 
   useEffect(() => {
     async function fetchEvents() {
+      if (user?.volunteerId) {
+        setIsFetchingVolunteers(true);
+      } else {
+        setIsFetchingEvents(true);
+      }
       // Query backend for events
-      setIsFetching(true);
       await fetch("/api/events", {
         method: "GET",
         headers: {
@@ -56,7 +62,10 @@ export default function Events() {
           console.error("Error fetching events: ", error);
         })
         .finally(() => {
-          setIsFetching(false);
+          setIsFetchingEvents(false);
+          if (user?.volunteerId) {
+            setIsFetchingVolunteers(false);
+          }
         });
     }
 
