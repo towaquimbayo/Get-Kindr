@@ -50,7 +50,6 @@ export default function Events() {
             };
           });
           setEvents((formattedEvents as any) || []);
-          console.log("Setting events: ", formattedEvents);
           return events;
         })
         .catch((error) => {
@@ -123,6 +122,7 @@ export default function Events() {
         if (res.ok) {
           const response = await res.json();
           console.log("Attendee added successfully: ", response);
+          // TODO: must redirect to the event page
         } else {
           console.error("Error adding attendee: ", res);
         }
@@ -172,17 +172,14 @@ export default function Events() {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
-      console.log("GET Response Details: ", res);
 
       if (!res.ok) {
         const error = await res.json();
         console.error("Error fetching user details: ", error);
         return;
       }
-
       const jsonRes = await res.json();
       const userInfo = jsonRes.user;
-      console.log("User Details: ", userInfo);
 
       if (!userInfo) {
         console.error("User not found");
