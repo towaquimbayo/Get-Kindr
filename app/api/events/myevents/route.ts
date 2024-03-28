@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
         } else {
           events = await getOrganizationEvents(organizationID as string);
         }
+        // console.log("Events:", events);
 
         return new Response(JSON.stringify(events), { status: 200 });
       } catch (error) {
@@ -47,7 +48,14 @@ export async function POST(req: NextRequest) {
   }
 }
 
+/**
+ * Gets all events for a given organization including their registered volunteers for the events
+ * 
+ * @param organizationID The organization ID to get events for
+ * @returns All events for the organization and their volunteers
+ */
 function getOrganizationEvents(organizationID: string) {
+  // console.log("Getting events for organization:", organizationID);
   return prisma.event.findMany({
     where: {
       organization_id: organizationID,
@@ -61,12 +69,19 @@ function getOrganizationEvents(organizationID: string) {
   });
 }
 
+/**
+ * Get all events for a given volunteer
+ * 
+ * @param volunteerID The volunteer ID to get events for
+ * @returns All registered events for the volunteer
+ */
 function getVolunteerEvents(volunteerID: string) {
+  // console.log("Getting events for volunteer:", volunteerID);
   return prisma.event.findMany({
     where: {
       event_volunteers: {
         some: {
-          id: volunteerID,
+          volunteerId: volunteerID,
         },
       },
     },
