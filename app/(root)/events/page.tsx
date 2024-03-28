@@ -18,7 +18,7 @@ export default function Events() {
 
   const router = useRouter();
 
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
   const [user, setUser] = useState<any>(session?.user); // User details
   const [isFetching, setIsFetching] = useState(true);
 
@@ -31,6 +31,7 @@ export default function Events() {
   useEffect(() => {
     async function fetchEvents() {
       // Query backend for events
+      setIsFetching(true);
       await fetch("/api/events", {
         method: "GET",
         headers: {
@@ -43,9 +44,13 @@ export default function Events() {
             return {
               ...event,
               ...convertTimeFormat(event),
+              applied: event.event_volunteers.some(
+                (ev: any) => ev.volunteerId === user?.volunteerId,
+              ),
             };
           });
           setEvents((formattedEvents as any) || []);
+          console.log("Setting events: ", formattedEvents);
           return events;
         })
         .catch((error) => {
@@ -57,7 +62,7 @@ export default function Events() {
     }
 
     fetchEvents();
-  }, []);
+  }, [user]);
 
   function convertTimeFormat(event: any): any {
     const months = [
@@ -299,7 +304,7 @@ export default function Events() {
                           key={tag}
                           className="inline-block rounded bg-primary bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-primary"
                         >
-                          #{tag}
+                          #&nbsp;{tag}
                         </span>
                       ))}
                     </div>
@@ -307,8 +312,9 @@ export default function Events() {
                     <Button
                       onClick={() => applyToEvent(event.id)}
                       className="!mr-0 rounded-lg bg-primary px-4 py-2 text-white"
+                      disabled={event.applied}
                     >
-                      Apply
+                      {event.applied ? "Applied" : "Apply"}
                     </Button>
                   </div>
                 </div>
