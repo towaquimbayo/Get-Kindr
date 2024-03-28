@@ -23,6 +23,31 @@ export default function Events() {
   const [isFetchingEvents, setIsFetchingEvents] = useState(true);
   const [isFetchingVolunteers, setIsFetchingVolunteers] = useState(true);
   const [isApplying, setIsApplying] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchTags, setSearchTags] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+
+  const filterEvents = (searchText: string, searchLocation: string, searchTags: string) => {
+    if (searchText || searchLocation || searchTags) {
+      const regex = new RegExp(searchText, "i"); // i = case insensitive
+      const locationRegex = new RegExp(searchLocation, "i");
+      const tagsRegex = new RegExp(searchTags, "i");
+      return events.filter(
+        (event) =>
+          (regex.test(event.name) || regex.test(event.description)) &&
+          locationRegex.test(event.city) &&
+          event.tags.some((tag: string) => tagsRegex.test(tag))
+      );
+    } else {
+      return events;
+    }
+  };
+
+  const handleSearch = () => {
+    const searchResult = filterEvents(searchText, searchLocation, searchTags);
+    setSearchResults(searchResult);
+  };
 
   const {
     email,
@@ -56,6 +81,7 @@ export default function Events() {
             };
           });
           setEvents((formattedEvents as any) || []);
+          setSearchResults((formattedEvents as any) || []);
           return events;
         })
         .catch((error) => {
@@ -220,6 +246,8 @@ export default function Events() {
               className="w-full appearance-none border-none bg-transparent placeholder-gray-400 focus:ring-0"
               type="text"
               placeholder="Search opportunities"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
           <div className="flex h-full w-full items-center px-2 pl-3">
@@ -228,6 +256,8 @@ export default function Events() {
               className="w-full appearance-none border-none bg-transparent placeholder-gray-400 focus:ring-0"
               type="text"
               placeholder="Vancouver, BC"
+              value={searchLocation}
+              onChange={(e) => setSearchLocation(e.target.value)}
             />
           </div>
           <div className="flex h-full w-full items-center px-2">
@@ -235,12 +265,15 @@ export default function Events() {
               className="w-full appearance-none border-none bg-transparent placeholder-gray-400 focus:ring-0"
               type="text"
               placeholder="Filter Tags"
+              value={searchTags}
+              onChange={(e) => setSearchTags(e.target.value)}
             />
           </div>
           <div className="h-full w-[125px] flex-none rounded-e-xl bg-primary">
             <Link
               href="#"
               className="flex h-full w-full items-center justify-center rounded-e-xl text-white"
+              onClick={handleSearch}
             >
               Find Events
             </Link>
@@ -251,7 +284,7 @@ export default function Events() {
       {/* Info and Sort */}
       <Container className="flex items-center justify-between !py-0">
         <p className="text-xl font-semibold text-gray-800">
-          Showing <span id="numEvents">{events.length}</span> events
+          Showing <span id="numEvents">{searchResults.length}</span> events
         </p>
         <div className="flex items-center text-gray-400">
           <p>Sort by:</p>
@@ -280,82 +313,86 @@ export default function Events() {
             {/* Events List */}
             <div className="max-h-[500px] flex-1 overflow-y-auto">
               {/* Event Card */}
-              {events.map((event) => (
-                <div
-                  key={event.id}
-                  className="mb-6 rounded-xl border border-[#EAEAEA] bg-white p-6 !transition-all duration-300 ease-in-out hover:shadow-md"
-                >
-                  <div className="mb-4 flex items-start justify-between">
-                    <div className="flex items-start gap-3">
-                      <div className="rounded-lg bg-primary bg-opacity-10 px-4 py-2 text-center">
-                        <p className="text-xs text-primary">
-                          {event.start_time.toString().split(" ")[0]}
-                        </p>
-                        <p className="text-xl font-semibold text-primary">
-                          {event.start_time.toString().split(" ")[1]}
-                        </p>
-                        <p className="text-xs text-primary">
-                          {event.start_time.toString().split(" ")[2]}
-                        </p>
+              {searchResults.length > 0 ? (
+                searchResults.map((event) => (
+                  <div
+                    key={event.id}
+                    className="mb-6 rounded-xl border border-[#EAEAEA] bg-white p-6 !transition-all duration-300 ease-in-out hover:shadow-md"
+                  >
+                    <div className="mb-4 flex items-start justify-between">
+                      <div className="flex items-start gap-3">
+                        <div className="rounded-lg bg-primary bg-opacity-10 px-4 py-2 text-center">
+                          <p className="text-xs text-primary">
+                            {event.start_time.toString().split(" ")[0]}
+                          </p>
+                          <p className="text-xl font-semibold text-primary">
+                            {event.start_time.toString().split(" ")[1]}
+                          </p>
+                          <p className="text-xs text-primary">
+                            {event.start_time.toString().split(" ")[2]}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-lg font-semibold">{event.name}</p>
+                          <p className="text-gray-600">
+                            {(event as any).organization.name}
+                          </p>
+                          <p className="text-gray-600">
+                            {event.city} - {event.end_time.toString()}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-lg font-semibold">{event.name}</p>
-                        <p className="text-gray-600">
-                          {(event as any).organization.name}
-                        </p>
-                        <p className="text-gray-600">
-                          {event.city} - {event.end_time.toString()}
-                        </p>
+                      <Link href="#" className="">
+                        <LucideHeart size={20} color="#cccccc" />
+                      </Link>
+                    </div>
+                    <p className="mb-6 text-gray-500">{event.description}</p>
+                    {/* Display number of volunteers and token bounty as two inline pills */}
+                    <div className="flex items-center space-x-4">
+                      <div className="flex items-center space-x-2">
+                        <LucideHeartHandshake size={20} className="text-secondary" />
+                        <p className="text-gray-600">{event.event_volunteers.length}/{event.number_of_spots}</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <LucideGem size={20} className="text-primary" />
+                        <p className="text-gray-600">{event.token_bounty}</p>
                       </div>
                     </div>
-                    <Link href="#" className="">
-                      <LucideHeart size={20} color="#cccccc" />
-                    </Link>
-                  </div>
-                  <p className="mb-6 text-gray-500">{event.description}</p>
-                  {/* Display number of volunteers and token bounty as two inline pills */}
-                  <div className="flex items-center space-x-4">
-                    <div className="flex items-center space-x-2">
-                      <LucideHeartHandshake size={20} className="text-secondary" />
-                      <p className="text-gray-600">{event.event_volunteers.length}/{event.number_of_spots}</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <LucideGem size={20} className="text-primary" />
-                      <p className="text-gray-600">{event.token_bounty}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      {event.tags.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="inline-block rounded bg-primary bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-primary"
-                        >
-                          #&nbsp;{tag}
-                        </span>
-                      ))}
-                    </div>
-                    {/* Render spinner if fetching volunteers, otherwise apply button */}
-                    {isFetchingVolunteers || isApplying ? (
-                      <div className='flex space-x-2 justify-center items-center bg-white dark:invert'>
-                        <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
-                        <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
-                        <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce'></div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        {event.tags.map((tag: string) => (
+                          <span
+                            key={tag}
+                            className="inline-block rounded bg-primary bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-primary"
+                          >
+                            #&nbsp;{tag}
+                          </span>
+                        ))}
                       </div>
-                      ) : (
-                        <Button
-                          onClick={() => applyToEvent(event.id)}
-                          className="!mr-0 rounded-lg bg-primary px-4 py-2 text-white"
-                          disabled={event.applied || event.event_volunteers.length >= event.number_of_spots}
-                        >
-                          {/* If user has already applied, show "Applied", if event is full, show "Full", otherwise, show Apply */}
-                          {event.applied ? "Applied" : event.event_volunteers.length >= event.number_of_spots ? "Full" : "Apply"}
-                        </Button>
-                    )}
-                    
+                      {/* Render spinner if fetching volunteers, otherwise apply button */}
+                      {isFetchingVolunteers || isApplying ? (
+                        <div className='flex space-x-2 justify-center items-center bg-white dark:invert'>
+                          <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+                          <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+                          <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce'></div>
+                        </div>
+                        ) : (
+                          <Button
+                            onClick={() => applyToEvent(event.id)}
+                            className="!mr-0 rounded-lg bg-primary px-4 py-2 text-white"
+                            disabled={event.applied || event.event_volunteers.length >= event.number_of_spots}
+                          >
+                            {/* If user has already applied, show "Applied", if event is full, show "Full", otherwise, show Apply */}
+                            {event.applied ? "Applied" : event.event_volunteers.length >= event.number_of_spots ? "Full" : "Apply"}
+                          </Button>
+                      )}
+                      
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p>No events found.</p>
+              )}
             </div>
 
             {/* Map Embed */}
