@@ -38,10 +38,7 @@ export default function JWTtest() {
     setMyEventsResponse("");
     try {
       const response = await fetch("/api/events/myevents", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "GET",
       });
 
       const events = await response.json();
