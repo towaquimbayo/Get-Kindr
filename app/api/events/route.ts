@@ -92,6 +92,7 @@ export async function GET(request: Request) {
               name: true,
             },
           },
+          event_volunteers: true,
         },
       });
     } else if (searchMode && searchTerm) {
@@ -112,6 +113,7 @@ export async function GET(request: Request) {
               name: true,
             },
           },
+          event_volunteers: true,
         },
       });
     } else {
@@ -131,6 +133,7 @@ export async function GET(request: Request) {
               name: true,
             },
           },
+          event_volunteers: true,
         },
       });
     }
