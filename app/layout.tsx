@@ -10,7 +10,7 @@ export const metadata = {
   title: "KINDR - Kindness is our currency",
   description:
     "KINDR is a hub that connects volunteers with non-profit organizations, and rewards them for their efforts. Join the community and start making a difference today!",
-  metadataBase: new URL("https://precedent.dev"),
+  metadataBase: new URL("https://getkindr.com"),
   themeColor: "#FFF",
 };
 
