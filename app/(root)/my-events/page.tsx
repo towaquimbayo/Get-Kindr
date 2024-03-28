@@ -137,7 +137,7 @@ export default function MyEvents() {
               endTime: event.end_time,
               organization: event.organization.name,
               tags: event.tags,
-              location: event.city + ", " + event.province,
+              location: event.city,
               status: event.status.toLowerCase(),
               isFavourite: false,
             };
