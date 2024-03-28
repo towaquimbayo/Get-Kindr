@@ -27,6 +27,7 @@ export default function Events() {
   const [searchLocation, setSearchLocation] = useState("");
   const [searchTags, setSearchTags] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [sortOrder, setSortOrder] = useState<'recent' | 'tokens'>('recent');
 
   const filterEvents = (searchText: string, searchLocation: string, searchTags: string) => {
     if (searchText || searchLocation || searchTags) {
@@ -47,6 +48,19 @@ export default function Events() {
   const handleSearch = () => {
     const searchResult = filterEvents(searchText, searchLocation, searchTags);
     setSearchResults(searchResult);
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedSortOrder = e.target.value as 'recent' | 'tokens';
+    setSortOrder(selectedSortOrder);
+  
+    let sortedResults = [...searchResults];
+    if (selectedSortOrder === 'recent') {
+      sortedResults.sort((a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime());
+    } else if (selectedSortOrder === 'tokens') {
+      sortedResults.sort((a, b) => b.token_bounty - a.token_bounty);
+    }
+    setSearchResults(sortedResults);
   };
 
   const {
@@ -288,9 +302,13 @@ export default function Events() {
         </p>
         <div className="flex items-center text-gray-400">
           <p>Sort by:</p>
-          <select className="appearance-none border-none bg-transparent focus:ring-0">
-            <option>Most Recent</option>
-            <option>Oldest</option>
+          <select 
+            className="appearance-none border-none bg-transparent focus:ring-0"
+            value={sortOrder}
+            onChange={handleSortChange}
+          >
+            <option value="recent">Most Recent</option>
+            <option value="tokens">Most Tokens</option>
           </select>
         </div>
       </Container>
