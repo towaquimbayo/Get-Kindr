@@ -62,8 +62,8 @@ export async function POST(request: NextRequest) {
       const newEvent = {
         name,
         description,
-        start_time: new Date(start_time),
-        end_time: new Date(end_time),
+        start_time,
+        end_time,
         organization_id,
         tags,
         address,
