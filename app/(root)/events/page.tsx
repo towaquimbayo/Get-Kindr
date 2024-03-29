@@ -58,11 +58,15 @@ export default function Events() {
     const startDateFormatted = `${startMonth} ${startDay < 10 ? '0' + startDay : startDay} ${startYear}`;
 
     // Format time range
-    const startTimeHours = ('0' + startDate.getUTCHours()).slice(-2);
-    const startTimeMinutes = ('0' + startDate.getUTCMinutes()).slice(-2);
-    const endTimeHours = ('0' + endDate.getUTCHours()).slice(-2);
-    const endTimeMinutes = ('0' + endDate.getUTCMinutes()).slice(-2);
-    const timeRangeFormatted = `${startTimeHours}:${startTimeMinutes} AM - ${endTimeHours}:${endTimeMinutes} AM`;
+    const formattedStartDate = new Date(startDate).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+    const formattedEndDate = new Date(endDate).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+    const timeRangeFormatted = `${formattedStartDate} - ${formattedEndDate}`;
 
     const result = {
       start_time: startDateFormatted,
