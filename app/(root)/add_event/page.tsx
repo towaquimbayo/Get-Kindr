@@ -4,9 +4,8 @@ import "../../globals.css";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-// TODO: Test without and remove
-// let load = 0;
-// let orgID = "";
+let lock = false;
+
 
 export default function Add_Event() {
 
@@ -90,7 +89,6 @@ export default function Add_Event() {
             .then((response) => response.json())
             .then((data) => {
                 updateSearchData(data.features);
-                console.log(data)
                 for (let i = 1; i <= 5; i++) {
                     const menuItem = document.getElementById('menu-item-' + i);
                     if (menuItem) {
@@ -237,6 +235,20 @@ export default function Add_Event() {
     //     setValuePhone(event);
     // }
 
+    const lockAndSubmit = () => {
+        const submitButton = document.getElementById('submit') as HTMLInputElement;
+        submitButton.disabled = true;
+        if (lock) {
+            return;
+        }
+        lock = true;
+        submitEvent();
+        setTimeout(() => {
+            lock = false;
+            submitButton.disabled = false;
+        }, 3000);
+    }
+
     const submitEvent = async () => {
         let splitAddress = valueAddress.split(',');
         let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
@@ -253,8 +265,8 @@ export default function Add_Event() {
             const eventInfo = {
                 name: valueName,
                 description: valueDescription,
-                start_time: valueDate + " " + valueStartTime,
-                end_time: valueDate + " " + valueEndTime,
+                start_time: new Date(valueDate + " " + valueStartTime),
+                end_time: new Date(valueDate + " " + valueEndTime),
                 // TODO: Test without and remove
                 // organization_id: orgID,
                 tags: valueTags.split(' '),
@@ -376,17 +388,17 @@ export default function Add_Event() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col mb:flex-row justify-evenly items-center w-full">
-                        <div className="flex flex-col w-4/5 mb:w-1/3 mb:min-w-40 mt-8">
+                    <div className="flex flex-col sm:flex-row justify-evenly items-center w-full">
+                        <div className="flex flex-col w-4/5 sm:w-1/3 sm:min-w-40 mt-8">
                             <label htmlFor="Date" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
-                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base" value={valueDate}></input>
+                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center sm:px-3 md:px-6 sm:text-base" value={valueDate}></input>
                         </div>
-                        <div className="flex flex-col w-4/5 mt-8 mb:w-1/3 mb:min-w-44">
+                        <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-44">
                             <label htmlFor="time" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
-                                <h1 className="text-xl mt-0.5 mb:text-2xl">-</h1>
-                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="12:00"></input>
+                                <h1 className="text-xl mt-0.5 sm:text-2xl">-</h1>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="23:59"></input>
                             </div>
                         </div>
                     </div>
@@ -428,7 +440,7 @@ export default function Add_Event() {
                     </div>
                     <div className="flex justify-evenly w-full mb-8 mt-12">
                         <Link href="/" className="w-1/5 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
-                        <button id="submit" onClick={submitEvent} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
+                        <button id="submit" onClick={lockAndSubmit} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
                     </div>
                 </div>
             </div>
