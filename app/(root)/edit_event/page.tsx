@@ -106,14 +106,11 @@ export default function Add_Event() {
             router.push("/");
         } else {
             updateValues(result);
-            // console.log("Result: ", result.end_time);
-            // console.log("Current Date: ", new Date());
-            // if (result.end_time < new Date()) {
-            //     console.log("Event has ended.")
-            //     updateValues(result);
-            // } else {
-            //     updateValues(result);
-            // }
+            if (new Date(result.end_time) < new Date()) {
+                console.log("Event has ended.")
+                closeEvent();
+            }
+            updateValues(result);
         }
     }
 
@@ -381,10 +378,13 @@ export default function Add_Event() {
     }
 
     const closeEvent = () => {
-        document.getElementById('editEventBox')?.classList.add(' opacity-30');
+
         document.getElementById('reqField')?.classList.remove('opacity-80');
         document.getElementById('reqField')?.classList.add('opacity-0');
-        document.getElementById('Date')?.classList.add('opacity-0');
+        const dateElement = document.getElementById('Date') as HTMLInputElement;
+        dateElement.type = 'text';
+        document.getElementById('editEventBox')?.classList.add('opacity-30');
+        document.getElementById('editEventBox')?.classList.add('pointer-events-none');
         document.getElementById('closeEventBox')?.classList.remove('h-0');
         document.getElementById('closeEventBox')?.classList.remove('border-0');
         document.getElementById('closeEventBox')?.classList.add('border-4');
@@ -395,15 +395,15 @@ export default function Add_Event() {
             <div className="flex flex-col w-10/12">
                 <p className="text-left font-display text-3xl font-bold text-tertiary mt-16 pl-6">Edit Event</p>
                 <p className="font-display font-bold text-4xl max-w-xs mb-12 pl-6 sm:max-w-full md:max-w-2xl md:text-6xl  lg:max-w-full">Host the future of giving back.</p>
-                <div id="closeEventBox" className="flex flex-col items-center rounded-lg border-primary bg-gray-50 w-5/6 absolute mt-56 sm:mt-48 md:mt-64 lg:mt-52 overflow-hidden h-0 border-0">
+                <div id="closeEventBox" className="flex flex-col items-center rounded-lg border-primary bg-gray-50 w-5/6 mt-56 sm:mt-48 md:mt-64 lg:mt-52 absolute overflow-hidden h-0 border-0">
                     <div className="w-5/6 mt-8 h-fit">
-                        <p id="reqField" className="font-display font-bold text-center text-4xl md:text-5xl xl:text-6xl !text-secondary">
+                        <p className="font-display font-bold text-center text-4xl md:text-5xl xl:text-6xl !text-secondary">
                             This event has ended.
                         </p>
-                        <p id="reqField" className="font-display font-bold text-center text-2xl md:text-3xl xl:text-4xl !text-secondary mt-4">
+                        <p className="font-display font-bold text-center text-2xl md:text-3xl xl:text-4xl !text-secondary mt-4">
                             Close the event to mark it as complete.
                         </p>
-                        <h3 id="reqField" className="font-display italic text-center text-lg xl:text-2xl !text-secondary opacity-60 mt-8">
+                        <h3 className="font-display italic text-center text-lg xl:text-2xl !text-secondary opacity-60 mt-8">
                             *This will allocate the token bounty <span className="md:hidden"><br></br></span> to the volunteers.*
                         </h3>
                     </div>
@@ -414,7 +414,7 @@ export default function Add_Event() {
                 </div>
                 <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
                     <div className="w-5/6 mt-8 h-fit">
-                        <h3 className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
+                        <h3 id="reqField" className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
                     </div>
                     <div className="flex justify-evenly w-full mt-4">
                         <div className="flex flex-col w-5/6">
