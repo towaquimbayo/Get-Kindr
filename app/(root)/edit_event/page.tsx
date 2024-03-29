@@ -6,6 +6,7 @@ import { Event } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 let load = 0;
+let lock = false;
 // TODO: Test without and remove
 // let org_ID = "";
 
@@ -45,6 +46,14 @@ export default function Add_Event() {
 
     const updateValues = (event: Event) => {
         if (load === 0) {
+            const localStart = new Date(event.start_time).toString().slice(16, 21)
+            const localEnd = new Date(event.end_time).toString().slice(16, 21)
+            const localDate = new Date(event.start_time).toString().slice(0, 15)
+            let month = String(new Date(event.start_time).getMonth() + 1);
+            if (Number(month) < 10) {
+                month = '0' + month;
+            }
+            const formattedDate = localDate.slice(11, 15) + '-' + month + '-' + localDate.slice(8, 10);
             load = 1;
             console.log("Event: ", event)
             setValueName(event.name);
@@ -52,9 +61,9 @@ export default function Add_Event() {
             setValueLocation(event.city);
             let coordinates = [String(event.latitude), String(event.longitude)];
             setValueCoordinates(coordinates);
-            setPlaceValueDate(event.start_time.toString());
-            setValueStartTime(event.start_time.toString());
-            setValueEndTime(event.start_time.toString());
+            setPlaceValueDate(formattedDate);
+            setValueStartTime(localStart);
+            setValueEndTime(localEnd);
             setValueVolNum(event.number_of_spots);
             setValueDescription(event.description ?? "");
             let tagsString = ''
@@ -62,14 +71,6 @@ export default function Add_Event() {
                 tagsString = tagsString + event.tags[i] + ' ';
             }
             setTagsValue(tagsString);
-            let start_date = event.start_time;
-            let end_date = event.end_time;
-            let date = start_date.toString().slice(0, 10);
-            setPlaceValueDate(date);
-            let start_time = start_date.toString().slice(11, 16);
-            let end_time = end_date.toString().slice(11, 16);
-            setValueStartTime(start_time);
-            setValueEndTime(end_time);
             setValueOnline(event.online);
             setValueRecurring(event.recurring);
         }
@@ -105,6 +106,14 @@ export default function Add_Event() {
             router.push("/");
         } else {
             updateValues(result);
+            // console.log("Result: ", result.end_time);
+            // console.log("Current Date: ", new Date());
+            // if (result.end_time < new Date()) {
+            //     console.log("Event has ended.")
+            //     updateValues(result);
+            // } else {
+            //     updateValues(result);
+            // }
         }
     }
 
@@ -131,7 +140,6 @@ export default function Add_Event() {
             .then((response) => response.json())
             .then((data) => {
                 updateSearchData(data.features);
-                console.log(data)
                 for (let i = 1; i <= 5; i++) {
                     const menuItem = document.getElementById('menu-item-' + i);
                     if (menuItem) {
@@ -252,6 +260,20 @@ export default function Add_Event() {
         }
     }
 
+    const lockAndSubmit = () => {
+        const submitButton = document.getElementById('submit') as HTMLInputElement;
+        submitButton.disabled = true;
+        if (lock) {
+            return;
+        }
+        lock = true;
+        submitEvent();
+        setTimeout(() => {
+            lock = false;
+            submitButton.disabled = false;
+        }, 3000);
+    }
+
     const submitEvent = async () => {
         let splitAddress = valueAddress.split(',');
         let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
@@ -358,12 +380,39 @@ export default function Add_Event() {
         return false;
     }
 
+    const closeEvent = () => {
+        document.getElementById('editEventBox')?.classList.add(' opacity-30');
+        document.getElementById('reqField')?.classList.remove('opacity-80');
+        document.getElementById('reqField')?.classList.add('opacity-0');
+        document.getElementById('Date')?.classList.add('opacity-0');
+        document.getElementById('closeEventBox')?.classList.remove('h-0');
+        document.getElementById('closeEventBox')?.classList.remove('border-0');
+        document.getElementById('closeEventBox')?.classList.add('border-4');
+    }
+
     return (
         <div className="flex flex-1 flex-col items-center w-full bg-tertiary bg-opacity-10 pb-12 pt-4">
             <div className="flex flex-col w-10/12">
-                <p className="text-left font-display text-3xl font-bold text-tertiary mt-16 pl-6">Create Event</p>
+                <p className="text-left font-display text-3xl font-bold text-tertiary mt-16 pl-6">Edit Event</p>
                 <p className="font-display font-bold text-4xl max-w-xs mb-12 pl-6 sm:max-w-full md:max-w-2xl md:text-6xl  lg:max-w-full">Host the future of giving back.</p>
-                <div className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
+                <div id="closeEventBox" className="flex flex-col items-center rounded-lg border-primary bg-gray-50 w-5/6 absolute mt-56 sm:mt-48 md:mt-64 lg:mt-52 overflow-hidden h-0 border-0">
+                    <div className="w-5/6 mt-8 h-fit">
+                        <p id="reqField" className="font-display font-bold text-center text-4xl md:text-5xl xl:text-6xl !text-secondary">
+                            This event has ended.
+                        </p>
+                        <p id="reqField" className="font-display font-bold text-center text-2xl md:text-3xl xl:text-4xl !text-secondary mt-4">
+                            Close the event to mark it as complete.
+                        </p>
+                        <h3 id="reqField" className="font-display italic text-center text-lg xl:text-2xl !text-secondary opacity-60 mt-8">
+                            *This will allocate the token bounty <span className="md:hidden"><br></br></span> to the volunteers.*
+                        </h3>
+                    </div>
+                    <div className="flex justify-evenly w-full mb-8 mt-12">
+                        <Link href="/my-events" className="w-1/3 md:w-1/5"><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
+                        <button id="submit" onClick={submitEvent} className="text-md h-12 w-1/3 md:w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 ">Close Event</button>
+                    </div>
+                </div>
+                <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
                     <div className="w-5/6 mt-8 h-fit">
                         <h3 className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
                     </div>
@@ -406,17 +455,17 @@ export default function Add_Event() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col mb:flex-row justify-evenly items-center w-full">
-                        <div className="flex flex-col w-4/5 mb:w-1/3 mb:min-w-40 mt-8">
+                    <div className="flex flex-col sm:flex-row justify-evenly items-center w-full">
+                        <div className="flex flex-col w-4/5 sm:w-1/3 sm:min-w-40 mt-8">
                             <label htmlFor="Date" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
-                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center mb:px-3 md:px-6 mb:text-base" value={valueDate}></input>
+                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center sm:px-3 md:px-6 sm:text-base" value={valueDate}></input>
                         </div>
-                        <div className="flex flex-col w-4/5 mt-8 mb:w-1/3 mb:min-w-44">
+                        <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-44">
                             <label htmlFor="time" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="12:00"></input>
-                                <h1 className="text-xl mt-0.5 mb:text-2xl">-</h1>
-                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm mb:text-base" placeholder="23:59"></input>
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="12:00"></input>
+                                <h1 className="text-xl mt-0.5 sm:text-2xl">-</h1>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="23:59"></input>
                             </div>
                         </div>
                     </div>
@@ -458,7 +507,7 @@ export default function Add_Event() {
                     </div>
                     <div className="flex justify-evenly w-full mb-8 mt-12">
                         <Link href="/" className="w-1/5 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
-                        <button id="submit" onClick={submitEvent} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
+                        <button id="submit" onClick={lockAndSubmit} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
                     </div>
                 </div>
             </div>
