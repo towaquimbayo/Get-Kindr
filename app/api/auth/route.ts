@@ -17,6 +17,10 @@ export async function GET(request: Request) {
 
     const user = await prisma.user.findUnique({
       where: { email: userEmail },
+      include: {
+        organization: true,
+        volunteer: true,
+      },
     });
 
     if (!user) {
@@ -35,6 +39,8 @@ export async function GET(request: Request) {
         email: user.email,
         phone: user.phoneNumber,
         password: "",
+        organizationId: user.organization?.id,
+        volunteerId: user.volunteer?.id,
       },
     });
   } catch (e) {

@@ -12,6 +12,7 @@ const nextConfig = {
       "ui-avatars.com",
       "api.dicebear.com",
       "avatars.dicebear.com",
+      "randomuser.me",
     ],
   },
   async redirects() {

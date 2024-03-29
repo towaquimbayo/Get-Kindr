@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          accountType: "VOLUNTEER",
+          accountType: "GOOGLE VOLUNTEER",
           volunteer: {
             create: {
               bio: "",
@@ -119,11 +119,21 @@ export const authOptions: NextAuthOptions = {
         token.name = session.name;
       }
 
+
       if (user) {
-        token.accountType = user.accountType;
+        const userdata = await prisma.user.findUniqueOrThrow({
+          where: {
+            email: user.email as string,
+          },
+          include: {
+            organization: true,
+            volunteer: true,
+          },
+        });
+        token.accountType = userdata.accountType;
         token.accountProvider = account ? account.provider : null;
-        token.organizationID = user.organization ? user.organization.id : null;
-        token.volunteerID = user.volunteer ? user.volunteer.id : null;
+        token.organizationID = userdata.organization ? userdata.organization.id : null;
+        token.volunteerID = userdata.volunteer ? userdata.volunteer.id : null;
         return {
           ...token,
           id: user.id,
