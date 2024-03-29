@@ -108,7 +108,7 @@ export default function Add_Event() {
             updateValues(result);
             if (new Date(result.end_time) < new Date()) {
                 console.log("Event has ended.")
-                closeEvent();
+                showFinishedEvent();
             }
             updateValues(result);
         }
@@ -377,8 +377,7 @@ export default function Add_Event() {
         return false;
     }
 
-    const closeEvent = () => {
-
+    const showFinishedEvent = () => {
         document.getElementById('reqField')?.classList.remove('opacity-80');
         document.getElementById('reqField')?.classList.add('opacity-0');
         const dateElement = document.getElementById('Date') as HTMLInputElement;
@@ -390,28 +389,44 @@ export default function Add_Event() {
         document.getElementById('closeEventBox')?.classList.add('border-4');
     }
 
+    const lockAndClose = () => {
+        const submitButton = document.getElementById('close') as HTMLInputElement;
+        submitButton.disabled = true;
+        if (lock) {
+            return;
+        }
+        lock = true;
+        closeEvent();
+        setTimeout(() => {
+            lock = false;
+            submitButton.disabled = false;
+        }, 3000);
+    }
+
+    const closeEvent = async () => {
+        const res = await fetch('/api/organizations/complete-event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ eventID: eventID }),
+        });
+        if (!res) {
+            console.log("An error occurred. Please try again.");
+        } else if (res.ok) {
+            console.log("Successfully closed event.")
+            window.location.href = "/my-events";
+        } else {
+            console.log(res)
+            console.log("Rejected event closure. Please try again.")
+        }
+    }
+
     return (
         <div className="flex flex-1 flex-col items-center w-full bg-tertiary bg-opacity-10 pb-12 pt-4">
             <div className="flex flex-col w-10/12">
                 <p className="text-left font-display text-3xl font-bold text-tertiary mt-16 pl-6">Edit Event</p>
                 <p className="font-display font-bold text-4xl max-w-xs mb-12 pl-6 sm:max-w-full md:max-w-2xl md:text-6xl  lg:max-w-full">Host the future of giving back.</p>
-                <div id="closeEventBox" className="flex flex-col items-center rounded-lg border-primary bg-gray-50 w-5/6 mt-56 sm:mt-48 md:mt-64 lg:mt-52 absolute overflow-hidden h-0 border-0">
-                    <div className="w-5/6 mt-8 h-fit">
-                        <p className="font-display font-bold text-center text-4xl md:text-5xl xl:text-6xl !text-secondary">
-                            This event has ended.
-                        </p>
-                        <p className="font-display font-bold text-center text-2xl md:text-3xl xl:text-4xl !text-secondary mt-4">
-                            Close the event to mark it as complete.
-                        </p>
-                        <h3 className="font-display italic text-center text-lg xl:text-2xl !text-secondary opacity-60 mt-8">
-                            *This will allocate the token bounty <span className="md:hidden"><br></br></span> to the volunteers.*
-                        </h3>
-                    </div>
-                    <div className="flex justify-evenly w-full mb-8 mt-12">
-                        <Link href="/my-events" className="w-1/3 md:w-1/5"><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
-                        <button id="submit" onClick={submitEvent} className="text-md h-12 w-1/3 md:w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 ">Close Event</button>
-                    </div>
-                </div>
                 <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
                     <div className="w-5/6 mt-8 h-fit">
                         <h3 id="reqField" className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
@@ -508,6 +523,23 @@ export default function Add_Event() {
                     <div className="flex justify-evenly w-full mb-8 mt-12">
                         <Link href="/" className="w-1/5 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
                         <button id="submit" onClick={lockAndSubmit} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
+                    </div>
+                </div>
+                <div id="closeEventBox" className="flex flex-col items-center rounded-lg border-primary bg-gray-50 w-5/6 mt-56 sm:mt-48 md:mt-64 lg:mt-52 absolute overflow-hidden h-0 border-0">
+                    <div className="w-5/6 mt-8 h-fit">
+                        <p className="font-display font-bold text-center text-4xl md:text-5xl xl:text-6xl !text-secondary">
+                            This event has ended.
+                        </p>
+                        <p className="font-display font-bold text-center text-2xl md:text-3xl xl:text-4xl !text-secondary mt-4">
+                            Close the event to mark it as complete.
+                        </p>
+                        <h3 className="font-display italic text-center text-lg xl:text-2xl !text-secondary opacity-60 mt-8">
+                            *This will allocate the token bounty <span className="md:hidden"><br></br></span> to the volunteers.*
+                        </h3>
+                    </div>
+                    <div className="flex justify-evenly w-full mb-8 mt-12">
+                        <Link href="/my-events" className="w-1/3 md:w-1/5"><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
+                        <button id="close" onClick={lockAndClose} className="text-md h-12 w-1/3 md:w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 ">Close Event</button>
                     </div>
                 </div>
             </div>
