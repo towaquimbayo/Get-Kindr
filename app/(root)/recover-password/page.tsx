@@ -19,12 +19,31 @@ export default async function recover(email: any, OTP: any): Promise<RecoveryRes
       refreshToken: process.env.OAUTH_REFRESH_TOKEN
     }
   });
-  console.log(email)
+
   let mailOptions = {
     from: "devteam.kindr@gmail.com",
     to: email,
-    subject: 'Nodemailer Setup Test',
-    text: 'This is a test email from Nodemailer. Your one time pass is: ' + OTP + '. It will expire in 15 minutes. Use the link to reset your password: http://localhost:3000/reset-password'
+    subject: 'Reset your KINDR password',
+    text:
+    `
+    Hello from KINDR.
+    
+    We received a request to reset your password for https://getkindr.com.
+    If you did not send this request, please ignore and delete this messsage.
+    
+    
+    You can use the following One Time Code to reset your password: ${OTP}
+    
+    Follow this link to reset your password: https://getkindr.com/reset-password
+    
+
+    Your One Time Code is only valid for 15 minutes, to get a new one visit https://getkindr.com/forgot-password.
+    
+
+    KINDR Support Team
+    
+    Email: support@getkindr.com        Phone: (604) 123-4567
+    `
   }
 
   return new Promise<RecoveryResult>((resolve, reject) => {
