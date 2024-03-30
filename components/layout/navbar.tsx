@@ -23,7 +23,7 @@ export default function NavBar({ session }: { session: Session | null }) {
     return (
       <Link
         href={href}
-        className={`hidden items-center transition-all duration-300 ease-in-out  hover:opacity-50 sm:block ${active ? "font-semibold text-primary" : "text-black"
+        className={`items-center transition-all duration-300 ease-in-out hover:opacity-50 ${session ? "hidden sm:block" : "block"} ${active ? "font-semibold text-primary" : "text-black"
           }`}
       >
         {name}
