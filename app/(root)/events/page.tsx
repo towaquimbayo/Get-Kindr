@@ -248,7 +248,7 @@ export default function Events() {
   }, [email]);
 
   return (
-    <div className="my-12 w-full">
+    <div className="mt-12 mb-4 w-full">
       <SectionTitle
         title="Apply and make an impact today."
         pretitle="volunteer events"
@@ -257,8 +257,8 @@ export default function Events() {
 
       {/* Search and Filter */}
       <Container>
-        <div className="flex h-[50px] divide-x rounded-xl shadow-[0_6px_25px_rgb(0,0,0,0.08)]">
-          <div className="flex h-full w-full items-center rounded-s-xl px-2 pl-3">
+        <div className="flex flex-col divide-y sm:flex-row sm:divide-x sm:divide-y-0 rounded-xl shadow-[0_6px_25px_rgb(0,0,0,0.08)]">
+          <div className="flex h-[50px] w-full items-center rounded-s-xl px-2 pl-3">
             <LucideSearch size={20} color="#000000" />
             <input
               className="w-full appearance-none border-none bg-transparent placeholder-gray-400 focus:ring-0"
@@ -268,7 +268,7 @@ export default function Events() {
               onChange={(e) => setSearchText(e.target.value)}
             />
           </div>
-          <div className="flex h-full w-full items-center px-2 pl-3">
+          <div className="flex h-[50px] w-full items-center px-2 pl-3">
             <LucideMapPin size={20} color="#000000" />
             <input
               className="w-full appearance-none border-none bg-transparent placeholder-gray-400 focus:ring-0"
@@ -278,7 +278,7 @@ export default function Events() {
               onChange={(e) => setSearchLocation(e.target.value)}
             />
           </div>
-          <div className="flex h-full w-full items-center px-2">
+          <div className="flex h-[50px] w-full items-center px-2">
             <input
               className="w-full appearance-none border-none bg-transparent placeholder-gray-400 focus:ring-0"
               type="text"
@@ -287,10 +287,10 @@ export default function Events() {
               onChange={(e) => setSearchTags(e.target.value)}
             />
           </div>
-          <div className="h-full w-[125px] flex-none rounded-e-xl bg-primary">
+          <div className="h-[50px] w-full sm:w-[125px] flex-none rounded-xl sm:rounded-e-xl bg-primary">
             <Link
               href="#"
-              className="flex h-full w-full items-center justify-center rounded-e-xl text-white"
+              className="flex h-flex h-full w-full items-center justify-center sm:rounded-e-xl text-white"
               onClick={handleSearch}
             >
               Find Events
@@ -418,7 +418,7 @@ export default function Events() {
             </div>
 
             {/* Map Embed */}
-            <div className="flex-1">
+            <div className="hidden flex-1 lg:block">
               <div
                 className="overflow-hidden rounded-3xl"
                 ref={mapContainerRef}
