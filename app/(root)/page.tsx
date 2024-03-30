@@ -1,3 +1,5 @@
+"use client";
+import { useSession } from "next-auth/react";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 import Container from "@/components/layout/Container";
@@ -5,6 +7,12 @@ import SectionTitle from "@/components/shared/SectionTitle";
 import { randomInt } from "crypto";
 
 const Home = async () => {
+  const { data: session } = useSession();
+  let volunteerRedirect = "/events";
+  if (!session) {
+    volunteerRedirect = "/login";
+  }
+
   const events = await prisma.event.findMany();
 
   const randomEvents: any[] = [];
@@ -119,7 +127,7 @@ const Home = async () => {
         </div>
         <div className="relative mt-auto flex flex-col items-start sm:flex-row sm:items-center">
           <a
-            href={`/events`}
+            href={volunteerRedirect}
             className="w-full rounded-2xl bg-primary px-8 py-4 text-center text-sm font-medium tracking-widest text-white mt-4"
           >
             VOLUNTEER NOW
