@@ -2,9 +2,33 @@ import prisma from "@/lib/prisma";
 import Image from "next/image";
 import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
+import { randomInt } from "crypto";
 
 const Home = async () => {
   const events = await prisma.event.findMany();
+
+  const randomEvents: any[] = [];
+  while (randomEvents.length < 3) {
+    const randomEvent = events[randomInt(0, events.length - 1)];
+    if (!randomEvents.includes(randomEvent) && randomEvent.status != "COMPLETED") {
+      randomEvents.push(randomEvent);
+    }
+  }
+
+  let event_1 = randomEvents[0];
+  let event_1_date = new Date(event_1.start_time);
+  let event_1_month = event_1_date.toLocaleString('default', { month: 'short' });
+  let event_1_description = event_1.description.length > 100 ? event_1.description.substring(0, 100) + "..." : event_1.description;
+
+  let event_2 = randomEvents[1];
+  let event_2_date = new Date(event_2.start_time);
+  let event_2_month = event_2_date.toLocaleString('default', { month: 'short' });
+  let event_2_description = event_2.description.length > 100 ? event_2.description.substring(0, 100) + "..." : event_2.description;
+
+  let event_3 = randomEvents[2];
+  let event_3_date = new Date(event_3.start_time);
+  let event_3_month = event_3_date.toLocaleString('default', { month: 'short' });
+  let event_3_description = event_3.description.length > 100 ? event_3.description.substring(0, 100) + "..." : event_3.description;
 
   const faq_data = [
     {
@@ -52,37 +76,25 @@ const Home = async () => {
 
   function FeatureEvent({
     eventId,
-    logo,
-    logoAltText,
-    orgName,
+    eventName,
     description,
     location,
     date,
   }: {
     eventId: string;
-    logo: string;
-    logoAltText: string;
-    orgName: string;
+    eventName: string;
     description: string;
     location: string;
     date: string;
   }) {
     return (
       <div
-        className="flex h-full flex-col rounded-md bg-white p-8 shadow-lg"
+        className="flex flex-col justify-center rounded-md bg-white p-8 shadow-lg"
       >
-        <Image
-          src={logo}
-          width="40"
-          height="40"
-          quality={100}
-          className="rounded-lg bg-gray-200 p-2 opacity-40"
-          alt={logoAltText}
-        />
-        <div className="mt-6 text-2xl font-medium leading-10">
-          <span className="break-words">{orgName}</span>
+        <div className=" mt-6 text-2xl font-medium leading-10">
+          <span className="break-words">{eventName}</span>
         </div>
-        <div className="mt-5 leading-8 text-black text-opacity-60">
+        <div className="flex flex-col justify-center mt-5 leading-8 text-black text-opacity-60 h-24">
           {description}
         </div>
         <div className="mt-5 flex justify-between gap-5 leading-[187.5%]">
@@ -108,7 +120,7 @@ const Home = async () => {
         <div className="relative mt-auto flex flex-col items-start sm:flex-row sm:items-center">
           <a
             href={`/events?id=${eventId}`}
-            className="w-full rounded-2xl bg-primary px-8 py-4 text-center text-sm font-medium tracking-widest text-white"
+            className="w-full rounded-2xl bg-primary px-8 py-4 text-center text-sm font-medium tracking-widest text-white mt-4"
           >
             VOLUNTEER NOW
           </a>
@@ -159,47 +171,55 @@ const Home = async () => {
         align="left"
       />
       <Container className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {/* {events.length > 0 ? (
-          events.slice(0,3).map((event) => (
-            <div key={event.id} className="flex flex-col h-full p-8 bg-white rounded-md shadow-lg">
-              <div className="relative h-48">
-                <Image src="/kindr_logo.png" layout="fill" objectFit="cover" objectPosition="left" quality={100} className="rounded-md" alt={event.name} />
-              </div>
-              <h2 className="py-4 text-2xl font-bold leading-snug tracking-tight text-gray-800">{event.name}</h2>
-              <p className="text-gray-500">{event.description}</p>
-            </div>
-          ))
-        ) : ( */}
-        <>
-          <FeatureEvent
-            eventId="123"
-            logo="/placeholder_image.svg"
-            logoAltText="Placeholder Image"
-            orgName="Rhythm of Life Society"
-            description="Our Drum Run event is looking to add a Social Media Assistant for our high-energy team of ..."
-            location="Vancouver, BC"
-            date="Feb 3, 2024"
-          />
-          <FeatureEvent
-            eventId="123"
-            logo="/placeholder_image.svg"
-            logoAltText="Placeholder Image"
-            orgName="SAHAS"
-            description="Helpline volunteers provide emotional support, information and resources, and effective ..."
-            location="Richmond, BC"
-            date="Feb 21, 2024"
-          />
-          <FeatureEvent
-            eventId="123"
-            logo="/placeholder_image.svg"
-            logoAltText="Placeholder Image"
-            orgName="Pinegrove Place"
-            description="We are dedicated to promoting person-centered, holistic care in a manner ..."
-            location="Burnaby, BC"
-            date="March 12, 2024"
-          />
-        </>
-        {/* )} */}
+        {events.length < 3 ? (
+          <>
+            <FeatureEvent
+              eventId="123"
+              eventName="Rhythm of Life Society"
+              description="Our Drum Run event is looking to add a Social Media Assistant for our high-energy team of ..."
+              location="Vancouver, BC"
+              date="Feb 3, 2024"
+            />
+            <FeatureEvent
+              eventId="123"
+              eventName="SAHAS"
+              description="Helpline volunteers provide emotional support, information and resources, and effective ..."
+              location="Richmond, BC"
+              date="Feb 21, 2024"
+            />
+            <FeatureEvent
+              eventId="123"
+              eventName="Pinegrove Place"
+              description="We are dedicated to promoting person-centered, holistic care in a manner ..."
+              location="Burnaby, BC"
+              date="March 12, 2024"
+            />
+          </>
+        ) : (
+          <>
+            <FeatureEvent
+              eventId={event_1.id}
+              eventName={event_1.name}
+              description={event_1_description}
+              location={event_1.city}
+              date={event_1_month + " " + event_1_date.getDate() + ", " + event_1_date.getFullYear()}
+            />
+            <FeatureEvent
+              eventId={event_2.id}
+              eventName={event_2.name}
+              description={event_2_description}
+              location={event_2.city}
+              date={event_2_month + " " + event_2_date.getDate() + ", " + event_2_date.getFullYear()}
+            />
+            <FeatureEvent
+              eventId={event_3.id}
+              eventName={event_3.name}
+              description={event_3_description}
+              location={event_3.city}
+              date={event_3_month + " " + event_3_date.getDate() + ", " + event_3_date.getFullYear()}
+            />
+          </>
+        )}
       </Container>
 
       {/* About */}
