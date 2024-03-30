@@ -1,5 +1,5 @@
-"use client";
-import { useSession } from "next-auth/react";
+// "use client"
+// import { useSession } from "next-auth/react";
 import prisma from "@/lib/prisma";
 import Image from "next/image";
 import Container from "@/components/layout/Container";
@@ -7,11 +7,11 @@ import SectionTitle from "@/components/shared/SectionTitle";
 import { randomInt } from "crypto";
 
 const Home = async () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   let volunteerRedirect = "/events";
-  if (!session) {
-    volunteerRedirect = "/login";
-  }
+  // if (!session) {
+  //   volunteerRedirect = "/login";
+  // }
 
   const events = await prisma.event.findMany();
 
