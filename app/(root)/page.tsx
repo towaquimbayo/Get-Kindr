@@ -119,7 +119,7 @@ const Home = async () => {
         </div>
         <div className="relative mt-auto flex flex-col items-start sm:flex-row sm:items-center">
           <a
-            href={`/events?id=${eventId}`}
+            href={`/events`}
             className="w-full rounded-2xl bg-primary px-8 py-4 text-center text-sm font-medium tracking-widest text-white mt-4"
           >
             VOLUNTEER NOW
