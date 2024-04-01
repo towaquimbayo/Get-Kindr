@@ -90,9 +90,31 @@ export async function GET(request: Request) {
           organization: {
             select: {
               name: true,
+              user: {
+                select: {
+                  name: true,
+                  email: true,
+                  image: true,
+                },
+              },
             },
           },
-          event_volunteers: true,
+          event_volunteers: {
+            include: {
+              volunteer: {
+                select: {
+                  user: {
+                    select: {
+                      name: true,
+                      email: true,
+                      image: true,
+                    },
+                  },
+                },
+              },
+            },
+          
+          },
         },
       });
     } else if (searchMode && searchTerm) {
