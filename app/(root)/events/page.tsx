@@ -139,7 +139,7 @@ export default function Events() {
       startDay < 10 ? "0" + startDay : startDay
     } ${startYear}`;
 
-    // Format time range
+    // Format time range to display correctly and in local time.
     const formattedStartDate = new Date(startDate).toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "numeric",
