@@ -4,54 +4,71 @@ import "../../globals.css";
 import Link from "next/link";
 
 export default function Recovery() {
+  // Set states for the password success / failure icons and their colors
   const [passIcon, setPassIcon] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [passColor, setPassColor] = useState<string>('red');
   const [repPassIcon, setRepPassIcon] = useState<string>('');
   const [repPassColor, setRepPassColor] = useState<string>('red');
 
+  // Set state for the password.
+  const [password, setPassword] = useState<string>('');
+
+  // Check if the base password is valid.
   const checkPassword = (password: string) => {
+    // Check if the password has a capital letter.
     let capital = false;
     if (password.toLowerCase() !== password) {
       capital = true;
     }
+    // Set the number and symbol to false and define numbers and letters.
     let number = false;
     let symbol = false;
     const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     const letters = /^[A-Za-z0-9]+$/;
+    // Check password for numbers and symbols by iterating through the characters.
     for (let i = 0; i < password.length; i++) {
+      // If the character is a number, set number to true.
       if (numbers.includes(password[i])) {
         number = true;
       }
-      if (!password[i].match(letters)) {
+      // If the character is not a letter or number, set symbol to true.
+      if (!password[i].match(letters) && !numbers.includes(password[i])) {
         symbol = true;
       }
     }
-    if (capital && (number || symbol) && password.length >= 8) {
+    // If the password has a capital letter, number, symbol, and is at least 8 characters long, return true.
+    if (capital && number && symbol && password.length >= 8) {
       return true;
     } else {
+      // Otherwise, return false
       return false;
     }
   }
 
-
+  // Check the password to update if the password is valid.
   const checkUpdatePassword = (password: string) => {
+    // Get password validity.
     let goodPass = checkPassword(password);
+    // If the password is valid, set the icon to a checkmark and change its color to green.
     if (goodPass) {
       setPassIcon('M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z');
       setPassColor('green');
     } else {
+      // Otherwise, set the icon to an x and change its color to red.
       setPassIcon('m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z');
       setPassColor('red');
     }
   }
 
+  // Check the repeated password to update if the password is valid.
   const checkRepPassword = (repPassword: string) => {
+    // If the repeated password is the same as the password, set the icon to a checkmark and change its color to green.
     if (password === repPassword) {
       setRepPassIcon('M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z');
       setRepPassColor('green');
+      // If the repeated password is the same as the password and the password is valid.
       if (checkPassword(password)) {
-        // set the submit button to be enabled
+        // Set the submit button to be enabled
         const submitButton = document.getElementById('submit');
         if (submitButton) {
           submitButton.classList.remove('!bg-[#E5E5E5]');
@@ -59,74 +76,109 @@ export default function Recovery() {
         }
       }
     } else {
+      // Otherwise, set the icon to an x and change its color to red.
       setRepPassIcon('m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z');
       setRepPassColor('red');
     }
   }
 
+  // Set the view password icon and color to the blocked icon and color.
   const [viewPassIcon, setViewPassIcon] = useState<string>('M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z');
   const [viewPassColor, setViewPassColor] = useState<string>('black');
+  // Set the password to be hidden.
   const [showPassType, setShowPassType] = useState<string>('password');
 
+  // Update the view password icon and color.
   const updatePassView = () => {
+    // Define the blocked and unblocked icons.
     const blocked = "M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
     const unblocked = "M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+    // If the view password icon is unblocked, set it to blocked and change the color to grey.
     if (viewPassIcon == unblocked) {
       setViewPassIcon(blocked)
       setViewPassColor('grey');
+      // Update the password to be hidden.
       setShowPassType('password');
     } else {
+      // Otherwise, set the view password icon to unblocked and change the color to black.
       setViewPassIcon(unblocked)
       setViewPassColor('black');
+      // Set the password to be shown.
       setShowPassType('text');
     }
   }
 
+  // Set the view repeated password icon and color to the blocked icon and color.
   const [viewRepPassIcon, setRepViewPassIcon] = useState<string>('M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z');
   const [viewRepPassColor, setRepViewPassColor] = useState<string>('black');
+  // Set the repeated password to be hidden.
   const [showRepPassType, setRepShowPassType] = useState<string>('password');
 
+  // Update the view repeated password icon and color.
   const updateRepPassView = () => {
+    // Define the blocked and unblocked icons.  
     const blocked = "M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
     const unblocked = "M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+    // If the view repeated password icon is unblocked, set it to blocked and change the color to grey.
     if (viewRepPassIcon == unblocked) {
       setRepViewPassIcon(blocked)
       setRepViewPassColor('grey');
+      // Update the repeated password to be hidden.
       setRepShowPassType('password');
     } else {
+      // Otherwise, set the view repeated password icon to unblocked and change the color to black.
       setRepViewPassIcon(unblocked)
       setRepViewPassColor('black');
+      // Set the repeated password to be shown.
       setRepShowPassType('text');
     }
   }
 
+  // Set the One Time Password state.
   const [OTP, setOTP] = useState<string>('password');
+
+  // Function to reset the password.
   const resetPassword = async () => {
+    // Get the password and repeated password.
     const pass = (document.getElementById('password') as HTMLInputElement)?.value;
     const repPass = (document.getElementById('repPassword') as HTMLInputElement)?.value;
+    // Set the response text.
     let responseText = "Verifying One Time Passcode..."
+    // Check if the passwords are the same and if the password is valid.
     if (pass == repPass) {
       if (checkPassword(pass)) {
+        // Get the response text for creating the One Time Password.
         const response = document.getElementById('response');
+
+        // If the response exists, update its view.
         if (response) {
+          // Remove the class options hiding the response.
           response.classList.remove('opacity-0');
           response.classList.remove('h-0');
           response.classList.remove('mt-0');
           response.classList.remove('mb-0');
+          // Set the response to the correct color.
           response.classList.add('text-secondary');
           response.classList.remove('text-primary');
           response.classList.remove('text-tertiary');
+          // Set the response text.
           response.innerHTML = responseText;
         }
+
+        // Fetch the One Time Password to verify.
         const res = await fetch('/api/one-time-pass/verify/?otp=' + OTP, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
           },
         });
+
+        // Wait for the response data.
         let data = await res.json();
         if (res.ok) {
           if (data.success) {
+
+            // If the response is valid and the One Time Password is correct, delete the One Time Password.
             await fetch('/api/one-time-pass/delete', {
               method: 'DELETE',
               headers: {
@@ -135,6 +187,7 @@ export default function Recovery() {
               body: JSON.stringify({ OneTimePass: OTP }),
             });
 
+            // Update the users password to their new password.
             const update = await fetch('/api/one-time-pass/update-pass', {
               method: 'PUT',
               headers: {
@@ -142,15 +195,19 @@ export default function Recovery() {
               },
               body: JSON.stringify({ email: data.email, password: pass }),
             });
+            // Wait for the response data.
             let updateData = await update.json();
+            // If the update was successful check its result.
             if (update.ok) {
               if (updateData.success) {
+                // If a response exists and was successful, update the response color and text.
                 if (response) {
                   response.innerHTML = updateData.result;
                   response.classList.remove('text-secondary');
                   response.classList.add('text-tertiary');
                 }
               } else {
+                // If a response exists and was not successful, update the response color and text.
                 if (response) {
                   response.innerHTML = updateData.result;
                   response.classList.remove('text-secondary');
@@ -158,6 +215,7 @@ export default function Recovery() {
                 }
               }
             } else {
+              // If a response exists and the update was not successful, update the response color and text.
               if (response) {
                 response.innerHTML = "Error updating password.";
                 response.classList.remove('text-secondary');
@@ -166,6 +224,7 @@ export default function Recovery() {
             }
           }
         } else {
+          // If the one time password was invalid, update the response color and text.
           if (response) {
             response.innerHTML = "Invalid One Time Passcode.";
             response.classList.remove('text-secondary');
