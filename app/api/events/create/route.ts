@@ -5,21 +5,26 @@ import { NextRequest } from 'next/server';
 /**
  * This function will create an events in the database.
  * @param {Request} request - The incoming request
+ * Request Params: name, description, start_time, end_time, tags, address, city, recurring, online, token_bounty, number_of_spots, coordinates
  * @returns {Response} - The response to the incoming request
  * @endpoint POST /api/events/create
  */
 export async function POST(request: NextRequest) {
+  // Get the token from the request.
   const token = await getToken({ req: request });
 
+  // If the token is missing, return an error response.
   if (!token) {
     return new Response("No valid session found", {
       status: 401,
     });
   }else if (token.accountType == "ORGANIZATION") {
+    // If the account is an organization, create the event.
     let createdEvent;
 
+    // Try to create the event.
     try {
-      // Get all the new organization info from the request
+      // Get all the new organization info from the request.
       const {
         name,
         description,
@@ -34,13 +39,13 @@ export async function POST(request: NextRequest) {
         number_of_spots,
         coordinates,
     } = await request.json();
-
+      // Get the organization ID from the token.
       const organization_id = token.organizationID ? token.organizationID as string : null;
   
-    // Extract the latitude and longitude from the coordinates
+    // Extract the latitude and longitude from the coordinates.
     const [latitude, longitude] = coordinates;
 
-      // If any of the required fields are missing, return an error
+      // If any of the required fields are missing, return an error response.
       if (
         !name ||
         !start_time ||
@@ -58,7 +63,7 @@ export async function POST(request: NextRequest) {
         });
       }
   
-      // Create a new event object with the new event info
+      // Create a new event object with the new event info passed from the request.
       const newEvent = {
         name,
         description,
@@ -83,17 +88,19 @@ export async function POST(request: NextRequest) {
         data: newEvent,
       });
     } catch (error) {
+      // If there is an error creating the event, return an error response.
       console.log("error" + error);
       return new Response("Error adding events: " + error, {
         status: 500,
       });
     }
   
-    // Return the created event
+    // Return the created event,
     return new Response(JSON.stringify(createdEvent), {
       status: 200,
     });
   } else {
+    // If the account is not an organization, return an error response.
     return new Response("Account is not an organization!", {
       status: 401,
     });

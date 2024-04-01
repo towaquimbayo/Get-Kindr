@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 
+// Define a list of dummy events to populate the database.
 const dummyEvents = [
   {
     name: "Community Cleanup Day",
@@ -170,6 +171,7 @@ const dummyEvents = [
  * @returns {Response} - The response to the incoming request
  */
 export async function GET(request: Request) {
+  // Loop through the dummy events and add them to the database.
   try {
     for (const event of dummyEvents) {
       await prisma.event.create({
@@ -177,10 +179,12 @@ export async function GET(request: Request) {
       });
     }
   } catch (error) {
+    // If there is an error adding the dummy events, return an error response.
     console.error(error);
     return new Response("Error adding dummy events: " + error, {
       status: 500,
     });
   }
+  // Return a success message.
   return new Response("Events created", { status: 200 });
 }
