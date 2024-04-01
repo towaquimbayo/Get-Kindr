@@ -7,32 +7,37 @@ import SectionTitle from "@/components/shared/SectionTitle";
 import { randomInt } from "crypto";
 
 const Home = async () => {
-  // const { data: session } = useSession();
+  // Define redirect for volunteer now button.
   let volunteerRedirect = "/events";
-  // if (!session) {
-  //   volunteerRedirect = "/login";
-  // }
 
+  // Get all events from the database.
   const events = await prisma.event.findMany();
 
+  // Randomly select 3 events to display on the landing page. If there are less than 3 events placeholders will be used.
   const randomEvents: any[] = [];
-  while (randomEvents.length < 3) {
-    const randomEvent = events[randomInt(0, events.length - 1)];
-    if (!randomEvents.includes(randomEvent) && randomEvent.status != "COMPLETED") {
-      randomEvents.push(randomEvent);
+  if (events.length < 3) {
+    while (randomEvents.length < 3) {
+      const randomEvent = events[randomInt(0, events.length - 1)];
+      // Check if the event is already in the list and if it is completed.
+      if (!randomEvents.includes(randomEvent) && randomEvent.status != "COMPLETED") {
+        randomEvents.push(randomEvent);
+      }
     }
   }
 
+  // Get the details for event 1. Format date and truncate description if needed.
   let event_1 = randomEvents[0];
   let event_1_date = new Date(event_1.start_time);
   let event_1_month = event_1_date.toLocaleString('default', { month: 'short' });
   let event_1_description = event_1.description.length > 100 ? event_1.description.substring(0, 100) + "..." : event_1.description;
-
+  
+  // Get the details for event 2. Format date and truncate description if needed.
   let event_2 = randomEvents[1];
   let event_2_date = new Date(event_2.start_time);
   let event_2_month = event_2_date.toLocaleString('default', { month: 'short' });
   let event_2_description = event_2.description.length > 100 ? event_2.description.substring(0, 100) + "..." : event_2.description;
 
+  // Get the details for event 3. Format date and truncate description if needed.
   let event_3 = randomEvents[2];
   let event_3_date = new Date(event_3.start_time);
   let event_3_month = event_3_date.toLocaleString('default', { month: 'short' });
@@ -81,7 +86,7 @@ const Home = async () => {
         "While word-of-mouth has charm, Kindr broadens your horizon by making it easier to discover volunteering opportunities that might otherwise go unnoticed. Also, earning Kindness Points adds an extra reward to your altruistic efforts. Refer friends to amplify your impact and rewards.",
     },
   ];
-
+  // Define the FeatureEvent component for display.
   function FeatureEvent({
     eventId,
     eventName,
