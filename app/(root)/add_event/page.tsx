@@ -4,91 +4,93 @@ import "../../globals.css";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+// Lock used to prevent multiple submissions.
 let lock = false;
 
 
 export default function Add_Event() {
 
+    // Get session information and check if the user is an organization
     const { data: session, status } = useSession();
     const router = useRouter();
-
     const isOrganization = session?.accountType.toLowerCase() === "organization";
 
+    // If the user is not logged in, an organization, or not authenticated, redirect to the login page.
     useEffect(() => {
         if (!session || status !== "authenticated" || !isOrganization) router.push("/login");
     }, [session, status, router, isOrganization]);
 
-    // TODO: Test without this function and remove
-    // const validateUser = async () => {
-    //     const userID = session?.user.id;
-    //     const res = await fetch('/api/organizations/find-by-user?userID=' + userID, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //     });
-    //     const data = await res.json();
-    //     orgID = data.id;
-    // }
-
-    // // Only check the organizationID once.
-    // if (load === 0) {
-    //     validateUser();
-    //     load = 1;
-    // }
-
-    // Removed Fields
+    // Removed Fields: Supervisor, Volunteer Position, Phone Number.
     // const [valueSupervisor, setValueSupervisor] = useState<string>('');
     // const [valuePosition, setValuePosition] = useState<string>('');
     // const [placeholderPhone, setPlaceValuePhone] = useState<string>('123 - 456 - 7890');
     // const [valuePhone, setValuePhone] = useState<string>('');
 
+    // Get current date for the date input field placeholder.
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString();
     const [valueDate, setPlaceValueDate] = useState<string>(formattedDate);
-    const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
-    const [valueVolNum, setValueVolNum] = useState<number>(0);
-    const [valueTags, setTagsValue] = useState<string>('');
+    // Define values for the event name, start time, and end time.
     const [valueName, setValueName] = useState<string>('');
-    const [valueAddress, setValueAddress] = useState<string>('');
-    const [valueLocation, setValueLocation] = useState<string>('');
-    const [valueCoordinates, setValueCoordinates] = useState<string>('');
-    const [addressButtonValue, setAddressButtonValue] = useState<string>('Search for a Location');
-    const [searchValue, setSearchValue] = useState('');
     const [valueStartTime, setValueStartTime] = useState<string>('');
     const [valueEndTime, setValueEndTime] = useState<string>('');
+    // Volunteer number is set to 0 by default.
+    const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
+    const [valueVolNum, setValueVolNum] = useState<number>(0);
+    // Checkboxes for recurring and online events are set to false by default.
     const [valueRecurring, setValueRecurring] = useState<boolean>(false)
     const [valueOnline, setValueOnline] = useState<boolean>(false)
+    // Tags and description are set to empty strings by default.
     const [valueDescription, setValueDescription] = useState<string>('');
+    const [valueTags, setTagsValue] = useState<string>('');
+    // Search value is the value the user inputs for location searching. Search data is the data returned from the API.
+    const [searchValue, setSearchValue] = useState('');
     const [searchData, updateSearchData] = useState('');
+    // Address is the full address from API, location is formatted without postal code and country.
+    const [valueAddress, setValueAddress] = useState<string>('');
+    const [valueLocation, setValueLocation] = useState<string>('');
+    // Value of dropdown menu for address selection. Show address tracks if the dropdown is open.
+    const [addressButtonValue, setAddressButtonValue] = useState<string>('Search for a Location');
     let showAddress = false;
+    // Coordinates are the latitude and longitude of the selected address.
+    const [valueCoordinates, setValueCoordinates] = useState<string>('');
 
+
+    // Handler to update the event name value and check if the required fields are filled for event submission.
     const updateNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValueName(event.target.value);
         validateSubmit();
     }
 
+    // Handler for changes to the location input field.
     const updateLocationHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // Update the search value and location value to the input value.
         setSearchValue(event.target.value);
         setValueLocation(event.target.value);
+        // If at least 5 characters are entered, update the search data and show the dropdown.
         if (event.target.value.length > 4) {
             setAddressButtonValue('Select an Address');
             handleSearch();
         } else {
+            // Otherwise clear the search data and hide the dropdown.
             updateSearchData('');
             setAddressButtonValue('Search for a Location');
             document.getElementById('addressDropdown')?.classList.add('h-0');
             document.getElementById('addressDropdown')?.classList.add('ring-0');
             showAddress = false;
         }
+        // Check if the required fields are filled for event submission.
         validateSubmit();
     }
 
+    // Handler for the search button to fetch location data from the Mapbox API.
     const handleSearch = () => {
+        // Call APU with search value.
         fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${searchValue}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}`)
             .then((response) => response.json())
             .then((data) => {
                 updateSearchData(data.features);
+                // Update the dropdown menu with the first 5 results.
                 for (let i = 1; i <= 5; i++) {
                     const menuItem = document.getElementById('menu-item-' + i);
                     if (menuItem) {
@@ -96,151 +98,151 @@ export default function Add_Event() {
                     }
                 }
             })
+            // Log any errors to the console.
             .catch((error) => {
                 console.error('Error fetching geocoding API:', error);
             });
     };
 
+    // Show or hide the address dropdown menu based on the search data.
     const showAddresses = () => {
+        // If show address is false and there is search data, show the dropdown.
         if (searchData.length > 0 && !showAddress) {
             document.getElementById('addressDropdown')?.classList.remove('h-0');
             document.getElementById('addressDropdown')?.classList.add('ring-1');
             showAddress = true;
         } else {
+            // Otherwise, hide the dropdown.
             document.getElementById('addressDropdown')?.classList.add('h-0');
             document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
         }
     }
 
+    // Set the address value based on the selected dropdown menu item.
     const setAddress = (index: number) => {
+        // Remove selection indication from all dropdown items.
         for (let i = 1; i <= 5; i++) {
             document.getElementById('dropdown-' + i)?.classList.remove('bg-tertiary');
         }
+        // Add selection indication to the selected dropdown item.
         document.getElementById('dropdown-' + index)?.classList.add('bg-tertiary');
+        // Set coordinates, location, and address values based on the selected dropdown item.
         setValueCoordinates((searchData[index - 1] as any).center);
         setValueLocation((searchData[index - 1] as any).place_name);
         setValueAddress((searchData[index - 1] as any).place_name);
+        // Hide the dropdown menu.
         setTimeout(() => {
             document.getElementById('addressDropdown')?.classList.add('h-0');
             document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
         }, 150);
+        // Check if the required fields are filled for event submission.
         validateSubmit();
     }
 
-    const updateStartTimeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValueStartTime(event.target.value);
-        validateSubmit();
-    }
-
-    const updateEndTimeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValueEndTime(event.target.value);
-        validateSubmit();
-    }
-
-    const updateDescriptionHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setValueDescription(event.target.value);
-        validateSubmit();
-    }
-
-    const handleInputClickVolNum = () => {
-        // Clear the placeholder value when the user clicks on the input field
-        setPlaceValueVolNum('');
-    };
-
-    const handleInputBlurVolNum = () => {
-        if (placeholderVolNum !== '') return;
-        // Reset the placeholder value when the user clicks outside the input field
-        setPlaceValueVolNum('0');
-    }
-
-    const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.value.length == 0) {
-            setValueVolNum(0);
-            return;
-        }
-        const newValue = event.target.value;
-        // Validate if the input is a number before updating the state
-        if (newValue.length > 3) {
-            const correctLen = newValue.slice(0, 3);
-            setValueVolNum(parseInt(correctLen, 10))
-        } else {
-            setValueVolNum(parseInt(newValue, 10));
-        }
-        validateSubmit();
-    }
-
-    const updateValueTags = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setTagsValue(event.target.value);
-    }
-
-    const formatValueTags = (event: string) => {
-        if (event.length > 0) {
-            const tags = valueTags.split(' ');
-            let formattedTags = '';
-            for (let i = 0; i < tags.length; i++) {
-                if (tags[i].charAt(0) !== "#" && tags[i].length > 0) {
-                    tags[i] = '#' + tags[i];
-                }
-                if (i === 0) {
-                    formattedTags = tags[i];
-                } else {
-                    formattedTags = formattedTags + ' ' + tags[i];
-                }
-            }
-            setTagsValue(formattedTags);
-        }
-    }
-
+    // Handler to check if the full date is entered and update the date value.
     const formatDate = (event: string) => {
+        // Format the date to convert to date object.
         if (event.length == 11) {
             event = event.slice(0, 4) + event.slice(5, 11);
         }
         if (event.length == 12) {
             event = event.slice(0, 4) + event.slice(6, 12);
         }
+        // Update the date value and check if the required fields are filled for event submission.
         setPlaceValueDate(event);
         validateSubmit();
     }
 
-    // // Deprecated as phone number moved to user info
-    // const handleInputClickPhone = () => {
-    //     // Clear the placeholder value when the user clicks on the input field
-    //     setPlaceValuePhone('');
-    // };
+    // Handler to update the start time value and check if the required fields are filled for event submission.
+    const updateStartTimeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValueStartTime(event.target.value);
+        validateSubmit();
+    }
 
-    // const handleInputBlurPhone = () => {
-    //     if (placeholderPhone !== '') return;
-    //     // Reset the placeholder value when the user clicks outside the input field
-    //     setPlaceValuePhone('123 - 456 - 7890');
-    // }
+    // Handler to update the end time value and check if the required fields are filled for event submission.
+    const updateEndTimeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValueEndTime(event.target.value);
+        validateSubmit();
+    }
 
-    // const formatPhone = (event: string) => {
-    //     // Check for a valid phone number with extra digits at the end
-    //     if (event.length > 16) {
-    //         const correctLen = event.slice(0, 16);
-    //         event = correctLen;
-    //     }
-    //     // Remove all non-numeric characters from the input value
-    //     const cleaned = event.replace(/\D/g, '');
-    //     // Apply formatting based on the cleaned value
-    //     const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
-    //     if (match) {
-    //         // Check if all digits are entered, otherwise, return formatted string with only entered digits
-    //         event = match[1] ? '(' + match[1] + (match[2] ? ') ' + match[2] + (match[3] ? ' - ' + match[3] : '') : '') : '';
-    //     } else {
-    //         event = ''
-    //     }
-    //     setValuePhone(event);
-    // }
+    // Handler to update the description value and check if the required fields are filled for event submission.
+    const updateDescriptionHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setValueDescription(event.target.value);
+        validateSubmit();
+    }
 
+    // Clear the placeholder value when the user clicks on the volunteer number field.
+    const handleInputClickVolNum = () => {
+        setPlaceValueVolNum('');
+    };
+
+    // Reset the placeholder value when the user clicks outside the input field if the input is empty.
+    const handleInputBlurVolNum = () => {
+        if (placeholderVolNum !== '') return;
+        setPlaceValueVolNum('0');
+    }
+
+    // Handle changes to the phone number input field.
+    const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // If the input is empty, set the value to 0.
+        if (event.target.value.length == 0) {
+            setValueVolNum(0);
+            return;
+        }
+        // Get the new value from the input field.
+        const newValue = event.target.value;
+        // Validate if the input is less than 3 digits before updating the state.
+        if (newValue.length > 3) {
+            const correctLen = newValue.slice(0, 3);
+            setValueVolNum(parseInt(correctLen, 10))
+        } else {
+            setValueVolNum(parseInt(newValue, 10));
+        }
+        // Check if the required fields are filled for event submission.
+        validateSubmit();
+    }
+
+    // Update the tags value when the user types in the tags input field.
+    const updateValueTags = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setTagsValue(event.target.value);
+    }
+
+    // Format the tags to have a hashtag at the beginning of each tag.
+    const formatValueTags = (event: string) => {
+        // Split the tags by spaces.
+        if (event.length > 0) {
+            const tags = valueTags.split(' ');
+            let formattedTags = '';
+            // If the tag is not an empty space and does not start with a hashtag, add a hashtag to the beginning.
+            for (let i = 0; i < tags.length; i++) {
+                if (tags[i].charAt(0) !== "#" && tags[i].length > 0) {
+                    tags[i] = '#' + tags[i];
+                }
+                // If it is the first tag, set the formatted tags to the tag.
+                if (i === 0) {
+                    formattedTags = tags[i];
+                } else {
+                    // Otherwise add the tag to the formatted tags.
+                    formattedTags = formattedTags + ' ' + tags[i];
+                }
+            }
+            // Update the tags value.
+            setTagsValue(formattedTags);
+        }
+    }
+
+    // Lock the submit button and prevent multiple submissions, then submit the event.
     const lockAndSubmit = () => {
+        // Set submit button to disabled.
         const submitButton = document.getElementById('submit') as HTMLInputElement;
         submitButton.disabled = true;
+        // If the lock is true, return.
         if (lock) {
             return;
         }
+        // Otherwise set the lock to true, submit the event, and set a timeout to unlock the button.
         lock = true;
         submitEvent();
         setTimeout(() => {
@@ -249,7 +251,9 @@ export default function Add_Event() {
         }, 3000);
     }
 
+    // Submit the event to the API.
     const submitEvent = async () => {
+        // Format the location to remove postal code and country.
         let splitAddress = valueAddress.split(',');
         let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
         for (let i = 2; i < splitAddress.length; i++) {
@@ -257,18 +261,14 @@ export default function Add_Event() {
                 formattedLocation = formattedLocation + splitAddress[i] + ', ';
             }
         }
+        // Check if the required fields are filled for event submission.
         if (validateSubmit()) {
-            // Removed Elements:
-            // - valuePosition
-            // - valueSupervisor
-            // - valuePhone
+            // Create the event info object with the required fields.
             const eventInfo = {
                 name: valueName,
                 description: valueDescription,
                 start_time: new Date(valueDate + " " + valueStartTime),
                 end_time: new Date(valueDate + " " + valueEndTime),
-                // TODO: Test without and remove
-                // organization_id: orgID,
                 tags: valueTags.split(' '),
                 address: valueAddress,
                 city: formattedLocation,
@@ -278,6 +278,7 @@ export default function Add_Event() {
                 token_bounty: 100,
                 number_of_spots: valueVolNum,
             };
+            // Call the API to create the event.
             const data = JSON.stringify(eventInfo);
             const res = await fetch('/api/events/create', {
                 method: 'POST',
@@ -286,14 +287,12 @@ export default function Add_Event() {
                 },
                 body: data,
             });
-
-            console.log("Response: ", res);
+            // Log the response and redirect to the events page if successful.
             if (!res) {
                 console.log("An error occurred. Please try again.");
             } else if (res.ok) {
                 console.log("Successfully created event.")
                 const eventData = await res.json();
-                console.log("Returned event: ", eventData);
                 window.location.href = "/events";
             } else {
                 console.log("Response: ", res)
@@ -302,6 +301,7 @@ export default function Add_Event() {
         }
     }
 
+    // For each of the required fields, check if they are filled and enable the submit button if they are.
     const validateSubmit = () => {
         var valid = true;
         if (valueName.length === 0) {
@@ -331,13 +331,21 @@ export default function Add_Event() {
         if (valueDescription.length === 0) {
             valid = false;
         }
+        // If all required fields are filled, enable the submit button.
         const submitButton = document.getElementById('submit');
         if (submitButton && valid) {
             submitButton.classList.remove('!bg-[#E5E5E5]');
             submitButton.classList.remove('cursor-not-allowed');
             return true;
+        } else {
+            // Prevent the tags from being added twice.
+            submitButton?.classList.remove('!bg-[#E5E5E5]');
+            submitButton?.classList.remove('cursor-not-allowed');
+            // Otherwise disable the submit button.
+            submitButton?.classList.add('!bg-[#E5E5E5]');
+            submitButton?.classList.add('cursor-not-allowed');
+            return false;
         }
-        return false;
     }
 
     return (
