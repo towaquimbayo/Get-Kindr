@@ -7,7 +7,7 @@ interface RecoveryResult {
 }
 
 export default async function recover(email: any, OTP: any): Promise<RecoveryResult> {
-
+  // Define the nodemailer transporter using local environment variables.
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -20,6 +20,7 @@ export default async function recover(email: any, OTP: any): Promise<RecoveryRes
     }
   });
 
+  // Format the email sender, subject, and the text in email being sent.
   let mailOptions = {
     from: "devteam.kindr@gmail.com",
     to: email,
@@ -46,10 +47,10 @@ export default async function recover(email: any, OTP: any): Promise<RecoveryRes
     `
   }
 
+  // Send the email and return a promise indicating success or failure.
   return new Promise<RecoveryResult>((resolve, reject) => {
     transporter.sendMail(mailOptions, (err) => {
       if (err) {
-        console.log(err);
         resolve({ success: false });
       } else {
         resolve({ success: true });
