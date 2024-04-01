@@ -85,8 +85,7 @@ export default function Recovery() {
 
       // Define the data for the OTP (One Time Pass).
       const OTPdata = {
-        email: email,
-        expiration_date: new Date(new Date().getTime() + 15 * 60 * 1000).toISOString(),
+        email: email
       }
 
       // Get the response from the fetch.
