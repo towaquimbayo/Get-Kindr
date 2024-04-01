@@ -57,6 +57,7 @@ model User {
   volunteer       Volunteer?
   wallet          Wallet?
   admin           Boolean @default(false)
+  tokenBalance    Int @default(0)
 }
 
 model Event {

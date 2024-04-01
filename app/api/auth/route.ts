@@ -41,6 +41,7 @@ export async function GET(request: Request) {
         password: "",
         organizationId: user.organization?.id,
         volunteerId: user.volunteer?.id,
+        tokenBalance: user.tokenBalance || 0,
       },
     });
   } catch (e) {
