@@ -176,16 +176,16 @@ export default function Recovery() {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center place-content-center w-full h-4/5 bg-gradient-to-r from-start to-end">
-      <div className="flex flex-col items-center md:w-2/3 w-11/12 h-fit mb-20 md:px-0 px-6 md:mb-8 border-4 rounded-lg border-secondary bg-gray-50">
-        <p className="md:mb-12 mb-16 mt-6 text-center font-display font-bold text-4xl md:text-5xl">Forgot Password?</p>
-        <p className="mb-4 text-center font-display md:text-xl text-base font-bold text-secondary ">Enter the email connected to your account.</p>
-        <input onChange={(e) => updateEmail(e)} className="md:h-12 h-16 md:w-2/3 w-full px-6 mb-10 md:mt-0 mt-2 rounded-lg border border-[#EAEAEA]" placeholder="example@email.com"></input>
-        <div className="flex justify-evenly w-full mb-8 mb:mt-0 mt-8">
-          <Link href="/" className="w-1/3 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
-          <button onClick={submitEmail} id="submit" className="text-md h-12 w-1/3 rounded-md focus:outline-none border-primary transition-all duration-300 block px-4 bg-primary text-white hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
+    <div id="forgotPasswordBody" className="flex flex-1 flex-col items-center place-content-center bg-gradient-to-r from-start to-end w-full h-4/5">
+      <div id="innerContainer" className="flex flex-col items-center bg-gray-50 border-4 rounded-lg border-secondary w-11/12 h-fit md:w-2/3 mb-20 px-6 md:px-0 md:mb-8">
+        <p className="text-center font-display font-bold text-4xl md:text-5xl mb-16 mt-6 md:mb-12">Forgot Password?</p>
+        <p className="text-center font-display font-bold text-base text-secondary md:text-xl mb-4">Enter the email connected to your account.</p>
+        <input onChange={(e) => updateEmail(e)} className="rounded-lg border border-[#EAEAEA] h-16 w-full md:h-12 md:w-2/3 px-6 mb-10 mt-2 md:mt-0" placeholder="example@email.com"></input>
+        <div id="buttonsContainer" className="flex justify-evenly w-full mb-8 mt-8 mb:mt-0">
+          <Link href="/" className="w-1/3 "><button id="return" className="rounded-md bg-secondary bg-opacity-60 font-semibold text-md text-white focus:outline-none hover:opacity-80 transition-all duration-300 h-12 w-full">Cancel</button></Link>
+          <button onClick={submitEmail} id="submit" className="bloc rounded-md focus:outline-none border-primary bg-primary !bg-[#E5E5E5] text-white text-[#BDBDBD] text-md transition-all duration-300 hover:opacity-80 h-12 w-1/3 px-4 cursor-not-allowed">Submit</button>
         </div>
-        <p id="response" className="text-center w-4/5 font-display text-2xl font-bold opacity-100 mt-4 mb-6"></p>
+        <p id="response" className="text-center font-bold font-display text-2xl opacity-100 w-4/5 mt-4 mb-6"></p>
       </div>
     </div>
   );
