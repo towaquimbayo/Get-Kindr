@@ -349,114 +349,136 @@ export default function Add_Event() {
     }
 
     return (
-        <div className="flex flex-1 flex-col items-center w-full bg-tertiary bg-opacity-10 pb-12 pt-4">
-            <div className="flex flex-col w-10/12">
-                <p className="text-left font-display text-3xl font-bold text-tertiary mt-16 pl-6">Create Event</p>
-                <p className="font-display font-bold text-4xl max-w-xs mb-12 pl-6 sm:max-w-full md:max-w-2xl md:text-6xl  lg:max-w-full">Host the future of giving back.</p>
-                <div className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
-                    <div className="w-5/6 mt-8 h-fit">
-                        <h3 className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
+        <div id="bodyBox" className="flex flex-1 flex-col items-center bg-tertiary bg-opacity-10 w-full pb-12 pt-4">
+
+            <div id="bodyContainer" className="flex flex-col w-10/12">
+
+                <p id="title" className="text-left font-display font-bold text-tertiary text-3xl mt-16 pl-6">Edit Event</p>
+                <p id="subTitle" className="font-display font-bold text-4xl max-w-xs sm:max-w-full md:max-w-2xl md:text-6xl lg:max-w-full mb-12 pl-6">Host the future of giving back.</p>
+
+                <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
+
+                    <div id="reqFieldContainer" className="w-5/6 h-fit mt-8">
+                        <h3 id="reqField" className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
                     </div>
-                    <div className="flex justify-evenly w-full mt-4">
-                        <div className="flex flex-col w-5/6">
-                            <label htmlFor="Name" className=" text-lg pl-4 ">Event Name <span className="text-primary">*</span></label>
-                            <input id="Name" onChange={(e) => updateNameHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 sm:text-lg text-ellipsis" placeholder="Enter Your Event Name"></input>
+
+                    <div id="eventNameContainer" className="flex justify-evenly w-full mt-4">
+                        <div id="eventNameSubContainer" className="flex flex-col w-5/6">
+                            <label htmlFor="NameInput" className=" text-lg pl-4">Event Name <span className="text-primary">*</span></label>
+                            <input id="NameInput" onChange={(e) => updateNameHandler(e)} value={valueName} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 sm:text-lg text-ellipsis pl-6 " placeholder="Enter Your Event Name"></input>
                         </div>
                     </div>
-                    <div className="flex justify-evenly w-full pt-12">
-                        <div className="flex flex-col w-1/3 pl-2 md:pl-6">
-                            <label htmlFor="Position" className="text-lg pl-4">Location <span className="text-primary">*</span></label>
-                            <input id="Position" onChange={(e) => updateLocationHandler(e)} value={valueLocation} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm pl-6 min-w-30 sm:text-lg" placeholder="Event Address"></input>
+
+                    <div id="locationContainer" className="flex justify-evenly w-full pt-12">
+
+                        <div id="addressSubContainer" className="flex flex-col w-1/3 pl-2 md:pl-6">
+                            <label htmlFor="PositionInput" className="text-lg pl-4">Location <span className="text-primary">*</span></label>
+                            <input id="PositionInput" onChange={(e) => updateLocationHandler(e)} value={valueLocation} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm sm:text-lg min-w-30 pl-6" placeholder="Event Address"></input>
                         </div>
-                        <div className="flex flex-col w-1/2 px-6">
-                            <label htmlFor="Position" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
-                            <button type="button" className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white text-sm sm:text-lg py-2.5 px-4 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+
+                        <div id="locationDropDownContainer" className="flex flex-col w-1/2 px-6">
+                            <label htmlFor="AddressInput" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
+                            <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-50 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-4 w-full "
                                 id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={showAddresses}>
                                 {addressButtonValue}
-                                <svg className="-mr-1 h-8 w-8 my-auto text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg id="dropDownFormatting" className="-mr-1 h-8 w-8 my-auto text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
                                 </svg>
                             </button>
-                            <div id="addressDropdown" className="z-10 mt-2 w-11/12 mx-auto divide-y-1 divide-gray-300 rounded-md bg-white shadow-lg ring-black ring-opacity-5 focus:outline-none h-0 overflow-hidden ring-0" aria-orientation="vertical" aria-labelledby="menu-button">
+
+                            <div id="addressDropdown" className="z-10 rounded-md shadow-lg ring-black ring-opacity-5 divide-y-1 divide-gray-300 bg-white focus:outline-none w-11/12 mt-2 mx-auto overflow-hidden h-0 ring-0" aria-orientation="vertical" aria-labelledby="menu-button">
                                 <div className="p-1 overflow-hidden" id="dropdown-1" onClick={() => setAddress(1)}>
-                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-1">1</button>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-1">1</button>
                                 </div>
                                 <div className="py-1" id="dropdown-2" onClick={() => setAddress(2)}>
-                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-2">2</button>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-2">2</button>
                                 </div>
                                 <div className="py-1" id="dropdown-3" onClick={() => setAddress(3)}>
-                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-3">3</button>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-3">3</button>
                                 </div>
                                 <div className="py-1" id="dropdown-4" onClick={() => setAddress(4)}>
-                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-4">4</button>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-4">4</button>
                                 </div>
                                 <div className="py-1" id="dropdown-5" onClick={() => setAddress(5)}>
-                                    <button className="text-gray-700 block px-4 py-2 text-md truncate w-full" id="menu-item-5">5</button>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-5">5</button>
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
-                    <div className="flex flex-col sm:flex-row justify-evenly items-center w-full">
+
+                    <div id="dateTimeContainer" className="flex flex-col sm:flex-row justify-evenly items-center w-full">
+
                         <div className="flex flex-col w-4/5 sm:w-1/3 sm:min-w-40 mt-8">
-                            <label htmlFor="Date" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
-                            <input type="date" id="Date" onChange={(e) => formatDate(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm min-w-34 text-center sm:px-3 md:px-6 sm:text-base" value={valueDate}></input>
+                            <label htmlFor="DateInput" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
+                            <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
                         </div>
+
                         <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-44">
-                            <label htmlFor="time" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
+                            <label htmlFor="timeInput" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="12:00"></input>
-                                <h1 className="text-xl mt-0.5 sm:text-2xl">-</h1>
-                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="23:59"></input>
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="12:00"></input>
+                                <h1 className="text-xl sm:text-2xl mt-0.5 ">-</h1>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="23:59"></input>
                             </div>
                         </div>
+
                     </div>
-                    <div className="flex flex-col items-center justify-center w-full mt-8 md:flex-row md:justify-evenly">
-                        <div className="flex w-full justify-between mt-10 md:w-4/5 md:justify-between md:mt-0">
-                            <div className="flex flex-col w-1/3 sm:min-w-36 md:pt-4 ml-10">
-                                <label htmlFor="Spots" className=" pl-4 text-lg sm:min-w-36">Available Spots <span className="text-primary">*</span></label>
-                                <input type="number" id="Spots" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] pl-6 text-gray-800 text-xl sm:text-2xl sm:min-w-40 text-center" placeholder={placeholderVolNum}></input>
+
+                    <div id="spotsAndCheckboxContainer" className="flex flex-col items-center justify-center md:flex-row md:justify-evenly w-full mt-8">
+                        <div id="subSpotsAndCheckboxContainer" className="flex w-full justify-between md:w-4/5 mt-10 md:mt-0">
+
+                            <div id="" className="flex flex-col w-1/3 sm:min-w-36 ml-10 md:pt-4">
+                                <label htmlFor="SpotsInput" className=" pl-4 text-lg sm:min-w-36">Available Spots <span className="text-primary">*</span></label>
+                                <input type="number" id="SpotsInput" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className=" text-center rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-xl sm:text-2xl sm:min-w-40 pl-6" placeholder={placeholderVolNum}></input>
                             </div>
-                            <div className="flex flex-col w-32 h-20 border-4 rounded-lg border-secondary border-opacity-80 mt-4 mr-10 md:w-36 md:w-1/3 md:h-24 md:pt-1 ">
-                                <div className="mt-2 w-full ml-2">
-                                    <input id="Virtual" type="checkbox" onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
+
+                            <div className="flex flex-col rounded-lg border-4 border-secondary border-opacity-80 w-32 h-20 md:w-1/3 md:h-24 mt-4 mr-10 md:pt-1">
+
+                                <div className="w-full mt-2 ml-2">
+                                    <input id="VirtualInput" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
-                                    <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Virtual">
+                                    <label className="cursor-pointer select-none font-semibold text-gray-700 md:text-xl mt-px pl-2" htmlFor="VirtualInput">
                                         Virtual
                                     </label>
                                 </div>
-                                <div className="mt-2 w-full ml-2">
-                                    <input id="Recurring" type="checkbox" onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
+
+                                <div className="w-full mt-2 ml-2">
+                                    <input id="RecurringInput" type="checkbox" checked={valueRecurring} onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
-                                    <label className="mt-px font-semibold text-gray-700 cursor-pointer select-none pl-2 md:text-xl" htmlFor="Recurring">
+                                    <label className="cursor-pointer select-none font-semibold text-gray-700 md:text-xl mt-px pl-2" htmlFor="RecurringInput">
                                         Recurring
                                     </label>
                                 </div>
+
                             </div>
+
                         </div>
                     </div>
+
                     <div className="flex justify-evenly w-full pt-2">
                         <div className="flex flex-col w-4/5">
-                            <label htmlFor="Description" className=" text-lg pl-4">Description <span className="text-primary">*</span></label>
-                            <textarea id="Description" rows={6} onChange={(e) => updateDescriptionHandler(e)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-gray-800 max-h-44 min-h-36"></textarea>
+                            <label htmlFor="DescriptionInput" className=" text-lg pl-4">Description <span className="text-primary">*</span></label>
+                            <textarea id="DescriptionInput" rows={6} onChange={(e) => updateDescriptionHandler(e)} value={valueDescription} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 max-h-44 min-h-36 pl-3"></textarea>
                         </div>
                     </div>
+
                     <div className="flex justify-evenly w-full mt-8">
                         <div className="flex flex-col w-4/5">
-                            <label htmlFor="Tags" className="text-lg pl-4">Tags</label>
-                            <input id="Tags" value={valueTags} onInput={updateValueTags} onBlur={(e) => formatValueTags(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] pl-3 font-semibold text-primary" placeholder="Enter tags related to your event ..."></input>
+                            <label htmlFor="TagsInput" className="text-lg pl-4">Tags</label>
+                            <input id="TagsInput" value={valueTags} onInput={updateValueTags} onBlur={(e) => formatValueTags(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-primary pl-3" placeholder="Enter tags related to your event ..."></input>
                         </div>
                     </div>
+
                     <div className="flex justify-evenly w-full mb-8 mt-12">
-                        <Link href="/" className="w-1/5 "><button className="text-md h-12 w-full rounded-md bg-secondary bg-opacity-60 text-white focus:outline-none font-semibold hover:opacity-80 transition-all duration-300">Cancel</button></Link>
-                        <button id="submit" onClick={lockAndSubmit} className="text-md h-12 w-1/5 rounded-md bg-primary text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] cursor-not-allowed">Submit</button>
+                        <Link href="/" className="w-1/5 "><button className="rounded-md bg-secondary bg-opacity-60 font-semibold text-white text-md focus:outline-none hover:opacity-80 transition-all duration-300 h-12 w-full">Cancel</button></Link>
+                        <button id="submit" onClick={lockAndSubmit} className="rounded-md bg-primary text-md text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] h-12 w-1/5 cursor-not-allowed">Submit</button>
                     </div>
+
                 </div>
+                
             </div>
         </div>
-        // Deprecated phone number input
-        // <div className="flex flex-col justify-evenly sm:justify-center w-3/5 sm:w-fit sm:min-w-80 md:w-1/3 md:min-w-0 m-auto md:m-0 md:max-w-56">
-        //     <label htmlFor="Phone" className="pl-4 text-lg md:pl-4">Phone</label>
-        //     <input type="tel" id="Phone" value={valuePhone} onClick={handleInputClickPhone} onChange={(e) => formatPhone(e.target.value)} onBlur={handleInputBlurPhone} className="font-semibold rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-center mb:text-lg md:max-w-56" placeholder={placeholderPhone}></input>
-        // </div>
     );
 }
