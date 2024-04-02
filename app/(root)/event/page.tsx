@@ -76,58 +76,7 @@ export default function Event() {
             online: fetchedEvent.online,
             recurring: fetchedEvent.recurring,
             tokenBounty: fetchedEvent.token_bounty,
-            // volunteers: fetchedEvent.event_volunteers || [],
-            volunteers: [
-              {
-                id: "1",
-                name: "John Doe",
-                email: "john@example.com",
-                profilePicture:
-                  "https://randomuser.me/api/portraits/men/79.jpg",
-              },
-              {
-                id: "2",
-                name: "Jane Doe",
-                email: "jane@example.com",
-                profilePicture:
-                  "https://randomuser.me/api/portraits/women/3.jpg",
-              },
-              {
-                id: "3",
-                name: "Alice Smith",
-                email: "alice@example.com",
-                profilePicture:
-                  "https://randomuser.me/api/portraits/women/60.jpg",
-              },
-              {
-                id: "4",
-                name: "Bob Smith",
-                email: "bob@example.com",
-                profilePicture:
-                  "https://randomuser.me/api/portraits/men/21.jpg",
-              },
-              {
-                id: "5",
-                name: "Eve Johnson",
-                email: "eve@example.com",
-                profilePicture:
-                  "https://randomuser.me/api/portraits/women/36.jpg",
-              },
-              {
-                id: "6",
-                name: "Charlie Johnson",
-                email: "charlie@example.com",
-                perfilPicture:
-                  "https://randomuser.me/api/portraits/women/47.jpg",
-              },
-              {
-                id: "7",
-                name: "David Brown",
-                email: "david@example.com",
-                profilePicture:
-                  "https://randomuser.me/api/portraits/men/46.jpg",
-              },
-            ] as any,
+            volunteers: fetchedEvent.event_volunteers || [],
             isFavourite: false,
           });
         })
@@ -238,20 +187,20 @@ export default function Event() {
           <div className="flex w-full flex-wrap justify-between gap-4">
             {event.volunteers.map((volunteer: any) => (
               <div
-                key={volunteer.id}
+                key={volunteer.volunteerId}
                 className="flex w-full items-center justify-between gap-4 rounded-lg border border-[#EAEAEA] bg-white p-4 transition-all duration-300 ease-in-out hover:shadow-md md:w-[48%]"
               >
                 <div className="flex items-center gap-4">
                   <Image
-                    src={volunteer.profilePicture || "/default_profile_img.png"}
-                    alt={volunteer.name}
+                    src={volunteer.volunteer.user.image || "/default_profile_img.png"}
+                    alt="User profile picture"
                     width={48}
                     height={48}
                     className="rounded-full"
                   />
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 items-start justify-between gap-0.5">
-                    <p className="text-lg font-semibold">{volunteer.name}</p>
-                    <p className="text-md text-[#4b4b4b]">{volunteer.email}</p>
+                    <p className="text-lg font-semibold">{volunteer.volunteer.user.name}</p>
+                    <p className="text-md text-[#4b4b4b]">{volunteer.volunteer.user.email}</p>
                   </div>
                 </div>
                 {isOrganization && (
