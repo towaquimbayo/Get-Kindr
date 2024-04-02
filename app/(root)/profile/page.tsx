@@ -380,12 +380,17 @@ export default function Profile() {
               </p>
             </div>
           </div>
+          <input
+            type="file"
+            accept="image/jpeg, image/png"
+            className="hidden"
+            id="profile-picture"
+          />
           <Button
-            title="Terminate Account"
-            text="Terminate Account"
+            title="Update Porfile Picture"
+            text="Update Photo"
             onClick={() => {
-              // @TODO: Add terminate account functionality
-              // update({ redirect: false });
+              document.getElementById("profile-picture")?.click();
             }}
             full
           />

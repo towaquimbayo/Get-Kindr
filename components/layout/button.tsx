@@ -9,6 +9,7 @@ interface ButtonProps {
   disabled?: boolean;
   outline?: boolean;
   full?: boolean;
+  small?: boolean;
   text?: string;
   children?: React.ReactNode;
 }
@@ -23,17 +24,16 @@ export default function Button({
   text = "",
   outline = false,
   full = false,
+  small = false,
   children = null,
 }: ButtonProps) {
   const btnClassNames = [
-    "text-md",
-    "h-12",
-    "rounded-md",
     "focus:outline-none",
     "border-primary",
     "transition-all",
     "duration-300",
     full ? "w-full" : "block mr-auto px-4",
+    small ? "text-sm h-10 rounded-xl" : "text-md h-12 rounded-md",
     outline
       ? "bg-transparent border-2 text-primary hover:bg-primary hover:text-white"
       : "bg-primary text-white hover:opacity-80",

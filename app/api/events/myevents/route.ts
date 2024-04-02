@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
           // Otherwise, if the organizationID is present, get the organization's events.
           events = await getOrganizationEvents(organizationID as string);
         }
-        // console.log("Events:", events);
+        console.log("Events:", events);
 
         // Return the events.
         return new Response(JSON.stringify(events), { status: 200 });
@@ -78,6 +78,11 @@ function getOrganizationEvents(organizationID: string) {
     },
     include: {
       event_volunteers: true,
+      organization: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 }
