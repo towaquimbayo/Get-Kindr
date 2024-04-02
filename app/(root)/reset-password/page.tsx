@@ -258,7 +258,7 @@ export default function Recovery() {
     <div className="flex flex-1 flex-col items-center place-content-center bg-gradient-to-r from-start to-end w-full h-4/5">
       <div className="flex flex-col items-center border-4 rounded-lg border-secondary bg-gray-50 w-11/12 h-fit md:w-2/3 mt-24 mb-20 md:mb-8 px-6 md:px-0">
         <p className="text-center font-display font-bold text-4xl md:text-5xl mb-16 mt-6 md:mb-12">Password Reset?</p>
-        <p className="font-display text-xl sm:text-2xl font-bold text-secondary md:w-2/3 w-full mb-4 pl-4 sm:pl-10">Enter your One Time Passcode.</p>
+        <p className="font-display text-xl sm:text-2xl font-bold text-secondary md:w-2/3 w-full mb-4 pl-4 sm:pl-10">Enter your <span className="mb:hidden"><br></br></span> One Time Passcode.</p>
         <div id="otpContainer" className=" flex md:w-2/3 w-full mb-8 pr-20 md:pr-14">
           <input id="otpInput" className="rounded-lg border border-[#EAEAEA] w-full h-16 md:h-12 mt-2 md:mt-0 px-6" onChange={(e) => setOTP(e.target.value)} placeholder=""></input>
         </div>
@@ -284,13 +284,13 @@ export default function Recovery() {
           <path strokeLinecap="round" strokeLinejoin="round" d={viewRepPassIcon} />
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
         </svg>
-        <p id="passwordReminder" className="flex items-center justify-center antialiased opacity-60 font-sans text-lg font-bold leading-normal text-tertiary w-4/5 gap-1 mt-4 mb-10">
+        <p id="passwordReminder" className="flex items-center justify-center antialiased opacity-60 font-sans text-lg font-bold leading-normal text-tertiary w-full sm:w-11/12 gap-1 mt-4 mb-10 ml-4 mb:mr-0">
           <svg id="reminderIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="min-w-10 max-w-10 min-h-10 max-h-10 -mt-px mr-2">
             <path fillRule="evenodd"
               d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
               clipRule="evenodd"></path>
           </svg>
-          Use at least 8 characters, one uppercase, and one number or symbol.
+          <span className="max-w-64 mb:px-2 sm:max-w-100 sm:px-0 sm:text-center md:max-w-64 md:px-2 md:text-left lg:max-w-100 lg:pr-0 lg:pl-2 lg:text-center">Use at least 8 characters, one uppercase character, and one number or symbol.</span>
         </p>
         <div id="buttonsContainer" className="flex justify-evenly w-full md:mb-4 mb-8 mb:mt-0 mt-8">
           <Link href="/" className="w-1/3"><button className="rounded-md bg-secondary bg-opacity-60 text-md text-white focus:outline-none hover:opacity-80 transition-all duration-300 w-full h-12">Cancel</button></Link>
