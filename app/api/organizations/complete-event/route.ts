@@ -55,83 +55,7 @@ export async function POST(req: NextRequest) {
                         status: 403,
                     });
                 } else {
-                    const requiredTokens = event.event_volunteers.length * event.token_bounty;
-
-                    const userWallet = await prisma.wallet.findUniqueOrThrow({
-                        where: {
-                            userId: userID as string,
-                        },
-                    });
-
-                    if (userWallet.balance < requiredTokens) {
-                        return new Response("Not enough tokens to pay volunteers!", {
-                            status: 403,
-                        });
-                    }
-
                     await releaseTokensAndCompleteEvent(event, userID);
-
-                    // V 1
-                    // await prisma.wallet.update({
-                    //     where: { id: userWallet.id },
-                    //     data: { balance: { decrement: requiredTokens } },
-                    // });
-
-                    // for (const volunteer of event.event_volunteers) {
-                    //     const volunteerWallet = await prisma.wallet.findUnique({
-                    //         where: { userId: volunteer.volunteerId },
-                    //     });
-
-                    //     if (volunteerWallet) {
-                    //         await prisma.wallet.update({
-                    //             where: { id: volunteerWallet.id },
-                    //             data: { balance: { increment: event.token_bounty } },
-                    //         });
-                    //     }
-                    // }
-
-                    // V 2
-                    // for (const volunteer of event.event_volunteers) {
-                    //     // Fetch the organization's wallet balance before each transfer
-                    //     const organizationWallet = await prisma.wallet.findUniqueOrThrow({
-                    //         where: { userId: organizationID },
-                    //     });
-
-                    //     if (organizationWallet.balance < event.token_bounty) {
-                    //         // If at any point the balance is not sufficient, stop the process
-                    //         return new Response("Not enough tokens to continue paying volunteers", { status: 403 });
-                    //     }
-
-                    //     // Deduct tokens from the organization's wallet
-                    //     await prisma.wallet.update({
-                    //         where: { id: organizationWallet.id },
-                    //         data: { balance: { decrement: event.token_bounty } },
-                    //     });
-
-                    //     // Increment the volunteer's wallet balance
-                    //     const volunteerWallet = await prisma.wallet.findUniqueOrThrow({
-                    //         where: { userId: volunteer.volunteerId },
-                    //     });
-
-                    //     await prisma.wallet.update({
-                    //         where: { id: volunteerWallet.id },
-                    //         data: { balance: { increment: event.token_bounty } },
-                    //     });
-
-                    //     // Create a transaction record
-                    //     await prisma.transaction.create({
-                    //         data: {
-                    //             sourceWalletId: organizationWallet.id,
-                    //             destinationWalletId: volunteerWallet.id,
-                    //             amount: event.token_bounty,
-                    //         },
-                    //     });
-                    // }
-
-                    // await prisma.event.update({
-                    //     where: { id: eventID },
-                    //     data: { status: 'COMPLETE' },
-                    // });
                     return new Response("Event closed and tokens released", { status: 200 });
                 }
             } catch (error) {
@@ -148,11 +72,30 @@ export async function POST(req: NextRequest) {
     }
 }
 
-// V 3
+/**
+ * Deducts the tokens from the organization and pays out the volunteers for the 
+ * Then sets the event to complete
+ * 
+ * @param event The event to complete
+ * @param userID The user ID of the organization completing and paying out the event
+ */
 async function releaseTokensAndCompleteEvent(event: any, userID: any) {
-    const organizationWallet = await prisma.wallet.findUniqueOrThrow({
-        where: { userId: userID as string },
+    const requiredTokens = event.event_volunteers.length * event.token_bounty;
+
+    const userBalance = await prisma.user.findUniqueOrThrow({
+        where: { 
+            id: userID as string,
+        },
+        select: {
+            tokenBalance: true,
+        },
     });
+
+    if (userBalance.tokenBalance < requiredTokens) {
+        return new Response("Not enough tokens to pay volunteers!", {
+            status: 403,
+        });
+    }
 
     for (const volunteer of event.event_volunteers) {
 
@@ -161,20 +104,13 @@ async function releaseTokensAndCompleteEvent(event: any, userID: any) {
         });
 
         await prisma.$transaction([
-            prisma.wallet.update({
-                where: { id: organizationWallet.id },
-                data: { balance: { decrement: event.token_bounty } },
+            prisma.user.update({
+                where: { id: userID as string },
+                data: { tokenBalance: { decrement: event.token_bounty } },
             }),
-            prisma.wallet.update({
-                where: { userId: volunteer.userId },
-                data: { balance: { increment: event.token_bounty } },
-            }),
-            prisma.transaction.create({
-                data: {
-                    sourceWalletId: organizationWallet.id,
-                    destinationWalletId: volunteerWallet.id,
-                    amount: event.token_bounty,
-                },
+            prisma.user.update({
+                where: { id: volunteer.userId },
+                data: { tokenBalance: { increment: event.token_bounty } },
             })
         ]);
     }
