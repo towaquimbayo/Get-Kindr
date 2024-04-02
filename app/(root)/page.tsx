@@ -10,6 +10,33 @@ const Home = async () => {
   // Define redirect for volunteer now button.
   let volunteerRedirect = "/events";
 
+  // Set placeholder details for event 1.
+  let event_1_name = "Rhythm of Life Society";
+  let event_1_id = "123";
+  let event_1_city = "Vancouver, BC";
+  let event_1_date = "3"
+  let event_1_year = "2024";
+  let event_1_month = "Feb";
+  let event_1_description = "Our Drum Run event is looking to add a Social Media Assistant for our high-energy team of ...";
+
+  // Set placeholder details for event 2.
+  let event_2_name = "Pinegrove Place";
+  let event_2_id = "123";
+  let event_2_city = "Burnaby, BC";
+  let event_2_date = "12"
+  let event_2_year = "2024";
+  let event_2_month = "March";
+  let event_2_description = "We are dedicated to promoting person-centered, holistic care in a manner ...";
+
+  // Set placeholder details for event 3.
+  let event_3_name = "SAHAS";
+  let event_3_id = "123";
+  let event_3_city = "Richmond, BC";
+  let event_3_date = "21"
+  let event_3_year = "2024";
+  let event_3_month = "Feb";
+  let event_3_description = "Helpline volunteers provide emotional support, information and resources, and effective ...";
+
   // Get all events from the database.
   const events = await prisma.event.findMany();
 
@@ -23,25 +50,35 @@ const Home = async () => {
         randomEvents.push(randomEvent);
       }
     }
+    let event_1 = randomEvents[0];
+    event_1_name = event_1.name;
+    event_1_id = event_1.id;
+    event_1_city = event_1.city;
+    event_1_date = new Date(event_1?.start_time).getDate().toString();
+    event_1_year = new Date(event_1?.start_time).getFullYear().toString();
+    event_1_month = new Date(event_1?.start_time).toLocaleString('default', { month: 'short' });
+    event_1_description = event_1.description.length > 100 ? event_1.description.substring(0, 100) + "..." : event_1.description;
+
+    // Get the details for event 2. Format date and truncate description if needed.
+    let event_2 = randomEvents[1];
+    event_2_name = event_2.name;
+    event_2_id = event_2.id;
+    event_2_city = event_2.city;
+    event_2_date = new Date(event_2?.start_time).getDate().toString();
+    event_2_year = new Date(event_2?.start_time).getFullYear().toString();
+    event_2_month = new Date(event_2?.start_time).toLocaleString('default', { month: 'short' });
+    event_2_description = event_2.description.length > 100 ? event_2.description.substring(0, 100) + "..." : event_2.description;
+
+    // Get the details for event 3. Format date and truncate description if needed.
+    let event_3 = randomEvents[2];
+    event_3_name = event_3.name;
+    event_3_id = event_3.id;
+    event_3_city = event_3.city;
+    event_3_date = new Date(event_3?.start_time).getDate().toString();
+    event_3_year = new Date(event_3?.start_time).getFullYear().toString();
+    event_3_month = new Date(event_3?.start_time).toLocaleString('default', { month: 'short' });
+    event_3_description = event_3.description.length > 100 ? event_3.description.substring(0, 100) + "..." : event_3.description;
   }
-
-  // Get the details for event 1. Format date and truncate description if needed.
-  let event_1 = randomEvents[0];
-  let event_1_date = new Date(event_1.start_time);
-  let event_1_month = event_1_date.toLocaleString('default', { month: 'short' });
-  let event_1_description = event_1.description.length > 100 ? event_1.description.substring(0, 100) + "..." : event_1.description;
-  
-  // Get the details for event 2. Format date and truncate description if needed.
-  let event_2 = randomEvents[1];
-  let event_2_date = new Date(event_2.start_time);
-  let event_2_month = event_2_date.toLocaleString('default', { month: 'short' });
-  let event_2_description = event_2.description.length > 100 ? event_2.description.substring(0, 100) + "..." : event_2.description;
-
-  // Get the details for event 3. Format date and truncate description if needed.
-  let event_3 = randomEvents[2];
-  let event_3_date = new Date(event_3.start_time);
-  let event_3_month = event_3_date.toLocaleString('default', { month: 'short' });
-  let event_3_description = event_3.description.length > 100 ? event_3.description.substring(0, 100) + "..." : event_3.description;
 
   const faq_data = [
     {
@@ -184,55 +221,30 @@ const Home = async () => {
         align="left"
       />
       <Container className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {events.length < 3 ? (
-          <>
-            <FeatureEvent
-              eventId="123"
-              eventName="Rhythm of Life Society"
-              description="Our Drum Run event is looking to add a Social Media Assistant for our high-energy team of ..."
-              location="Vancouver, BC"
-              date="Feb 3, 2024"
-            />
-            <FeatureEvent
-              eventId="123"
-              eventName="SAHAS"
-              description="Helpline volunteers provide emotional support, information and resources, and effective ..."
-              location="Richmond, BC"
-              date="Feb 21, 2024"
-            />
-            <FeatureEvent
-              eventId="123"
-              eventName="Pinegrove Place"
-              description="We are dedicated to promoting person-centered, holistic care in a manner ..."
-              location="Burnaby, BC"
-              date="March 12, 2024"
-            />
-          </>
-        ) : (
-          <>
-            <FeatureEvent
-              eventId={event_1.id}
-              eventName={event_1.name}
-              description={event_1_description}
-              location={event_1.city}
-              date={event_1_month + " " + event_1_date.getDate() + ", " + event_1_date.getFullYear()}
-            />
-            <FeatureEvent
-              eventId={event_2.id}
-              eventName={event_2.name}
-              description={event_2_description}
-              location={event_2.city}
-              date={event_2_month + " " + event_2_date.getDate() + ", " + event_2_date.getFullYear()}
-            />
-            <FeatureEvent
-              eventId={event_3.id}
-              eventName={event_3.name}
-              description={event_3_description}
-              location={event_3.city}
-              date={event_3_month + " " + event_3_date.getDate() + ", " + event_3_date.getFullYear()}
-            />
-          </>
-        )}
+
+        <>
+          <FeatureEvent
+            eventId={event_1_id}
+            eventName={event_1_name}
+            description={event_1_description}
+            location={event_1_city}
+            date={event_1_month + " " + event_1_date + ", " + event_1_year}
+          />
+          <FeatureEvent
+            eventId={event_2_id}
+            eventName={event_2_name}
+            description={event_2_description}
+            location={event_2_city}
+            date={event_2_month + " " + event_2_date + ", " + event_2_year}
+          />
+          <FeatureEvent
+            eventId={event_3_id}
+            eventName={event_3_name}
+            description={event_3_description}
+            location={event_3_city}
+            date={event_3_month + " " + event_3_date + ", " + event_3_year}
+          />
+        </>
       </Container>
 
       {/* About */}
