@@ -295,7 +295,7 @@ export default function Recovery() {
         </p>
         <div id="buttonsContainer" className="flex justify-evenly w-full md:mb-4 mb-8 mb:mt-0 mt-8">
           <Link href="/" className="w-1/3"><button className="rounded-md bg-secondary bg-opacity-60 text-md text-white focus:outline-none hover:opacity-80 transition-all duration-300 w-full h-12">Cancel</button></Link>
-          <button id="submit" className="block rounded-md focus:outline-none bg-primary !bg-[#E5E5E5] border-primary transition-all duration-300 text-md text-white text-[#BDBDBD] hover:opacity-80 cursor-not-allowed h-12 w-1/3 px-4" onClick={resetPassword}>Reset</button>
+          <button id="submit" className="block rounded-md focus:outline-none bg-primary !bg-[#E5E5E5] border-primary transition-all duration-300 text-md text-white text-[#BDBDBD] hover:opacity-80 cursor-not-allowed h-12 w-1/3 px-4" onClick={lockAndReset}>Reset</button>
         </div>
         <p id="response" className="text-center font-display font-bold text-2xl mt-6 mb-6 opacity-0 h-0 mb-0 mt-0">Password Reset.</p>
       </div>
