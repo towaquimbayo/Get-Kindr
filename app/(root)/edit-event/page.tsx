@@ -22,7 +22,7 @@ export default function Add_Event() {
     // Redirect the user if they are not authenticated or not an organization.
     useEffect(() => {
         if (!session || status !== "authenticated" || !isOrganization) router.push("/");
-    }, [session, status, router]);
+    }, [session, status, router, isOrganization]);
 
     // Get current date for the date input field placeholder.
     const currentDate = new Date();
