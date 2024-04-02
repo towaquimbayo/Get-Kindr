@@ -60,7 +60,11 @@ export async function POST(req: Request) {
         name: isOrganization ? organizationName : `${firstName} ${lastName}`,
         email,
         hashedPassword,
-        image: `https://ui-avatars.com/api/?name=${firstName}+${lastName}`,
+        image: `https://ui-avatars.com/api/?name=${
+          isOrganization
+            ? organizationName.replace(" ", "+")
+            : (firstName + lastName).replace(" ", "+")
+        }`,
         accountType: isOrganization
           ? AccountType.ORGANIZATION
           : AccountType.VOLUNTEER,
