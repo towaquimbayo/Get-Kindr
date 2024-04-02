@@ -24,6 +24,7 @@ module.exports = {
       spacing: {
         30: "120px",
         34: "136px",
+        100: "440px",
       },
       colors: {
         primary: "#FF5656",

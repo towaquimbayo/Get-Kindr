@@ -86,7 +86,7 @@ export default function Recovery() {
     if (!validateEmail(email)) {
       return;
     }
-    
+
     // Get the field to display the response.
     const responseElement = document.getElementById('response');
     if (responseElement) {
@@ -196,7 +196,7 @@ export default function Recovery() {
 
   return (
     <div id="forgotPasswordBody" className="flex flex-1 flex-col items-center place-content-center bg-gradient-to-r from-start to-end w-full h-4/5">
-      <div id="innerContainer" className="flex flex-col items-center bg-gray-50 border-4 rounded-lg border-secondary w-11/12 h-fit md:w-2/3 mb-20 px-6 md:px-0 md:mb-8">
+      <div id="innerContainer" className="flex flex-col items-center bg-gray-50 border-4 rounded-lg border-secondary w-11/12 h-fit md:w-2/3 mb-20 px-6 mt-20 md:px-0 md:mb-8 md:mt-0">
         <p className="text-center font-display font-bold text-4xl md:text-5xl mb-16 mt-6 md:mb-12">Forgot Password?</p>
         <p className="text-center font-display font-bold text-base text-secondary md:text-xl mb-4">Enter the email connected to your account.</p>
         <input onChange={(e) => updateEmail(e)} className="rounded-lg border border-[#EAEAEA] h-16 w-full md:h-12 md:w-2/3 px-6 mb-10 mt-2 md:mt-0" placeholder="example@email.com"></input>
