@@ -193,7 +193,7 @@ export default function Recovery() {
           },
         });
 
-        if (res.ok) {
+        if (res.ok && res.status == 200) {
           // Wait for the response data.
           let data = await res.json();
           if (data.success) {
