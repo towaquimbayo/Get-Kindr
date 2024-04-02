@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import "../../globals.css";
 import Link from "next/link";
+// Lock to prevent multiple submissions.
+let lock = false;
 
 export default function Recovery() {
   // Set states for the password success / failure icons and their colors
@@ -133,6 +135,23 @@ export default function Recovery() {
       // Set the repeated password to be shown.
       setRepShowPassType('text');
     }
+  }
+
+  const lockAndReset = () => {
+    // Set submit button to disabled.
+    const submitButton = document.getElementById('submit') as HTMLInputElement;
+    submitButton.disabled = true;
+    // If the lock is true, return.
+    if (lock) {
+      return;
+    }
+    // Otherwise set the lock to true, send an email, and set a timeout to unlock the button.
+    lock = true;
+    resetPassword();
+    setTimeout(() => {
+      lock = false;
+      submitButton.disabled = false;
+    }, 3000);
   }
 
   // Set the One Time Password state.
