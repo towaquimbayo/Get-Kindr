@@ -27,10 +27,7 @@ const EventCard = React.memo(function EventCard({
     >
       <CardBody
         className="w-full p-6 hover:cursor-pointer md:p-8"
-        onClick={() => {
-          if (isOrganization) router.push(`/edit-event?id=${event.id}`);
-          else router.push(`/event?id=${event.id}`);
-        }}
+        onClick={() => router.push(`/event?id=${event.id}`)}
       >
         <div className="mb-4 flex w-full flex-col items-start justify-between gap-4 md:mb-2 md:flex-row md:items-center md:gap-0">
           <div className="flex w-full items-center gap-4">
