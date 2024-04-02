@@ -15,7 +15,6 @@ type Coordinates = [number, number];
 
 export default function Events() {
   const { data: session } = useSession();
-
   const router = useRouter();
 
   const [events, setEvents] = useState<any[]>([]);
@@ -176,9 +175,7 @@ export default function Events() {
         if (res.ok) {
           const response = await res.json();
           console.log("Attendee added successfully: ", response);
-          // TODO: must redirect to the event page
-          // Refresh the page to update the applied status (temp)
-          window.location.reload();
+          router.push("/event?id=" + eventId);
         } else {
           console.error("Error adding attendee: ", res);
         }
@@ -355,7 +352,7 @@ export default function Events() {
                           </p>
                         </div>
                         <div>
-                          <p className="text-lg font-semibold">{event.name}</p>
+                          <Link className="text-lg font-semibold hover:text-primary transition-all duration-300 ease-in-out" href={`/event?id=${event.id}`}>{event.name}</Link>
                           <p className="text-gray-600">
                             {(event as any).organization.name}
                           </p>
@@ -380,8 +377,8 @@ export default function Events() {
                         <p className="text-gray-600">{event.token_bounty}</p>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
+                    <div className="flex flex-col items-center justify-between sm:flex-row">
+                      <div className="flex items-center space-x-2 mt-2">
                         {event.tags.map((tag: string) => (
                           <span
                             key={tag}
@@ -401,7 +398,7 @@ export default function Events() {
                         ) : (
                           <Button
                             onClick={() => applyToEvent(event.id)}
-                            className="!mr-0 rounded-lg bg-primary px-4 py-2 text-white"
+                            className="!mr-0 rounded-lg bg-primary mt-4 w-full px-4 py-2 text-white sm:mt-0 sm:w-auto"
                             disabled={event.applied || event.event_volunteers.length >= event.number_of_spots}
                           >
                             {/* If user has already applied, show "Applied", if event is full, show "Full", otherwise, show Apply */}

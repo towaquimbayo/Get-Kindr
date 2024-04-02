@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const newOTP = {
       userEmail: email,
       OneTimePass: one_time_pass ?? "",
-      expires: new Date(new Date().getTime() + 15 * 60 * 1000).toISOString(),
+      expires: new Date(new Date().getTime() + 1 * 60 * 1000).toISOString(),
     };
 
     // Add the new OTP to the database

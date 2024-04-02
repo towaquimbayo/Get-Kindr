@@ -193,11 +193,10 @@ export default function Recovery() {
           },
         });
 
-        // Wait for the response data.
-        let data = await res.json();
-        if (res.ok) {
+        if (res.ok && res.status == 200) {
+          // Wait for the response data.
+          let data = await res.json();
           if (data.success) {
-
             // If the response is valid and the One Time Password is correct, delete the One Time Password.
             await fetch('/api/one-time-pass/delete', {
               method: 'DELETE',
