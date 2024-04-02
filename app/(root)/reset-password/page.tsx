@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import "../../globals.css";
 import Link from "next/link";
+// Lock to prevent multiple submissions.
+let lock = false;
 
 export default function Recovery() {
   // Set states for the password success / failure icons and their colors
@@ -58,6 +60,7 @@ export default function Recovery() {
       setPassIcon('m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z');
       setPassColor('red');
     }
+    checkRepPassword((document.getElementById('repPassword') as HTMLInputElement)?.value);
   }
 
   // Check the repeated password to update if the password is valid.
@@ -132,6 +135,23 @@ export default function Recovery() {
       // Set the repeated password to be shown.
       setRepShowPassType('text');
     }
+  }
+
+  const lockAndReset = () => {
+    // Set submit button to disabled.
+    const submitButton = document.getElementById('submit') as HTMLInputElement;
+    submitButton.disabled = true;
+    // If the lock is true, return.
+    if (lock) {
+      return;
+    }
+    // Otherwise set the lock to true, send an email, and set a timeout to unlock the button.
+    lock = true;
+    resetPassword();
+    setTimeout(() => {
+      lock = false;
+      submitButton.disabled = false;
+    }, 3000);
   }
 
   // Set the One Time Password state.
@@ -275,7 +295,7 @@ export default function Recovery() {
         </p>
         <div id="buttonsContainer" className="flex justify-evenly w-full md:mb-4 mb-8 mb:mt-0 mt-8">
           <Link href="/" className="w-1/3"><button className="rounded-md bg-secondary bg-opacity-60 text-md text-white focus:outline-none hover:opacity-80 transition-all duration-300 w-full h-12">Cancel</button></Link>
-          <button id="submit" className="block rounded-md focus:outline-none bg-primary !bg-[#E5E5E5] border-primary transition-all duration-300 text-md text-white text-[#BDBDBD] hover:opacity-80 cursor-not-allowed h-12 w-1/3 px-4" onClick={resetPassword}>Reset</button>
+          <button id="submit" className="block rounded-md focus:outline-none bg-primary !bg-[#E5E5E5] border-primary transition-all duration-300 text-md text-white text-[#BDBDBD] hover:opacity-80 cursor-not-allowed h-12 w-1/3 px-4" onClick={lockAndReset}>Reset</button>
         </div>
         <p id="response" className="text-center font-display font-bold text-2xl mt-6 mb-6 opacity-0 h-0 mb-0 mt-0">Password Reset.</p>
       </div>

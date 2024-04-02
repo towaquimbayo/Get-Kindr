@@ -3,6 +3,8 @@ import React from "react";
 import "../../globals.css";
 import Link from "next/link";
 import recover from "../recover-password/page";
+// Lock to prevent multiple submissions.
+let lock = false;
 
 export default function Recovery() {
 
@@ -58,6 +60,24 @@ export default function Recovery() {
     // If the email is invalid, return false.
     return false;
   }
+
+  const lockAndSubmit = () => {
+    // Set submit button to disabled.
+    const submitButton = document.getElementById('submit') as HTMLInputElement;
+    submitButton.disabled = true;
+    // If the lock is true, return.
+    if (lock) {
+      return;
+    }
+    // Otherwise set the lock to true, send an email, and set a timeout to unlock the button.
+    lock = true;
+    submitEmail();
+    setTimeout(() => {
+      lock = false;
+      submitButton.disabled = false;
+    }, 3000);
+  }
+
 
   // Define the submit email handler.
   const submitEmail = async () => {
@@ -182,7 +202,7 @@ export default function Recovery() {
         <input onChange={(e) => updateEmail(e)} className="rounded-lg border border-[#EAEAEA] h-16 w-full md:h-12 md:w-2/3 px-6 mb-10 mt-2 md:mt-0" placeholder="example@email.com"></input>
         <div id="buttonsContainer" className="flex justify-evenly w-full mb-8 mt-8 mb:mt-0">
           <Link href="/" className="w-1/3 "><button id="return" className="rounded-md bg-secondary bg-opacity-60 font-semibold text-md text-white focus:outline-none hover:opacity-80 transition-all duration-300 h-12 w-full">Cancel</button></Link>
-          <button onClick={submitEmail} id="submit" className="bloc rounded-md focus:outline-none border-primary bg-primary !bg-[#E5E5E5] text-white text-[#BDBDBD] text-md transition-all duration-300 hover:opacity-80 h-12 w-1/3 px-4 cursor-not-allowed">Submit</button>
+          <button onClick={lockAndSubmit} id="submit" className="bloc rounded-md focus:outline-none border-primary bg-primary !bg-[#E5E5E5] text-white text-[#BDBDBD] text-md transition-all duration-300 hover:opacity-80 h-12 w-1/3 px-4 cursor-not-allowed">Submit</button>
         </div>
         <p id="response" className="text-center font-bold font-display text-2xl opacity-100 w-4/5 mt-4 mb-6"></p>
       </div>
