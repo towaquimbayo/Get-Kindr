@@ -147,7 +147,7 @@ export default function Add_Event() {
             updateSearchData('');
             setAddressButtonValue('Search for a Location');
             document.getElementById('addressDropdown')?.classList.add('h-0');
-            document.getElementById('addressDropdown')?.classList.add('ring-0');
+            document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
         }
         // Check if the required fields are filled for event submission.

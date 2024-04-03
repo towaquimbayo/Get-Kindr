@@ -80,7 +80,7 @@ export default function Add_Event() {
             updateSearchData('');
             setAddressButtonValue('Search for a Location');
             document.getElementById('addressDropdown')?.classList.add('h-0');
-            document.getElementById('addressDropdown')?.classList.add('ring-0');
+            document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
         }
         // Check if the required fields are filled for event submission.
@@ -466,7 +466,7 @@ export default function Add_Event() {
                                 <input type="number" id="SpotsInput" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className=" text-center rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-xl sm:text-2xl sm:min-w-40 pl-6" placeholder={placeholderVolNum}></input>
                             </div>
 
-                            <div className="flex flex-col rounded-lg border-4 border-secondary border-opacity-80 w-32 h-20 md:w-1/3 md:h-24 mt-4 mr-10 md:pt-1">
+                            <div className="flex flex-col rounded-lg border-4 border-secondary border-opacity-80 w-32 h-20 md:w-36 md:h-24 mt-4 mr-10 md:pt-1">
 
                                 <div className="w-full mt-2 ml-2">
                                     <input id="VirtualInput" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
