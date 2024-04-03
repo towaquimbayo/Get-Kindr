@@ -107,6 +107,11 @@ export default function MyEvents() {
             const endTime = new Date(event.end_time);
             totalHours += (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
 
+            // Braden: Added code to check date and update visual for event status.
+            if (new Date(event.end_time) < new Date() && event.status !== "completed") {
+              event.status = "ended";
+            }
+
             // Format the event data
             return {
               id: event.id,

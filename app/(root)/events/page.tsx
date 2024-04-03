@@ -52,7 +52,7 @@ export default function Events() {
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedSortOrder = e.target.value as 'recent' | 'tokens';
     setSortOrder(selectedSortOrder);
-  
+
     let sortedResults = [...searchResults];
     if (selectedSortOrder === 'recent') {
       sortedResults.sort((a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime());
@@ -134,9 +134,8 @@ export default function Events() {
     const startDay = startDate.getUTCDate();
     const startMonth = months[startDate.getUTCMonth()];
     const startYear = startDate.getUTCFullYear();
-    const startDateFormatted = `${startMonth} ${
-      startDay < 10 ? "0" + startDay : startDay
-    } ${startYear}`;
+    const startDateFormatted = `${startMonth} ${startDay < 10 ? "0" + startDay : startDay
+      } ${startYear}`;
 
     // Format time range to display correctly and in local time.
     const formattedStartDate = new Date(startDate).toLocaleTimeString("en-US", {
@@ -203,8 +202,7 @@ export default function Events() {
           const response = await fetch(
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
               address,
-            )}.json?access_token=${
-              process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+            )}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
             }`,
           );
           const data = await response.json();
@@ -303,7 +301,7 @@ export default function Events() {
         </p>
         <div className="flex items-center text-gray-400">
           <p>Sort by:</p>
-          <select 
+          <select
             className="appearance-none border-none bg-transparent focus:ring-0"
             value={sortOrder}
             onChange={handleSortChange}
@@ -330,7 +328,8 @@ export default function Events() {
         ) : (
           <>
             {/* Events List */}
-            <div className="max-h-[500px] flex-1 overflow-y-auto">
+            {/* Braden: added overflow-x-hidden to hide horizontal scrollbar */}
+            <div className="max-h-[500px] flex-1 overflow-y-auto overflow-x-hidden">
               {/* Event Card */}
               {searchResults.length > 0 ? (
                 searchResults.map((event) => (
@@ -395,17 +394,17 @@ export default function Events() {
                           <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce [animation-delay:-0.15s]'></div>
                           <div className='h-4 w-4 bg-gray-300 rounded-full animate-bounce'></div>
                         </div>
-                        ) : (
-                          <Button
-                            onClick={() => applyToEvent(event.id)}
-                            className="!mr-0 rounded-lg bg-primary mt-4 w-full px-4 py-2 text-white sm:mt-0 sm:w-auto"
-                            disabled={event.applied || event.event_volunteers.length >= event.number_of_spots}
-                          >
-                            {/* If user has already applied, show "Applied", if event is full, show "Full", otherwise, show Apply */}
-                            {event.applied ? "Applied" : event.event_volunteers.length >= event.number_of_spots ? "Full" : "Apply"}
-                          </Button>
+                      ) : (
+                        <Button
+                          onClick={() => applyToEvent(event.id)}
+                          className="!mr-0 rounded-lg bg-primary mt-4 w-full px-4 py-2 text-white sm:mt-0 sm:w-auto"
+                          disabled={event.applied || event.event_volunteers.length >= event.number_of_spots}
+                        >
+                          {/* If user has already applied, show "Applied", if event is full, show "Full", otherwise, show Apply */}
+                          {event.applied ? "Applied" : event.event_volunteers.length >= event.number_of_spots ? "Full" : "Apply"}
+                        </Button>
                       )}
-                      
+
                     </div>
                   </div>
                 ))
