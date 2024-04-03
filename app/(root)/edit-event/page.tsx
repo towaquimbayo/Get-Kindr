@@ -34,7 +34,7 @@ export default function Add_Event() {
     const [valueEndTime, setValueEndTime] = useState<string>('');
     // Volunteer number is set to 0 by default.
     const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
-    const [valueVolNum, setValueVolNum] = useState<number>(0);
+    const [valueVolNum, setValueVolNum] = useState<string>('0');
     // Checkboxes for recurring and online events are set to false by default.
     const [valueRecurring, setValueRecurring] = useState<boolean>(false)
     const [valueOnline, setValueOnline] = useState<boolean>(false)
@@ -80,7 +80,7 @@ export default function Add_Event() {
             setPlaceValueDate(formattedDate);
             setValueStartTime(localStart);
             setValueEndTime(localEnd);
-            setValueVolNum(event.number_of_spots);
+            setValueVolNum(String(event.number_of_spots));
             setValueOnline(event.online);
             setValueRecurring(event.recurring);
             setValueDescription(event.description ?? "");
@@ -126,6 +126,9 @@ export default function Add_Event() {
 
     // Handler to update the event name value and check if the required fields are filled for event submission.
     const updateNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.value.length > 80) {
+            event.target.value = event.target.value.slice(0, 80);
+        }
         setValueName(event.target.value);
         validateSubmit();
     }
@@ -136,7 +139,7 @@ export default function Add_Event() {
         setSearchValue(event.target.value);
         setValueLocation(event.target.value);
         // If at least 5 characters are entered, update the search data and show the dropdown.
-        if (event.target.value.length > 4) {
+        if (event.target.value.length > 3) {
             setAddressButtonValue('Select an Address');
             handleSearch();
         } else {
@@ -223,6 +226,16 @@ export default function Add_Event() {
         validateSubmit();
     }
 
+    // Check that the date is not in the passed and not more than 100 years in the future.
+    const validDate = (event: string) => {
+        if (new Date(event) < new Date()) {
+            setPlaceValueDate(formattedDate);
+        }
+        if (new Date(event).getFullYear() > new Date().getFullYear() + 101) {
+            setPlaceValueDate(formattedDate);
+        }
+    }
+
     // Handler to update the start time value and check if the required fields are filled for event submission.
     const updateStartTimeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValueStartTime(event.target.value);
@@ -237,6 +250,10 @@ export default function Add_Event() {
 
     // Handler to update the description value and check if the required fields are filled for event submission.
     const updateDescriptionHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        // Check for a max length and clip it.
+        if (event.target.value.length > 1000) {
+            event.target.value = event.target.value.slice(0, 1000);
+        }
         setValueDescription(event.target.value);
         validateSubmit();
     }
@@ -256,17 +273,26 @@ export default function Add_Event() {
     const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
         // If the input is empty, set the value to 0.
         if (event.target.value.length == 0) {
-            setValueVolNum(0);
+            setValueVolNum('0');
             return;
         }
         // Get the new value from the input field.
         const newValue = event.target.value;
+        // Check if the input is negative.
+        if (newValue.charAt(0) === '-') {
+            setValueVolNum('0');
+            return;
+        }
+        let checkZero = newValue;
+        if (newValue.charAt(0) === '0' && newValue.length > 1) {
+            checkZero = newValue.slice(1);
+        }
         // Validate if the input is less than 3 digits before updating the state.
-        if (newValue.length > 3) {
-            const correctLen = newValue.slice(0, 3);
-            setValueVolNum(parseInt(correctLen, 10))
+        if (checkZero.length > 3) {
+            setValueVolNum('null');
+            setValueVolNum(checkZero.slice(0, 3));
         } else {
-            setValueVolNum(parseInt(newValue, 10));
+            setValueVolNum(checkZero);
         }
         // Check if the required fields are filled for event submission.
         validateSubmit();
@@ -274,6 +300,11 @@ export default function Add_Event() {
 
     // Update the tags value when the user types in the tags input field.
     const updateValueTags = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let checkLen = event.target.value.replace(/#/g, '');
+        let change = event.target.value.length - checkLen.length;
+        if (checkLen.length > 100) {
+            event.target.value = event.target.value.slice(0, 100 + change);
+        }
         setTagsValue(event.target.value);
     }
 
@@ -344,7 +375,7 @@ export default function Add_Event() {
                 recurring: valueRecurring,
                 online: valueOnline,
                 token_bounty: 100,
-                number_of_spots: valueVolNum,
+                number_of_spots: parseInt(valueVolNum),
             };
             // Call the API to create the event.
             const data = JSON.stringify(eventInfo);
@@ -393,7 +424,7 @@ export default function Add_Event() {
         if (valueEndTime.length === 0) {
             valid = false;
         }
-        if (valueVolNum === 0) {
+        if (valueVolNum === '0' || valueVolNum === 'null') {
             valid = false;
         }
         if (valueDescription.length === 0) {
@@ -473,14 +504,14 @@ export default function Add_Event() {
 
     return (
         <div id="bodyBox" className="flex flex-1 flex-col items-center bg-tertiary bg-opacity-10 w-full pb-12 pt-4">
-            
+
             <div id="bodyContainer" className="flex flex-col w-10/12">
 
                 <p id="title" className="text-left font-display font-bold text-tertiary text-3xl mt-16 pl-6">Edit Event</p>
                 <p id="subTitle" className="font-display font-bold text-4xl max-w-xs sm:max-w-full md:max-w-2xl md:text-6xl lg:max-w-full mb-12 pl-6">Host the future of giving back.</p>
-                
+
                 <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
-                    
+
                     <div id="reqFieldContainer" className="w-5/6 h-fit mt-8">
                         <h3 id="reqField" className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
                     </div>
@@ -532,10 +563,10 @@ export default function Add_Event() {
                     </div>
 
                     <div id="dateTimeContainer" className="flex flex-col sm:flex-row justify-evenly items-center w-full">
-                        
+
                         <div className="flex flex-col w-4/5 sm:w-1/3 sm:min-w-40 mt-8">
                             <label htmlFor="DateInput" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
-                            <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
+                            <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} onBlur={(e) => validDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
                         </div>
 
                         <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-44">
@@ -551,14 +582,14 @@ export default function Add_Event() {
 
                     <div id="spotsAndCheckboxContainer" className="flex flex-col items-center justify-center md:flex-row md:justify-evenly w-full mt-8">
                         <div id="subSpotsAndCheckboxContainer" className="flex w-full justify-between md:w-4/5 mt-10 md:mt-0">
-                            
+
                             <div id="" className="flex flex-col w-1/3 sm:min-w-36 ml-10 md:pt-4">
                                 <label htmlFor="SpotsInput" className=" pl-4 text-lg sm:min-w-36">Available Spots <span className="text-primary">*</span></label>
                                 <input type="number" id="SpotsInput" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className=" text-center rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-xl sm:text-2xl sm:min-w-40 pl-6" placeholder={placeholderVolNum}></input>
                             </div>
 
                             <div className="flex flex-col rounded-lg border-4 border-secondary border-opacity-80 w-32 h-20 md:w-1/3 md:h-24 mt-4 mr-10 md:pt-1">
-                                
+
                                 <div className="w-full mt-2 ml-2">
                                     <input id="VirtualInput" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
@@ -598,7 +629,7 @@ export default function Add_Event() {
                         <Link href="/" className="w-1/5 "><button className="rounded-md bg-secondary bg-opacity-60 font-semibold text-white text-md focus:outline-none hover:opacity-80 transition-all duration-300 h-12 w-full">Cancel</button></Link>
                         <button id="submit" onClick={lockAndSubmit} className="rounded-md bg-primary text-md text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] h-12 w-1/5 cursor-not-allowed">Submit</button>
                     </div>
-                    
+
                 </div>
 
                 <div id="closeEventBox" className=" absolute  flex flex-col items-center rounded-lg border-primary bg-gray-50 w-5/6 mt-56 sm:mt-48 md:mt-64 lg:mt-52 overflow-hidden h-0 border-0">

@@ -4,6 +4,7 @@ import "../../globals.css";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { parse } from "path";
 // Lock used to prevent multiple submissions.
 let lock = false;
 
@@ -36,7 +37,7 @@ export default function Add_Event() {
     const [valueEndTime, setValueEndTime] = useState<string>('');
     // Volunteer number is set to 0 by default.
     const [placeholderVolNum, setPlaceValueVolNum] = useState<string>('0');
-    const [valueVolNum, setValueVolNum] = useState<number>(0);
+    const [valueVolNum, setValueVolNum] = useState<string>('0');
     // Checkboxes for recurring and online events are set to false by default.
     const [valueRecurring, setValueRecurring] = useState<boolean>(false)
     const [valueOnline, setValueOnline] = useState<boolean>(false)
@@ -58,6 +59,9 @@ export default function Add_Event() {
 
     // Handler to update the event name value and check if the required fields are filled for event submission.
     const updateNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.value.length > 80) {
+            event.target.value = event.target.value.slice(0, 80);
+        }
         setValueName(event.target.value);
         validateSubmit();
     }
@@ -68,7 +72,7 @@ export default function Add_Event() {
         setSearchValue(event.target.value);
         setValueLocation(event.target.value);
         // If at least 5 characters are entered, update the search data and show the dropdown.
-        if (event.target.value.length > 4) {
+        if (event.target.value.length > 3) {
             setAddressButtonValue('Select an Address');
             handleSearch();
         } else {
@@ -155,6 +159,16 @@ export default function Add_Event() {
         validateSubmit();
     }
 
+    // Check that the date is not in the passed and not more than 100 years in the future.
+    const validDate = (event: string) => {
+        if (new Date(event) < new Date()) {
+            setPlaceValueDate(formattedDate);
+        }
+        if (new Date(event).getFullYear() > new Date().getFullYear() + 101) {
+            setPlaceValueDate(formattedDate);
+        }
+    }
+
     // Handler to update the start time value and check if the required fields are filled for event submission.
     const updateStartTimeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValueStartTime(event.target.value);
@@ -169,6 +183,10 @@ export default function Add_Event() {
 
     // Handler to update the description value and check if the required fields are filled for event submission.
     const updateDescriptionHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        // Check for a max length and clip it.
+        if (event.target.value.length > 1000) {
+            event.target.value = event.target.value.slice(0, 1000);
+        }
         setValueDescription(event.target.value);
         validateSubmit();
     }
@@ -188,17 +206,26 @@ export default function Add_Event() {
     const handleInputChangeVolNum = (event: React.ChangeEvent<HTMLInputElement>) => {
         // If the input is empty, set the value to 0.
         if (event.target.value.length == 0) {
-            setValueVolNum(0);
+            setValueVolNum('0');
             return;
         }
         // Get the new value from the input field.
         const newValue = event.target.value;
+        // Check if the input is negative.
+        if (newValue.charAt(0) === '-') {
+            setValueVolNum('0');
+            return;
+        }
+        let checkZero = newValue;
+        if (newValue.charAt(0) === '0' && newValue.length > 1) {
+            checkZero = newValue.slice(1);
+        }
         // Validate if the input is less than 3 digits before updating the state.
-        if (newValue.length > 3) {
-            const correctLen = newValue.slice(0, 3);
-            setValueVolNum(parseInt(correctLen, 10))
+        if (checkZero.length > 3) {
+            setValueVolNum('null');
+            setValueVolNum(checkZero.slice(0, 3));
         } else {
-            setValueVolNum(parseInt(newValue, 10));
+            setValueVolNum(checkZero);
         }
         // Check if the required fields are filled for event submission.
         validateSubmit();
@@ -206,6 +233,11 @@ export default function Add_Event() {
 
     // Update the tags value when the user types in the tags input field.
     const updateValueTags = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let checkLen = event.target.value.replace(/#/g, '');
+        let change = event.target.value.length - checkLen.length;
+        if (checkLen.length > 100) {
+            event.target.value = event.target.value.slice(0, 100 + change);
+        }
         setTagsValue(event.target.value);
     }
 
@@ -276,7 +308,7 @@ export default function Add_Event() {
                 recurring: valueRecurring,
                 online: valueOnline,
                 token_bounty: 100,
-                number_of_spots: valueVolNum,
+                number_of_spots: parseInt(valueVolNum, 10),
             };
             // Call the API to create the event.
             const data = JSON.stringify(eventInfo);
@@ -325,7 +357,7 @@ export default function Add_Event() {
         if (valueEndTime.length === 0) {
             valid = false;
         }
-        if (valueVolNum === 0) {
+        if (valueVolNum === '0' || valueVolNum === 'null') {
             valid = false;
         }
         if (valueDescription.length === 0) {
@@ -412,7 +444,7 @@ export default function Add_Event() {
 
                         <div className="flex flex-col w-4/5 sm:w-1/3 sm:min-w-40 mt-8">
                             <label htmlFor="DateInput" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
-                            <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
+                            <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} onBlur={(e) => validDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
                         </div>
 
                         <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-44">
@@ -477,7 +509,7 @@ export default function Add_Event() {
                     </div>
 
                 </div>
-                
+
             </div>
         </div>
     );
