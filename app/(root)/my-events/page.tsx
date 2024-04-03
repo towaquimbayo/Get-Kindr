@@ -61,7 +61,7 @@ const EventCard = React.memo(function EventCard({
               key={tag}
               className="rounded-full bg-primary bg-opacity-10 px-4 py-1 text-sm text-primary"
             >
-              {tag}
+              #{tag}
             </div>
           ))}
         </div>
