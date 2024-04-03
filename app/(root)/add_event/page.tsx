@@ -295,11 +295,17 @@ export default function Add_Event() {
         }
         // Check if the required fields are filled for event submission.
         if (validateSubmit()) {
-            // Remove the hashtag from the tags.
-            let tags = valueTags.split(' ');
-            for (let i = 0; i < tags.length; i++) {
-                tags[i] = tags[i].replace('#', '');
+            // If no tags are entered, give the event a KINDR tag.
+            if (valueTags.length === 0) {
+                setTagsValue('KINDR');
+            } else {
+                // Otherwise, remove the hashtag from the tags.
+                let tags = valueTags.split(' ');
+                for (let i = 0; i < tags.length; i++) {
+                    tags[i] = tags[i].replace('#', '');
+                }
             }
+            
             // Create the event info object with the required fields.
             const eventInfo = {
                 name: valueName,
