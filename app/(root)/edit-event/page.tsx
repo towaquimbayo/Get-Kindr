@@ -525,14 +525,14 @@ export default function Add_Event() {
 
                     <div id="locationContainer" className="flex justify-evenly w-full pt-12">
 
-                        <div id="addressSubContainer" className="flex flex-col w-1/3 pl-2 md:pl-6">
-                            <label htmlFor="PositionInput" className="text-lg pl-4">Location <span className="text-primary">*</span></label>
-                            <input id="PositionInput" onChange={(e) => updateLocationHandler(e)} value={valueLocation} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm sm:text-lg min-w-30 pl-6" placeholder="Event Address"></input>
+                        <div id="addressSubContainer" className="flex flex-col w-1/3 min-w-36 sm:min-w-52 pl-6 mb:pl-0 mb:ml-12 md:ml-16 md:px-0 md:pr-8">
+                            <label htmlFor="PositionInput" className="text-lg pl-2 w-full mb:ml-4">Location <span className="text-primary">*</span></label>
+                            <input id="PositionInput" onChange={(e) => updateLocationHandler(e)} value={valueLocation} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm sm:text-lg min-w-32 pl-3 mb:pl-4 mb:ml-2" placeholder="Event Address"></input>
                         </div>
 
-                        <div id="locationDropDownContainer" className="flex flex-col w-1/2 px-6">
-                            <label htmlFor="AddressInput" className="text-lg pl-4">Address <span className="text-primary">*</span></label>
-                            <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-50 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-4 w-full "
+                        <div id="locationDropDownContainer" className="flex flex-col w-1/2 px-4 sm:px-0 sm:mx-8 mb:mx-12 md:m-0 md:px-8 lg:pl-16">
+                            <label htmlFor="AddressInput" className="text-lg pl-3 mb:pl-4">Address <span className="text-primary">*</span></label>
+                            <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-50 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-6 w-full "
                                 id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={showAddresses}>
                                 {addressButtonValue}
                                 <svg id="dropDownFormatting" className="-mr-1 h-8 w-8 my-auto text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -565,12 +565,12 @@ export default function Add_Event() {
                     <div id="dateTimeContainer" className="flex flex-col sm:flex-row justify-evenly items-center w-full">
 
                         <div className="flex flex-col w-4/5 sm:w-1/3 sm:min-w-40 mt-8">
-                            <label htmlFor="DateInput" className="text-lg pl-4">Date <span className="text-primary">*</span></label>
+                            <label htmlFor="DateInput" className="text-lg pl-2 mb:pl-4">Date <span className="text-primary">*</span></label>
                             <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} onBlur={(e) => validDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
                         </div>
 
-                        <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-44">
-                            <label htmlFor="timeInput" className=" text-lg pl-4">Time <span className="text-primary">*</span></label>
+                        <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-48">
+                            <label htmlFor="timeInput" className=" text-lg pl-2 mb:pl-4">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
                                 <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="12:00"></input>
                                 <h1 className="text-xl sm:text-2xl mt-0.5 ">-</h1>
@@ -581,14 +581,14 @@ export default function Add_Event() {
                     </div>
 
                     <div id="spotsAndCheckboxContainer" className="flex flex-col items-center justify-center md:flex-row md:justify-evenly w-full mt-8">
-                        <div id="subSpotsAndCheckboxContainer" className="flex w-full justify-between md:w-4/5 mt-10 md:mt-0">
+                        <div id="subSpotsAndCheckboxContainer" className="flex w-full justify-between md:w-4/5 mt-10 md:mt-0 mb-4">
 
-                            <div id="" className="flex flex-col w-1/3 sm:min-w-36 ml-10 md:pt-4">
-                                <label htmlFor="SpotsInput" className=" pl-4 text-lg sm:min-w-36">Available Spots <span className="text-primary">*</span></label>
+                            <div id="" className="flex flex-col w-1/3 sm:min-w-36 ml-6 mb:ml-16 md:ml-6 md:pt-4">
+                                <label htmlFor="SpotsInput" className="pl-2 sm:pl-4 text-lg mb:min-w-36">Available Spots <span className="text-primary">*</span></label>
                                 <input type="number" id="SpotsInput" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className=" text-center rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-xl sm:text-2xl sm:min-w-40 pl-6" placeholder={placeholderVolNum}></input>
                             </div>
 
-                            <div className="flex flex-col rounded-lg border-4 border-secondary border-opacity-80 w-32 h-20 md:w-1/3 md:h-24 mt-4 mr-10 md:pt-1">
+                            <div className="flex flex-col rounded-lg border-4 border-secondary border-opacity-80 w-32 h-20 md:w-36 md:h-24 mt-4 mr-4 sm:mr-16 mb:mr-10 md:pt-1">
 
                                 <div className="w-full mt-2 ml-2">
                                     <input id="VirtualInput" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
