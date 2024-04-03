@@ -21,7 +21,9 @@ export default function Add_Event() {
 
     // Redirect the user if they are not authenticated or not an organization.
     useEffect(() => {
-        if (!session || status !== "authenticated" || !isOrganization) router.push("/");
+        if (!session || status !== "authenticated" || !isOrganization) {
+            router.push("/");
+        }
     }, [session, status, router, isOrganization]);
 
     // Get current date for the date input field placeholder.
@@ -53,8 +55,6 @@ export default function Add_Event() {
     // Coordinates are the latitude and longitude of the selected address.
     const [valueCoordinates, setValueCoordinates] = useState<string[]>(['', '']);
 
-    const url = new URL(window.location.href);
-    const eventID = url.searchParams.get("eventID");
 
     // Load the event data from the API and update the form values.
     const updateValues = (event: Event) => {
@@ -98,6 +98,8 @@ export default function Add_Event() {
 
     // Read the event data from the API and update the form values.
     const readEvent = async () => {
+        const url = window.location.href;
+        const eventID = url.split('=')[1];
         // Look for event with ID matching the URL parameter.
         const res = await fetch('/api/events?eventID=' + eventID, {
             method: 'GET',
@@ -106,7 +108,7 @@ export default function Add_Event() {
             }
         });
         // Await results
-        const result = (await res.json())
+        const result = await res.json();
         // If the result is null or the organization ID does not match, redirect to the home page.
         if (result === null || result.organization_id !== organizationID) {
             router.push("/");
@@ -115,7 +117,6 @@ export default function Add_Event() {
             updateValues(result);
             // If the event has ended, show the finished event view.
             if (new Date(result.end_time) < new Date()) {
-                console.log("Event has ended.")
                 showFinishedEvent();
             }
         }
@@ -452,7 +453,7 @@ export default function Add_Event() {
         // Hide the required field message and change the date input to text (hides the calender image).
         document.getElementById('reqField')?.classList.remove('opacity-80');
         document.getElementById('reqField')?.classList.add('opacity-0');
-        const dateElement = document.getElementById('Date') as HTMLInputElement;
+        const dateElement = document.getElementById('DateInput') as HTMLInputElement;
         dateElement.type = 'text';
         // Show the close event box and disable the edit event box.
         document.getElementById('editEventBox')?.classList.add('opacity-30');
@@ -482,6 +483,9 @@ export default function Add_Event() {
 
     // Close the event and mark it as complete in the API.
     const closeEvent = async () => {
+        // Get the event ID from the URL.
+        const url = window.location.href;
+        const eventID = url.split('=')[1];
         // Call the API to close the event.
         const res = await fetch('/api/organizations/complete-event', {
             method: 'POST',
