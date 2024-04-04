@@ -142,11 +142,17 @@ export default function Add_Event() {
         // If at least 5 characters are entered, update the search data and show the dropdown.
         if (event.target.value.length > 3) {
             setAddressButtonValue('Select an Address');
+            document.getElementById('menu-button')?.classList.remove('bg-white');
+            document.getElementById('menu-button')?.classList.add('bg-tertiary');
+            document.getElementById('menu-button')?.classList.add('bg-opacity-60');
             handleSearch();
         } else {
             // Otherwise clear the search data and hide the dropdown.
             updateSearchData('');
             setAddressButtonValue('Search for a Location');
+            document.getElementById('menu-button')?.classList.add('bg-white');
+            document.getElementById('menu-button')?.classList.remove('bg-tertiary');
+            document.getElementById('menu-button')?.classList.remove('bg-opacity-60');
             document.getElementById('addressDropdown')?.classList.add('h-0');
             document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
@@ -526,7 +532,7 @@ export default function Add_Event() {
                 <p id="title" className="text-left font-display font-bold text-tertiary text-3xl mt-16 pl-6">Edit Event</p>
                 <p id="subTitle" className="font-display font-bold text-4xl max-w-xs sm:max-w-full md:max-w-2xl md:text-6xl lg:max-w-full mb-12 pl-6">Host the future of giving back.</p>
 
-                <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
+                <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-200">
 
                     <div id="reqFieldContainer" className="w-5/6 h-fit mt-8">
                         <h3 id="reqField" className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>

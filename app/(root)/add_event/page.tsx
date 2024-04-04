@@ -74,11 +74,17 @@ export default function Add_Event() {
         // If at least 5 characters are entered, update the search data and show the dropdown.
         if (event.target.value.length > 3) {
             setAddressButtonValue('Select an Address');
+            document.getElementById('menu-button')?.classList.remove('bg-white');
+            document.getElementById('menu-button')?.classList.add('bg-tertiary');
+            document.getElementById('menu-button')?.classList.add('bg-opacity-60');
             handleSearch();
         } else {
             // Otherwise clear the search data and hide the dropdown.
             updateSearchData('');
             setAddressButtonValue('Search for a Location');
+            document.getElementById('menu-button')?.classList.add('bg-white');
+            document.getElementById('menu-button')?.classList.remove('bg-tertiary');
+            document.getElementById('menu-button')?.classList.remove('bg-opacity-60');
             document.getElementById('addressDropdown')?.classList.add('h-0');
             document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
@@ -432,7 +438,7 @@ export default function Add_Event() {
 
                         <div id="locationDropDownContainer" className="flex flex-col w-1/2 px-4 sm:px-0 sm:mx-8 mb:mx-12 md:m-0 md:px-8 lg:pl-16">
                             <label htmlFor="AddressInput" className="text-lg pl-3 mb:pl-4">Address <span className="text-primary">*</span></label>
-                            <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-50 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-6 w-full "
+                            <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-200 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-6 w-full "
                                 id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={showAddresses}>
                                 {addressButtonValue}
                                 <svg id="dropDownFormatting" className="-mr-1 h-8 w-8 my-auto text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
