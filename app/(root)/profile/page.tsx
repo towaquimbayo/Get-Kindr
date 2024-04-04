@@ -40,8 +40,6 @@ export default function Profile() {
     accountProvider?: string | null;
     accountType?: string | null;
   } = session || {};
-  const userTokens = 0;
-  const userVolHours = 0;
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [infoMsg, setInfoMsg] = useState("");
@@ -50,6 +48,7 @@ export default function Profile() {
   const isOrganization = accountType?.toLowerCase() === "organization";
   const [fieldErrors, setFieldErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const [profileImg, setProfileImg] = useState(image);
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -57,6 +56,9 @@ export default function Profile() {
     email: "",
     phone: "",
     password: "",
+    tokenBalance: 0,
+    volunteerHours: 0,
+    orgHostedEvents: 0,
   });
 
   useEffect(() => {
@@ -212,6 +214,9 @@ export default function Profile() {
       password: form.get("password")?.toString().trim() ?? "",
       isOrganization: isOrganization,
       userEmail: email, // user's current email
+      tokenBalance: userData.tokenBalance,
+      volunteerHours: userData.volunteerHours,
+      orgHostedEvents: userData.orgHostedEvents,
     };
     console.log("Profile Details: ", data);
 
@@ -240,7 +245,7 @@ export default function Profile() {
 
     console.log("Sending update request: ", data);
 
-    const res = await fetch("/api/auth/update", {
+    const res = await fetch("/api/auth/update/profile", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -350,13 +355,71 @@ export default function Profile() {
     );
   }
 
+  async function UploadImage(base64Image: string) {
+    // remove data:image/png;base64, from base64 string
+    const formattedBase64 = base64Image.replace(
+      /^data:image\/(png|jpeg|jpg);base64,/,
+      "",
+    );
+    const formData = new FormData();
+    formData.append("image", formattedBase64);
+
+    const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    const res = await fetch("https://api.imgbb.com/1/upload?key=" + apiKey, {
+      method: "POST",
+      body: formData,
+    });
+    const data = await res.json();
+
+    if (data.status !== 200) {
+      console.error("Error uploading image: ", data);
+      setErrorMsg("Error uploading image. Please try again.");
+      return;
+    }
+
+    return data.data.url;
+  }
+
+  async function UpdateProfileImage() {
+    // upload image to api.imgbb.com by calling UploadImage function
+    if (!profileImg || !profileImg.startsWith("data:image")) return;
+    const imgUrl = await UploadImage(profileImg); // Add 'await' keyword to wait for the promise to resolve
+
+    // send request to update profile image
+    if (!imgUrl) {
+      setErrorMsg("Error uploading image. Please try again.");
+      return;
+    }
+
+    const res = await fetch("/api/auth/update/image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        profileImage: imgUrl,
+      }),
+    });
+
+    if (!res) {
+      setErrorMsg("An error occurred. Please try again.");
+    } else if (res.ok) {
+      setSuccessMsg(
+        "Profile image updated successfully. Redirecting to login...",
+      );
+      setTimeout(() => signOut({ callbackUrl: "/login" }), 3000);
+    } else {
+      const error = await res.json();
+      setErrorMsg(error.message);
+    }
+  }
+
   return (
     <div className="mx-auto mb-auto mt-28 flex w-full max-w-screen-xl flex-col gap-8 p-8 lg:flex-row">
       <div className="flex w-full flex-col gap-8 md:flex-row lg:w-1/3 lg:flex-col">
         <ProfileSection>
           <div className="mb-4 flex justify-center">
             <Image
-              src={image || "/default_profile_img.png"}
+              src={profileImg || "/default_profile_img.png"}
               alt="Profile Picture"
               width="100"
               height="100"
@@ -364,20 +427,32 @@ export default function Profile() {
             />
           </div>
           <h1 className="my-4 flex text-xl">
-            Hello,&nbsp;<span className="font-semibold text-primary">{name}!</span>
+            Hello,&nbsp;
+            <span className="font-semibold text-primary">{name}!</span>
           </h1>
           <div className="mb-6 flex">
             <div className="flex w-full justify-between">
               <p className="text-sm text-[#4b4b4b]">
                 Tokens:{" "}
-                <span className="font-semibold text-black">{userTokens}</span>
-              </p>
-              <p className="text-sm text-[#4b4b4b]">
-                Volunteered:{" "}
                 <span className="font-semibold text-black">
-                  {userVolHours}h
+                  {userData.tokenBalance}
                 </span>
               </p>
+              {isOrganization ? (
+                <p className="text-sm text-[#4b4b4b]">
+                  Hosted Events:{" "}
+                  <span className="font-semibold text-black">
+                    {userData.orgHostedEvents}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-sm text-[#4b4b4b]">
+                  Volunteered:{" "}
+                  <span className="font-semibold text-black">
+                    {userData.volunteerHours}h
+                  </span>
+                </p>
+              )}
             </div>
           </div>
           <input
@@ -385,15 +460,52 @@ export default function Profile() {
             accept="image/jpeg, image/png"
             className="hidden"
             id="profile-picture"
-          />
-          <Button
-            title="Update Porfile Picture"
-            text="Update Photo"
-            onClick={() => {
-              document.getElementById("profile-picture")?.click();
+            onChange={(e) => {
+              setErrorMsg("");
+              const file = e.target.files?.[0];
+              if (file) {
+                console.log(file);
+
+                // Check if file is a valid image type
+                if (!["image/jpeg", "image/png"].includes(file.type)) {
+                  setErrorMsg(
+                    "Invalid file type. Please select a JPEG or PNG image.",
+                  );
+                  return;
+                }
+
+                // Check if file size is greater than 2MB
+                if (!file.size || file.size > 2097152) {
+                  setErrorMsg(
+                    "File size is too large. Please select an image less than 2MB.",
+                  );
+                  return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = () => setProfileImg(reader.result as string);
+                reader.readAsDataURL(file);
+              }
             }}
-            full
           />
+          {profileImg?.startsWith("data:image") ? (
+            <Button
+              title="Update Profile Image"
+              text="Update Image"
+              onClick={UpdateProfileImage}
+              full
+            />
+          ) : (
+            <Button
+              title="Change Profile Image"
+              text="Change Image"
+              disabled={isFetching}
+              onClick={() => {
+                document.getElementById("profile-picture")?.click();
+              }}
+              full
+            />
+          )}
         </ProfileSection>
         <ProfileSection>
           <h1 className="mb-4 text-xl font-semibold">Need assistance?</h1>

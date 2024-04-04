@@ -1,6 +1,53 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+
+// find all Events where user is a volunteer by volunteer id
+async function getVolunteerHours(volunteerId: string) {
+  return prisma.eventVolunteer.findMany({
+    where: {
+      volunteerId,
+    },
+    select: {
+      event: {
+        select: {
+          start_time: true,
+          end_time: true,
+        },
+      },
+    },
+  }).then((events) => {
+    let totalHours = 0;
+    events.forEach((event) => {
+      const startTime = new Date(event.event.start_time);
+      const endTime = new Date(event.event.end_time);
+      totalHours += (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+    });
+    return totalHours;
+  }).catch((error) => {
+    console.error("Error fetching volunteer hours: ", error);
+    return 0;
+  });
+}
+
+// find all Events where user is an organization by organization id
+async function getOrgHostedEvents(organizationId: string) {
+  return prisma.event.findMany({
+    where: {
+      organization_id: organizationId,
+    },
+    select: {
+      id: true,
+    },
+  }).then((events) => {
+    return events.length;
+  }).catch((error) => {
+    console.error("Error fetching org hosted events: ", error);
+    return 0;
+  });
+
+}
+
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -28,8 +75,12 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "User not found." }, { status: 404 });
     }
 
-    const isOrganization = user.accountType?.toLowerCase() === "organization";
     console.log("Successfully fetched user: ", user);
+
+    const isOrganization = user.accountType?.toLowerCase() === "organization";
+    const volunteerHours = isOrganization ? 0 : await getVolunteerHours(user.volunteer?.id || "");
+    const orgHostedEvents = isOrganization ? await getOrgHostedEvents(user.organization?.id || "") : 0;
+
     return NextResponse.json({
       status: 200,
       user: {
@@ -42,6 +93,8 @@ export async function GET(request: Request) {
         organizationId: user.organization?.id,
         volunteerId: user.volunteer?.id,
         tokenBalance: user.tokenBalance || 0,
+        volunteerHours: volunteerHours,
+        orgHostedEvents: orgHostedEvents,
       },
     });
   } catch (e) {

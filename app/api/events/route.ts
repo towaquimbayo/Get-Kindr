@@ -97,6 +97,7 @@ export async function GET(request: Request) {
         include: {
           organization: {
             select: {
+              id: true,
               name: true,
               user: {
                 select: {

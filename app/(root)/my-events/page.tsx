@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { Calendar, Edit, LucideBuilding, MapPin } from "lucide-react";
+import { Calendar, LucideBuilding, MapPin } from "lucide-react";
 import React, { Key, useEffect, useMemo, useState } from "react";
 import { getDate, getTime } from "@/components/shared/utils";
 
@@ -32,7 +32,6 @@ const EventCard = React.memo(function EventCard({
         <div className="mb-4 flex w-full flex-col items-start justify-between gap-4 md:mb-2 md:flex-row md:items-center md:gap-0">
           <div className="flex w-full items-center gap-4">
             <h1 className="text-xl font-semibold md:text-2xl">{event.name}</h1>
-            {isOrganization && <Edit size={18} />}
           </div>
           <div className="rounded-full bg-primary px-4 py-2 text-white">
             <p className="px-1">{statusName}</p>
@@ -99,17 +98,21 @@ export default function MyEvents() {
             return;
           }
           console.log("Fetched Events:", events);
-          
+
           let totalHours = 0;
           const formattedEvents = events.map((event: any) => {
             // Calculate total hours
             const startTime = new Date(event.start_time);
             const endTime = new Date(event.end_time);
-            totalHours += (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+            totalHours +=
+              (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
 
             // Braden: Added code to check date and update visual for event status.
-            if (new Date(event.end_time) < new Date() && event.status !== "completed") {
-              event.status = "ended";
+            if (
+              new Date(event.end_time) < new Date() &&
+              event.status !== "completed"
+            ) {
+              event.status = "completed";
             }
 
             // Format the event data
@@ -160,9 +163,16 @@ export default function MyEvents() {
         <h2 className="font-display text-5xl font-bold text-black">
           My Events
         </h2>
-        <p className="text-lg">
-          Total hours: <span className="font-bold">{totalVolHours}h</span>
-        </p>
+        {isOrganization ? (
+          <p className="text-lg">
+            Total events: <span className="font-bold">{events.length}</span>
+          </p>
+        ) : (
+          <p className="text-lg">
+            Total hours:{" "}
+            <span className="font-bold">{totalVolHours.toFixed(2)}h</span>
+          </p>
+        )}
       </div>
 
       {isFetching ? (

@@ -30,6 +30,7 @@ export default function Event() {
     startTime: "",
     endTime: "",
     organization: "",
+    organizationId: "",
     tags: [],
     city: "",
     status: "",
@@ -71,6 +72,7 @@ export default function Event() {
             startTime: fetchedEvent.start_time,
             endTime: fetchedEvent.end_time,
             organization: fetchedEvent.organization.name,
+            organizationId: fetchedEvent.organization.id,
             tags: fetchedEvent.tags,
             city: fetchedEvent.city,
             status: fetchedEvent.status.toLowerCase(),
@@ -112,25 +114,24 @@ export default function Event() {
       </button>
       <div className="flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex w-full flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <h1 className="font-display text-4xl flex font-bold text-black md:text-5xl">
+          <h1 className="flex font-display text-4xl font-bold text-black md:text-5xl">
             {event.name}
           </h1>
-          {isOrganization && (
-            <Button
-              text="Edit Event"
-              title="Edit Event"
-              small
-              onClick={() => router.push(`/edit-event?eventID=${eventId}`)}
-            >
-              Edit
-            </Button>
-          )}
+          {isOrganization &&
+            event.organizationId === session?.organizationID && (
+              <Button
+                text="Edit Event"
+                title="Edit Event"
+                small
+                onClick={() => router.push(`/edit-event?eventID=${eventId}`)}
+              >
+                Edit
+              </Button>
+            )}
         </div>
-          <div
-            className="text-md rounded-full border border-primary bg-transparent px-4 py-2 text-primary md:text-lg"
-          >
-            <p className="px-1">{status}</p>
-          </div>
+        <div className="text-md rounded-full border border-primary bg-transparent px-4 py-2 text-primary md:text-lg">
+          <p className="px-1">{status}</p>
+        </div>
       </div>
 
       <div className="mb-4 mt-12 flex w-full flex-col gap-4 lg:flex-row">
@@ -228,6 +229,9 @@ export default function Event() {
                   <div className="flex flex-col items-start justify-between gap-0.5 sm:flex-row sm:items-center sm:gap-2">
                     <p className="text-lg font-semibold">
                       {volunteer.volunteer.user.name}
+                      {session?.volunteerID === volunteer.volunteerId && (
+                        <span className="font-normal text-primary"> (You)</span>
+                      )}
                     </p>
                     <p className="text-md text-[#4b4b4b]">
                       {volunteer.volunteer.user.email}
