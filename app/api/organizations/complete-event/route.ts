@@ -123,6 +123,6 @@ async function releaseTokensAndCompleteEvent(event: any, userID: any) {
 
     await prisma.event.update({
         where: { id: event.id },
-        data: { status: 'COMPLETE' },
+        data: { status: 'COMPLETED' },
     });
 }

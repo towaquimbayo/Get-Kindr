@@ -109,7 +109,7 @@ export default function MyEvents() {
 
             // Braden: Added code to check date and update visual for event status.
             if (new Date(event.end_time) < new Date() && event.status !== "completed") {
-              event.status = "ended";
+              event.status = "completed";
             }
 
             // Format the event data
