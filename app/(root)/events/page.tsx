@@ -6,7 +6,7 @@ import SectionTitle from "@/components/shared/SectionTitle";
 import { LucideSearch, LucideMapPin, LucideHeart, LucideHeartHandshake, LucideGem } from "lucide-react";
 import Link from "next/link";
 import Button from "@/components/layout/button";
-import Map, { Marker } from "react-map-gl";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { Event } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -27,6 +27,43 @@ export default function Events() {
   const [searchTags, setSearchTags] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [sortOrder, setSortOrder] = useState<'recent' | 'tokens'>('recent');
+
+  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
+  const [markerCoordinates, setMarkerCoordinates] = useState<Coordinates[]>([]);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API || "",
+  });
+
+  useEffect(() => {
+    const fetchMarkerCoordinates = async () => {
+      const coordinates = await Promise.all(
+        events.map(async (event) => {
+          const address = `${event.address}, ${event.city}`;
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+              address,
+            )}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API}`,
+          );
+          const data = await response.json();
+          const { lat, lng } = data.results[0].geometry.location;
+          return [lat, lng] as Coordinates;
+        }),
+      );
+      setMarkerCoordinates(coordinates);
+    };
+
+    fetchMarkerCoordinates();
+  }, [events]);
+
+  const handleMarkerClick = (eventIndex: number) => {
+    const eventCard = document.getElementById(`event-${eventIndex}`);
+    if (eventCard) {
+      eventCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   const filterEvents = (searchText: string, searchLocation: string, searchTags: string) => {
     if (searchText || searchLocation || searchTags) {
@@ -182,39 +219,12 @@ export default function Events() {
     }
   }
 
-  const [mapDimensions, setMapDimensions] = useState({ width: 0, height: 0 });
-  const [markerCoordinates, setMarkerCoordinates] = useState<Coordinates[]>([]);
-
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (mapContainerRef.current) {
       const { width, height } = mapContainerRef.current.getBoundingClientRect();
       setMapDimensions({ width, height });
     }
   }, []);
-
-  useEffect(() => {
-    const fetchMarkerCoordinates = async () => {
-      const coordinates = await Promise.all(
-        events.map(async (event) => {
-          const address = `${event.address}, ${event.city}`;
-          const response = await fetch(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-              address,
-            )}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
-            }`,
-          );
-          const data = await response.json();
-          return data.features[0].center as Coordinates;
-        }),
-      );
-
-      setMarkerCoordinates(coordinates);
-    };
-
-    fetchMarkerCoordinates();
-  }, [events]);
 
   useEffect(() => {
     async function getUserDetails() {
@@ -332,9 +342,10 @@ export default function Events() {
             <div className="max-h-[500px] flex-1 overflow-y-auto overflow-x-hidden">
               {/* Event Card */}
               {searchResults.length > 0 ? (
-                searchResults.map((event) => (
+                searchResults.map((event, index) => (
                   <div
                     key={event.id}
+                    id={`event-${index}`}
                     className="mb-6 rounded-xl border border-[#EAEAEA] bg-white p-6 !transition-all duration-300 ease-in-out hover:shadow-md"
                   >
                     <div className="mb-4 flex items-start justify-between">
@@ -416,36 +427,194 @@ export default function Events() {
             {/* Map Embed */}
             <div className="hidden flex-1 lg:block">
               <div
-                className="overflow-hidden rounded-3xl"
+                className="overflow-hidden rounded-3xl ring-0"
                 ref={mapContainerRef}
               >
-                <Map
-                  mapboxAccessToken={
-                    process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
-                  }
-                  initialViewState={{
-                    longitude: -123.05,
-                    latitude: 49.24,
-                    zoom: 10,
-                  }}
-                  style={{ width: "100%", height: 500, borderRadius: "1.5rem" }}
-                  mapStyle="mapbox://styles/mapbox/light-v10"
-                >
-                  {markerCoordinates.map((coordinates, index) => (
-                    <Marker
-                      key={index}
-                      longitude={coordinates[0]}
-                      latitude={coordinates[1]}
-                      anchor="center"
-                      offset={[
-                        mapDimensions.width / 2,
-                        -mapDimensions.height - 20,
-                      ]}
-                    >
-                      <div className="h-2 w-2 rounded-full bg-primary"></div>
-                    </Marker>
-                  ))}
-                </Map>
+                {isLoaded && (
+                  <GoogleMap
+                    mapContainerStyle={{ width: "100%", height: "500px", borderRadius: "1.5rem" }}
+                    center={{ lat: 49.24, lng: -123.05 }}
+                    zoom={10}
+                    options={{
+                      styles: [
+                        {
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#f5f5f5"
+                            }
+                          ]
+                        },
+                        {
+                          "elementType": "labels.icon",
+                          "stylers": [
+                            {
+                              "visibility": "off"
+                            }
+                          ]
+                        },
+                        {
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#616161"
+                            }
+                          ]
+                        },
+                        {
+                          "elementType": "labels.text.stroke",
+                          "stylers": [
+                            {
+                              "color": "#f5f5f5"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "administrative.land_parcel",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#bdbdbd"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "poi",
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#eeeeee"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "poi",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#757575"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "poi.park",
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#e5e5e5"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "poi.park",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#9e9e9e"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "road",
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#ffffff"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "road.arterial",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#757575"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "road.highway",
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#dadada"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "road.highway",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#616161"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "road.local",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#9e9e9e"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "transit.line",
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#e5e5e5"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "transit.station",
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#eeeeee"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "water",
+                          "elementType": "geometry",
+                          "stylers": [
+                            {
+                              "color": "#c9c9c9"
+                            }
+                          ]
+                        },
+                        {
+                          "featureType": "water",
+                          "elementType": "labels.text.fill",
+                          "stylers": [
+                            {
+                              "color": "#9e9e9e"
+                            }
+                          ]
+                        }
+                      ]
+                    }}
+                  >
+                    {markerCoordinates.map((coords, index) => (
+                      <Marker
+                        key={index}
+                        position={{ lat: coords[0], lng: coords[1] }}
+                        onClick={() => handleMarkerClick(index)}
+                        icon={{
+                          path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+                          fillColor: '#ff5656',
+                          fillOpacity: 1,
+                          strokeColor: '#ff5656',
+                          strokeWeight: 0,
+                          scale: 0.7,
+                        }}
+                      />
+                    ))}
+                  </GoogleMap>
+                )}
               </div>
             </div>
           </>
