@@ -228,6 +228,9 @@ export default function Event() {
                   <div className="flex flex-col items-start justify-between gap-0.5 sm:flex-row sm:items-center sm:gap-2">
                     <p className="text-lg font-semibold">
                       {volunteer.volunteer.user.name}
+                      {session?.volunteerID === volunteer.volunteerId && (
+                        <span className="text-primary font-normal"> (You)</span>
+                      )}
                     </p>
                     <p className="text-md text-[#4b4b4b]">
                       {volunteer.volunteer.user.email}
