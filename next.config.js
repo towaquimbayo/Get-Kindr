@@ -13,6 +13,7 @@ const nextConfig = {
       "api.dicebear.com",
       "avatars.dicebear.com",
       "randomuser.me",
+      "i.ibb.co",
     ],
   },
   async redirects() {
