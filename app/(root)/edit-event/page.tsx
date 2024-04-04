@@ -466,7 +466,7 @@ export default function Add_Event() {
     // Lock the close event button and prevent multiple submissions, then close the event.
     const lockAndClose = () => {
         // Set the close button to disabled.
-        const submitButton = document.getElementById('close') as HTMLInputElement;
+        const submitButton = document.getElementById('closeEvent') as HTMLInputElement;
         submitButton.disabled = true;
         // Return if the lock is true.
         if (lock) {
