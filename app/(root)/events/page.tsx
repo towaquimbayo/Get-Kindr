@@ -48,8 +48,13 @@ export default function Events() {
             )}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API}`,
           );
           const data = await response.json();
-          const { lat, lng } = data.results[0].geometry.location;
-          return [lat, lng] as Coordinates;
+          if (data.status == 'OK') {
+            const { lat, lng } = data.results[0].geometry.location;
+            return [lat, lng] as Coordinates;
+          } else {
+            console.error('Error fetching coordinates: ', data);
+            return [0, 0] as Coordinates;
+          }
         }),
       );
       setMarkerCoordinates(coordinates);
@@ -599,6 +604,7 @@ export default function Events() {
                     }}
                   >
                     {markerCoordinates.map((coords, index) => (
+                      coords[0] !== 0 && coords[1] !== 0 &&
                       <Marker
                         key={index}
                         position={{ lat: coords[0], lng: coords[1] }}
