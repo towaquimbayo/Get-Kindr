@@ -112,11 +112,8 @@ export default function Events() {
 
   useEffect(() => {
     async function fetchEvents() {
-      if (user?.volunteerId) {
-        setIsFetchingVolunteers(true);
-      } else {
-        setIsFetchingEvents(true);
-      }
+      setIsFetchingVolunteers(true);
+      setIsFetchingEvents(true);
       // Query backend for events
       await fetch("/api/events", {
         method: "GET",
@@ -144,9 +141,7 @@ export default function Events() {
         })
         .finally(() => {
           setIsFetchingEvents(false);
-          if (user?.volunteerId) {
-            setIsFetchingVolunteers(false);
-          }
+          setIsFetchingVolunteers(false);
         });
     }
 
