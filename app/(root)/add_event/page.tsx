@@ -301,16 +301,20 @@ export default function Add_Event() {
         }
         // Check if the required fields are filled for event submission.
         if (validateSubmit()) {
+            let useTags = valueTags.split(' ');
             // If no tags are entered, give the event a KINDR tag.
             if (valueTags.length === 0) {
-                setTagsValue('KINDR');
+                useTags = ['KINDR'];
             } else {
                 // Otherwise, remove the hashtag from the tags.
-                let tags = valueTags.split(' ');
-                for (let i = 0; i < tags.length; i++) {
-                    tags[i] = tags[i].replace('#', '');
+                for (let i = 0; i < useTags.length; i++) {
+                    if (useTags[i].replace('#', '').length != 0){
+                        useTags[i] = useTags[i].replace('#', '');
+                    } else {
+                        // If the tag is empty, remove it from the tags.
+                        useTags.splice(i, 1);
+                    }
                 }
-                setTagsValue(tags.join(' '));
             }
 
             // Create the event info object with the required fields.
@@ -319,7 +323,7 @@ export default function Add_Event() {
                 description: valueDescription,
                 start_time: new Date(valueDate + " " + valueStartTime),
                 end_time: new Date(valueDate + " " + valueEndTime),
-                tags: valueTags.split(' '),
+                tags: useTags,
                 address: valueAddress,
                 city: formattedLocation,
                 coordinates: valueCoordinates,

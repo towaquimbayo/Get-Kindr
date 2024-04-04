@@ -389,7 +389,7 @@ export default function Add_Event() {
                 number_of_spots: parseInt(valueVolNum),
                 coordinates: valueCoordinates,
             };
-            // Call the API to create the event.
+            // Call the API to update the event.
             const data = JSON.stringify(eventInfo);
             const res = await fetch('/api/events/update', {
                 method: 'PUT',
@@ -408,17 +408,17 @@ export default function Add_Event() {
             const submitButton = document.getElementById('submit') as HTMLInputElement;
             // Log the response and redirect to the events page if successful.
             if (!res) {
-                response.textContent = "Event creation failed. Please try again.";
+                response.textContent = "Event update failed. Please try again.";
                 response.classList.remove('text-secondary');
                 response.classList.add('text-primary');
                 lock = false;
                 submitButton.disabled = false;
             } else if (res.ok) {
-                console.log("Successfully created event.")
+                console.log("Successfully updated event.")
                 const eventData = await res.json();
                 window.location.href = "/events";
             } else {
-                response.textContent = "Event creation failed. Please try again.";
+                response.textContent = "Event update failed. Please try again.";
                 response.classList.remove('text-secondary');
                 response.classList.add('text-primary');
                 lock = false;
