@@ -371,6 +371,7 @@ export default function Add_Event() {
                 description: valueDescription,
                 start_time: new Date(valueDate + " " + valueStartTime),
                 end_time: new Date(valueDate + " " + valueEndTime),
+                organization_id: organizationID,
                 tags: valueTags.split(' '),
                 address: valueAddress,
                 city: formattedLocation,
@@ -382,7 +383,7 @@ export default function Add_Event() {
             };
             // Call the API to create the event.
             const data = JSON.stringify(eventInfo);
-            const res = await fetch('/api/events/create', {
+            const res = await fetch('/api/events/update', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
