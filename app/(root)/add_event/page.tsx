@@ -134,9 +134,13 @@ export default function Add_Event() {
         // Remove selection indication from all dropdown items.
         for (let i = 1; i <= 5; i++) {
             document.getElementById('dropdown-' + i)?.classList.remove('bg-tertiary');
+            document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-opacity-60');
+            document.getElementById('dropdown-' + i)?.classList.add('hover:bg-gray-100');
         }
         // Add selection indication to the selected dropdown item.
         document.getElementById('dropdown-' + index)?.classList.add('bg-tertiary');
+        document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-gray-100');
+        document.getElementById('dropdown-' + index)?.classList.add('hover:bg-opacity-60');
         // Set coordinates, location, and address values based on the selected dropdown item.
         setValueCoordinates((searchData[index - 1] as any).center);
         setValueLocation((searchData[index - 1] as any).place_name);
@@ -306,6 +310,7 @@ export default function Add_Event() {
                 for (let i = 0; i < tags.length; i++) {
                     tags[i] = tags[i].replace('#', '');
                 }
+                setTagsValue(tags.join(' '));
             }
 
             // Create the event info object with the required fields.
@@ -447,20 +452,20 @@ export default function Add_Event() {
                             </button>
 
                             <div id="addressDropdown" className="z-10 rounded-md shadow-lg ring-black ring-opacity-5 divide-y-1 divide-gray-300 bg-white focus:outline-none w-11/12 mt-2 mx-auto overflow-hidden h-0 ring-0" aria-orientation="vertical" aria-labelledby="menu-button">
-                                <div className="p-1 overflow-hidden" id="dropdown-1" onClick={() => setAddress(1)}>
+                                <div className="p-1 hover:bg-gray-100 overflow-hidden" id="dropdown-1" onClick={() => setAddress(1)}>
                                     <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-1">1</button>
                                 </div>
-                                <div className="py-1" id="dropdown-2" onClick={() => setAddress(2)}>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-2" onClick={() => setAddress(2)}>
                                     <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-2">2</button>
                                 </div>
-                                <div className="py-1" id="dropdown-3" onClick={() => setAddress(3)}>
-                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-3">3</button>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-3" onClick={() => setAddress(3)}>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2 " id="menu-item-3">3</button>
                                 </div>
-                                <div className="py-1" id="dropdown-4" onClick={() => setAddress(4)}>
-                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-4">4</button>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-4" onClick={() => setAddress(4)}>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2 " id="menu-item-4">4</button>
                                 </div>
-                                <div className="py-1" id="dropdown-5" onClick={() => setAddress(5)}>
-                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-5">5</button>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-5" onClick={() => setAddress(5)}>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2 " id="menu-item-5">5</button>
                                 </div>
                             </div>
 
@@ -475,12 +480,12 @@ export default function Add_Event() {
                             <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} onBlur={(e) => validDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
                         </div>
 
-                        <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-48">
+                        <div className="flex flex-col w-4/5 mt-8 sm:w-min lg:w-1/3">
                             <label htmlFor="timeInput" className=" text-lg pl-2 mb:pl-4">Time <span className="text-primary">*</span></label>
-                            <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="12:00"></input>
+                            <div className="bg-white flex flex-row w-full p-0.5 rounded-lg border-2 border border-[#EAEAEA]">
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base sm:p-2 md:px-3" placeholder="12:00"></input>
                                 <h1 className="text-xl sm:text-2xl mt-0.5 ">-</h1>
-                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="23:59"></input>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base sm:p-2 md:px-3" placeholder="23:59"></input>
                             </div>
                         </div>
 

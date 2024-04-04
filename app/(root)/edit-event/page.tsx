@@ -202,9 +202,13 @@ export default function Add_Event() {
         // Remove selection indication from all dropdown items.
         for (let i = 1; i <= 5; i++) {
             document.getElementById('dropdown-' + i)?.classList.remove('bg-tertiary');
+            document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-opacity-60');
+            document.getElementById('dropdown-' + i)?.classList.add('hover:bg-gray-100');
         }
         // Add selection indication to the selected dropdown item.
         document.getElementById('dropdown-' + index)?.classList.add('bg-tertiary');
+        document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-gray-100');
+        document.getElementById('dropdown-' + index)?.classList.add('hover:bg-opacity-60');
         // Set coordinates, location, and address values based on the selected dropdown item.
         setValueCoordinates((searchData[index - 1] as any).center);
         setValueLocation((searchData[index - 1] as any).place_name);
@@ -355,6 +359,7 @@ export default function Add_Event() {
 
     // Submit the event to the API.
     const submitEvent = async () => {
+        
         // Format the location to remove postal code and country.
         let splitAddress = valueAddress.split(',');
         let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
@@ -365,13 +370,16 @@ export default function Add_Event() {
         }
         // Check if the required fields are filled for event submission.
         if (validateSubmit()) {
+            // Get event ID for event update.
+            const url = window.location.href;
+            const eventID = url.split('=')[1];
             // Create the event info object with the required fields.
             const eventInfo = {
                 name: valueName,
                 description: valueDescription,
                 start_time: new Date(valueDate + " " + valueStartTime),
                 end_time: new Date(valueDate + " " + valueEndTime),
-                id: organizationID,
+                id: eventID,
                 tags: valueTags.split(' '),
                 address: valueAddress,
                 city: formattedLocation,
@@ -533,7 +541,7 @@ export default function Add_Event() {
                 <p id="title" className="text-left font-display font-bold text-tertiary text-3xl mt-16 pl-6">Edit Event</p>
                 <p id="subTitle" className="font-display font-bold text-4xl max-w-xs sm:max-w-full md:max-w-2xl md:text-6xl lg:max-w-full mb-12 pl-6">Host the future of giving back.</p>
 
-                <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-200">
+                <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
 
                     <div id="reqFieldContainer" className="w-5/6 h-fit mt-8">
                         <h3 id="reqField" className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
@@ -555,7 +563,7 @@ export default function Add_Event() {
 
                         <div id="locationDropDownContainer" className="flex flex-col w-1/2 px-4 sm:px-0 sm:mx-8 mb:mx-12 md:m-0 md:px-8 lg:pl-16">
                             <label htmlFor="AddressInput" className="text-lg pl-3 mb:pl-4">Address <span className="text-primary">*</span></label>
-                            <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-50 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-6 w-full "
+                            <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-200 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-6 w-full "
                                 id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={showAddresses}>
                                 {addressButtonValue}
                                 <svg id="dropDownFormatting" className="-mr-1 h-8 w-8 my-auto text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -564,20 +572,20 @@ export default function Add_Event() {
                             </button>
 
                             <div id="addressDropdown" className="z-10 rounded-md shadow-lg ring-black ring-opacity-5 divide-y-1 divide-gray-300 bg-white focus:outline-none w-11/12 mt-2 mx-auto overflow-hidden h-0 ring-0" aria-orientation="vertical" aria-labelledby="menu-button">
-                                <div className="p-1 overflow-hidden" id="dropdown-1" onClick={() => setAddress(1)}>
+                                <div className="p-1 hover:bg-gray-100 overflow-hidden" id="dropdown-1" onClick={() => setAddress(1)}>
                                     <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-1">1</button>
                                 </div>
-                                <div className="py-1" id="dropdown-2" onClick={() => setAddress(2)}>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-2" onClick={() => setAddress(2)}>
                                     <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-2">2</button>
                                 </div>
-                                <div className="py-1" id="dropdown-3" onClick={() => setAddress(3)}>
-                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-3">3</button>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-3" onClick={() => setAddress(3)}>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2 " id="menu-item-3">3</button>
                                 </div>
-                                <div className="py-1" id="dropdown-4" onClick={() => setAddress(4)}>
-                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-4">4</button>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-4" onClick={() => setAddress(4)}>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2 " id="menu-item-4">4</button>
                                 </div>
-                                <div className="py-1" id="dropdown-5" onClick={() => setAddress(5)}>
-                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2" id="menu-item-5">5</button>
+                                <div className="py-1 hover:bg-gray-100" id="dropdown-5" onClick={() => setAddress(5)}>
+                                    <button className="block text-gray-700 text-md truncate w-full px-4 py-2 " id="menu-item-5">5</button>
                                 </div>
                             </div>
 
@@ -592,12 +600,12 @@ export default function Add_Event() {
                             <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} onBlur={(e) => validDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
                         </div>
 
-                        <div className="flex flex-col w-4/5 mt-8 sm:w-1/3 sm:min-w-48">
+                        <div className="flex flex-col w-4/5 mt-8 sm:w-min lg:w-1/3">
                             <label htmlFor="timeInput" className=" text-lg pl-2 mb:pl-4">Time <span className="text-primary">*</span></label>
-                            <div className="bg-white flex flex-row w-full rounded-lg border-2 border border-[#EAEAEA]">
-                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="12:00"></input>
+                            <div className="bg-white flex flex-row w-full p-0.5 rounded-lg border-2 border border-[#EAEAEA]">
+                                <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base sm:p-2 md:px-3" placeholder="12:00"></input>
                                 <h1 className="text-xl sm:text-2xl mt-0.5 ">-</h1>
-                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base" placeholder="23:59"></input>
+                                <input type="time" id="endTime" onChange={(e) => updateEndTimeHandler(e)} value={valueEndTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base sm:p-2 md:px-3" placeholder="23:59"></input>
                             </div>
                         </div>
 
