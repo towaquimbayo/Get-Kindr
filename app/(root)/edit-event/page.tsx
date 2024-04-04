@@ -345,10 +345,6 @@ export default function Add_Event() {
         // Otherwise set the lock to true, submit the event, and set a timeout to unlock the button.
         lock = true;
         submitEvent();
-        setTimeout(() => {
-            lock = false;
-            submitButton.disabled = false;
-        }, 3000);
     }
 
     // Submit the event to the API.
@@ -387,9 +383,12 @@ export default function Add_Event() {
                 },
                 body: data,
             });
+            const submitButton = document.getElementById('submit') as HTMLInputElement;
             // Log the response and redirect to the events page if successful.
             if (!res) {
                 console.log("An error occurred. Please try again.");
+                lock = false;
+                submitButton.disabled = false;
             } else if (res.ok) {
                 console.log("Successfully created event.")
                 const eventData = await res.json();
@@ -397,6 +396,8 @@ export default function Add_Event() {
             } else {
                 console.log("Response: ", res)
                 console.log("Rejected event creation. Please try again.")
+                lock = false;
+                submitButton.disabled = false;
             }
         }
     }
@@ -475,10 +476,6 @@ export default function Add_Event() {
         // Otherwise set the lock to true, close the event, and set a timeout to unlock the button.
         lock = true;
         closeEvent();
-        setTimeout(() => {
-            lock = false;
-            submitButton.disabled = false;
-        }, 3000);
     }
 
     // Close the event and mark it as complete in the API.
@@ -494,13 +491,18 @@ export default function Add_Event() {
             },
             body: JSON.stringify({ eventID: eventID }),
         });
+        const submitButton = document.getElementById('closeEvent') as HTMLInputElement;
         // Log the response and redirect to the my events page if successful.
         if (!res) {
+            lock = false;
+            submitButton.disabled = false;
             console.log("An error occurred. Please try again.");
         } else if (res.ok) {
             console.log("Successfully closed event.")
             window.location.href = "/my-events";
         } else {
+            lock = false;
+            submitButton.disabled = false;
             console.log(res)
             console.log("Rejected event closure. Please try again.")
         }
