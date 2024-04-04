@@ -40,8 +40,6 @@ export default function Profile() {
     accountProvider?: string | null;
     accountType?: string | null;
   } = session || {};
-  const userTokens = 0;
-  const userVolHours = 0;
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [infoMsg, setInfoMsg] = useState("");
@@ -57,6 +55,8 @@ export default function Profile() {
     email: "",
     phone: "",
     password: "",
+    tokenBalance: 0,
+    volunteerHours: 0,
   });
 
   useEffect(() => {
@@ -212,6 +212,8 @@ export default function Profile() {
       password: form.get("password")?.toString().trim() ?? "",
       isOrganization: isOrganization,
       userEmail: email, // user's current email
+      tokenBalance: userData.tokenBalance,
+      volunteerHours: userData.volunteerHours,
     };
     console.log("Profile Details: ", data);
 
@@ -370,12 +372,12 @@ export default function Profile() {
             <div className="flex w-full justify-between">
               <p className="text-sm text-[#4b4b4b]">
                 Tokens:{" "}
-                <span className="font-semibold text-black">{userTokens}</span>
+                <span className="font-semibold text-black">{userData.tokenBalance}</span>
               </p>
               <p className="text-sm text-[#4b4b4b]">
                 Volunteered:{" "}
                 <span className="font-semibold text-black">
-                  {userVolHours}h
+                  {userData.volunteerHours}h
                 </span>
               </p>
             </div>
