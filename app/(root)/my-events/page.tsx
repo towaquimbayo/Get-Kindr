@@ -99,16 +99,20 @@ export default function MyEvents() {
             return;
           }
           console.log("Fetched Events:", events);
-          
+
           let totalHours = 0;
           const formattedEvents = events.map((event: any) => {
             // Calculate total hours
             const startTime = new Date(event.start_time);
             const endTime = new Date(event.end_time);
-            totalHours += (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+            totalHours +=
+              (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
 
             // Braden: Added code to check date and update visual for event status.
-            if (new Date(event.end_time) < new Date() && event.status !== "completed") {
+            if (
+              new Date(event.end_time) < new Date() &&
+              event.status !== "completed"
+            ) {
               event.status = "completed";
             }
 
@@ -160,9 +164,16 @@ export default function MyEvents() {
         <h2 className="font-display text-5xl font-bold text-black">
           My Events
         </h2>
-        <p className="text-lg">
-          Total hours: <span className="font-bold">{totalVolHours}h</span>
-        </p>
+        {isOrganization ? (
+          <p className="text-lg">
+            Total events: <span className="font-bold">{events.length}</span>
+          </p>
+        ) : (
+          <p className="text-lg">
+            Total hours:{" "}
+            <span className="font-bold">{totalVolHours.toFixed(2)}h</span>
+          </p>
+        )}
       </div>
 
       {isFetching ? (

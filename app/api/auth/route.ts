@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 
 // find all Events where user is a volunteer by volunteer id
-function getVolunteerHours(volunteerId: string) {
+async function getVolunteerHours(volunteerId: string) {
   return prisma.eventVolunteer.findMany({
     where: {
       volunteerId,
@@ -28,6 +28,24 @@ function getVolunteerHours(volunteerId: string) {
     console.error("Error fetching volunteer hours: ", error);
     return 0;
   });
+}
+
+// find all Events where user is an organization by organization id
+async function getOrgHostedEvents(organizationId: string) {
+  return prisma.event.findMany({
+    where: {
+      organization_id: organizationId,
+    },
+    select: {
+      id: true,
+    },
+  }).then((events) => {
+    return events.length;
+  }).catch((error) => {
+    console.error("Error fetching org hosted events: ", error);
+    return 0;
+  });
+
 }
 
 export async function GET(request: Request) {
@@ -61,6 +79,7 @@ export async function GET(request: Request) {
 
     const isOrganization = user.accountType?.toLowerCase() === "organization";
     const volunteerHours = isOrganization ? 0 : await getVolunteerHours(user.volunteer?.id || "");
+    const orgHostedEvents = isOrganization ? await getOrgHostedEvents(user.organization?.id || "") : 0;
 
     return NextResponse.json({
       status: 200,
@@ -75,6 +94,7 @@ export async function GET(request: Request) {
         volunteerId: user.volunteer?.id,
         tokenBalance: user.tokenBalance || 0,
         volunteerHours: volunteerHours,
+        orgHostedEvents: orgHostedEvents,
       },
     });
   } catch (e) {

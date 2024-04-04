@@ -57,6 +57,7 @@ export default function Profile() {
     password: "",
     tokenBalance: 0,
     volunteerHours: 0,
+    orgHostedEvents: 0,
   });
 
   useEffect(() => {
@@ -214,6 +215,7 @@ export default function Profile() {
       userEmail: email, // user's current email
       tokenBalance: userData.tokenBalance,
       volunteerHours: userData.volunteerHours,
+      orgHostedEvents: userData.orgHostedEvents,
     };
     console.log("Profile Details: ", data);
 
@@ -366,20 +368,32 @@ export default function Profile() {
             />
           </div>
           <h1 className="my-4 flex text-xl">
-            Hello,&nbsp;<span className="font-semibold text-primary">{name}!</span>
+            Hello,&nbsp;
+            <span className="font-semibold text-primary">{name}!</span>
           </h1>
           <div className="mb-6 flex">
             <div className="flex w-full justify-between">
               <p className="text-sm text-[#4b4b4b]">
                 Tokens:{" "}
-                <span className="font-semibold text-black">{userData.tokenBalance}</span>
-              </p>
-              <p className="text-sm text-[#4b4b4b]">
-                Volunteered:{" "}
                 <span className="font-semibold text-black">
-                  {userData.volunteerHours}h
+                  {userData.tokenBalance}
                 </span>
               </p>
+              {isOrganization ? (
+                <p className="text-sm text-[#4b4b4b]">
+                  Hosted Events:{" "}
+                  <span className="font-semibold text-black">
+                    {userData.orgHostedEvents}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-sm text-[#4b4b4b]">
+                  Volunteered:{" "}
+                  <span className="font-semibold text-black">
+                    {userData.volunteerHours}h
+                  </span>
+                </p>
+              )}
             </div>
           </div>
           <input
