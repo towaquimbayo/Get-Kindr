@@ -359,7 +359,7 @@ export default function Add_Event() {
 
     // Submit the event to the API.
     const submitEvent = async () => {
-        
+
         // Format the location to remove postal code and country.
         let splitAddress = valueAddress.split(',');
         let formattedLocation = splitAddress[0] + ', ' + splitAddress[1];
@@ -375,24 +375,24 @@ export default function Add_Event() {
             const eventID = url.split('=')[1];
             // Create the event info object with the required fields.
             const eventInfo = {
+                id: eventID,
                 name: valueName,
                 description: valueDescription,
                 start_time: new Date(valueDate + " " + valueStartTime),
                 end_time: new Date(valueDate + " " + valueEndTime),
-                id: eventID,
                 tags: valueTags.split(' '),
                 address: valueAddress,
                 city: formattedLocation,
-                coordinates: valueCoordinates,
                 recurring: valueRecurring,
                 online: valueOnline,
                 token_bounty: 100,
                 number_of_spots: parseInt(valueVolNum),
+                coordinates: valueCoordinates,
             };
             // Call the API to create the event.
             const data = JSON.stringify(eventInfo);
             const res = await fetch('/api/events/update', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -400,7 +400,7 @@ export default function Add_Event() {
             });
             // Get the response element and show it.
             let response = document.getElementById('response') as HTMLInputElement;
-            response.textContent = "Creating event...";
+            response.textContent = "Updating event...";
             response.classList.remove('opacity-0');
             response.classList.remove('h-0');
             response.classList.remove('mb-0');
