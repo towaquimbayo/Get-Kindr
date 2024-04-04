@@ -38,7 +38,16 @@ export async function POST(req: NextRequest) {
                         id: eventID,
                     },
                     include: {
-                        event_volunteers: true,
+                        event_volunteers: {
+                            include: {
+                                volunteer: {
+                                    select: {
+                                        id: true,
+                                        userId: true,
+                                    },
+                                },
+                            }
+                        }
                     },
                 });
 
@@ -98,10 +107,7 @@ async function releaseTokensAndCompleteEvent(event: any, userID: any) {
     }
 
     for (const volunteer of event.event_volunteers) {
-
-        const volunteerWallet = await prisma.wallet.findUniqueOrThrow({
-            where: { userId: volunteer.volunteerId },
-        });
+        const UID = volunteer.volunteer.userId;
 
         await prisma.$transaction([
             prisma.user.update({
@@ -109,7 +115,7 @@ async function releaseTokensAndCompleteEvent(event: any, userID: any) {
                 data: { tokenBalance: { decrement: event.token_bounty } },
             }),
             prisma.user.update({
-                where: { id: volunteer.userId },
+                where: { id: UID },
                 data: { tokenBalance: { increment: event.token_bounty } },
             })
         ]);
