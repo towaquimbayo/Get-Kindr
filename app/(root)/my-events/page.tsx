@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
-import { Calendar, Edit, LucideBuilding, MapPin } from "lucide-react";
+import { Calendar, LucideBuilding, MapPin } from "lucide-react";
 import React, { Key, useEffect, useMemo, useState } from "react";
 import { getDate, getTime } from "@/components/shared/utils";
 
@@ -32,7 +32,6 @@ const EventCard = React.memo(function EventCard({
         <div className="mb-4 flex w-full flex-col items-start justify-between gap-4 md:mb-2 md:flex-row md:items-center md:gap-0">
           <div className="flex w-full items-center gap-4">
             <h1 className="text-xl font-semibold md:text-2xl">{event.name}</h1>
-            {isOrganization && <Edit size={18} />}
           </div>
           <div className="rounded-full bg-primary px-4 py-2 text-white">
             <p className="px-1">{statusName}</p>
