@@ -301,7 +301,7 @@ export default function Add_Event() {
                     tags[i] = tags[i].replace('#', '');
                 }
             }
-            
+
             // Create the event info object with the required fields.
             const eventInfo = {
                 name: valueName,
@@ -317,6 +317,13 @@ export default function Add_Event() {
                 token_bounty: 100,
                 number_of_spots: parseInt(valueVolNum, 10),
             };
+            // Get the response element and show it.
+            let response = document.getElementById('response') as HTMLInputElement;
+            response.textContent = "Creating event...";
+            response.classList.remove('opacity-0');
+            response.classList.remove('h-0');
+            response.classList.remove('mb-0');
+            response.classList.add('mb-6');
             // Call the API to create the event.
             const data = JSON.stringify(eventInfo);
             const res = await fetch('/api/events/create', {
@@ -329,7 +336,9 @@ export default function Add_Event() {
             const submitButton = document.getElementById('submit') as HTMLInputElement;
             // Log the response and redirect to the events page if successful.
             if (!res) {
-                console.log("An error occurred. Please try again.");
+                response.textContent = "Error creating event. Please try again.";
+                response.classList.remove('text-secondary');
+                response.classList.add('text-primary');
                 lock = false;
                 submitButton.disabled = false;
             } else if (res.ok) {
@@ -337,8 +346,9 @@ export default function Add_Event() {
                 const eventData = await res.json();
                 window.location.href = "/events";
             } else {
-                console.log("Response: ", res)
-                console.log("Rejected event creation. Please try again.")
+                response.textContent = "Event creation failed. Please try again.";
+                response.classList.remove('text-secondary');
+                response.classList.add('text-primary');
                 lock = false;
                 submitButton.disabled = false;
             }
@@ -520,6 +530,9 @@ export default function Add_Event() {
                         <button id="submit" onClick={lockAndSubmit} className="rounded-md bg-primary text-md text-white focus:outline-none font-semibold hover:opacity-80 !bg-[#E5E5E5] text-[#BDBDBD] h-12 w-1/5 cursor-not-allowed">Submit</button>
                     </div>
 
+                    <div className="flex margin-auto w-fill">
+                        <p id="response" className="text-center text-secondary font-display font-bold text-2xl opacity-0 h-0">Password Reset.</p>
+                    </div>
                 </div>
 
             </div>
