@@ -94,6 +94,7 @@ export default function Recovery() {
       responseElement.innerHTML = "Checking for a matching email...";
       responseElement.classList.remove('text-primary');
       responseElement.classList.remove('text-tertiary');
+      responseElement.classList.remove('brightness-90');
       responseElement.classList.add('text-secondary');
       // Fetch the email from the database.
       const res = await fetch('/api/emails/?email=' + email, {
@@ -174,6 +175,7 @@ export default function Recovery() {
               responseElement.innerHTML += "A new email has been sent to your account.\n The previous OTP has been is now invalid.";
             }
             responseElement.classList.add('text-tertiary');
+            responseElement.classList.add('brightness-90');
           } else {
             console.log("test")
             // If the email was not sent successfully, update the response element and its color to indicate failure.

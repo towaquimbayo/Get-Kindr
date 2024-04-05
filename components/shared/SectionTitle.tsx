@@ -11,7 +11,7 @@ const SectionTitle = ({ children, align, pretitle, title }: {
         align === "left" ? "" : "items-center justify-center text-center"
     }`}>
         {pretitle && (
-            <div className="text-md font-bold tracking-widest text-teal-500 uppercase">
+            <div className="text-md font-bold tracking-widest text-tertiary brightness-90 uppercase">
                 {pretitle}
             </div>
         )}

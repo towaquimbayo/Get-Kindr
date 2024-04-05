@@ -76,6 +76,7 @@ export default function Add_Event() {
             setAddressButtonValue('Select an Address');
             document.getElementById('menu-button')?.classList.remove('bg-white');
             document.getElementById('menu-button')?.classList.add('bg-tertiary');
+            document.getElementById('menu-button')?.classList.add('brightness-90');
             document.getElementById('menu-button')?.classList.add('bg-opacity-60');
             handleSearch();
         } else {
@@ -84,6 +85,7 @@ export default function Add_Event() {
             setAddressButtonValue('Search for a Location');
             document.getElementById('menu-button')?.classList.add('bg-white');
             document.getElementById('menu-button')?.classList.remove('bg-tertiary');
+            document.getElementById('menu-button')?.classList.remove('brightness-90');
             document.getElementById('menu-button')?.classList.remove('bg-opacity-60');
             document.getElementById('addressDropdown')?.classList.add('h-0');
             document.getElementById('addressDropdown')?.classList.remove('ring-1');
@@ -134,11 +136,13 @@ export default function Add_Event() {
         // Remove selection indication from all dropdown items.
         for (let i = 1; i <= 5; i++) {
             document.getElementById('dropdown-' + i)?.classList.remove('bg-tertiary');
+            document.getElementById('dropdown-' + i)?.classList.remove('brightness-90');
             document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-opacity-60');
             document.getElementById('dropdown-' + i)?.classList.add('hover:bg-gray-100');
         }
         // Add selection indication to the selected dropdown item.
         document.getElementById('dropdown-' + index)?.classList.add('bg-tertiary');
+        document.getElementById('dropdown-' + index)?.classList.add('brightness-90');
         document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-gray-100');
         document.getElementById('dropdown-' + index)?.classList.add('hover:bg-opacity-60');
         // Set coordinates, location, and address values based on the selected dropdown item.
@@ -418,14 +422,14 @@ export default function Add_Event() {
     }
 
     return (
-        <div id="bodyBox" className="flex flex-1 flex-col items-center bg-tertiary bg-opacity-10 w-full pb-12 pt-4">
+        <div id="bodyBox" className="flex flex-1 flex-col items-center bg-white w-full pb-12 pt-4">
 
             <div id="bodyContainer" className="flex flex-col w-10/12">
 
-                <p id="title" className="text-left font-display font-bold text-tertiary text-3xl mt-16 pl-6">Create Event</p>
+                <p id="title" className="text-left font-display font-bold text-tertiary brightness-90 text-3xl mt-16 pl-6">Create Event</p>
                 <p id="subTitle" className="font-display font-bold text-4xl max-w-xs sm:max-w-full md:max-w-2xl md:text-6xl lg:max-w-full mb-12 pl-6">Host the future of giving back.</p>
 
-                <div id="createEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-gray-50">
+                <div id="createEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-secondary bg-opacity-5">
 
                     <div id="reqFieldContainer" className="w-5/6 h-fit mt-8">
                         <h3 id="reqField" className="font-semibold text-end text-lg !text-secondary opacity-80">Required Field <span className="text-primary">*</span></h3>
@@ -507,7 +511,7 @@ export default function Add_Event() {
 
                                 <div className="w-full mt-2 ml-2">
                                     <input id="VirtualInput" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
-                                        className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
+                                        className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary focus:checked:brightness-90 hover:checked:brightness-90" />
                                     <label className="cursor-pointer select-none font-semibold text-gray-700 md:text-xl mt-px pl-2" htmlFor="VirtualInput">
                                         Virtual
                                     </label>
@@ -515,7 +519,7 @@ export default function Add_Event() {
 
                                 <div className="w-full mt-2 ml-2">
                                     <input id="RecurringInput" type="checkbox" checked={valueRecurring} onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
-                                        className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary" />
+                                        className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary focus:checked:brightness-90 hover:checked:brightness-90" />
                                     <label className="cursor-pointer select-none font-semibold text-gray-700 md:text-xl mt-px pl-2" htmlFor="RecurringInput">
                                         Recurring
                                     </label>
