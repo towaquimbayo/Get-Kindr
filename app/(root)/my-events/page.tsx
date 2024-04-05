@@ -31,22 +31,22 @@ const EventCard = React.memo(function EventCard({
       >
         <div className="mb-4 flex w-full flex-col items-start justify-between gap-4 md:mb-2 md:flex-row md:items-center md:gap-0">
           <div className="flex w-full items-center gap-4">
-            <h1 className="text-xl font-semibold md:text-2xl">{event.name}</h1>
+            <h1 className="text-xl font-semibold text-secondary md:text-2xl">{event.name}</h1>
           </div>
           <div className="rounded-full bg-primary px-4 py-2 text-white">
             <p className="px-1">{statusName}</p>
           </div>
         </div>
         <div className="mb-4 flex w-full flex-col items-start gap-2 text-sm md:flex-row md:items-center lg:gap-4 lg:text-base">
-          <div className="flex items-center gap-2 text-[#4b4b4b]">
+          <div className="flex items-center gap-2 text-secondary opacity-80">
             <LucideBuilding size={18} />
             <p>{event.organization}</p>
           </div>
-          <div className="flex items-center gap-2 text-[#4b4b4b]">
+          <div className="flex items-center gap-2 text-secondary opacity-80">
             <MapPin size={18} />
             <p>{event.location}</p>
           </div>
-          <div className="flex items-center gap-2 text-[#4b4b4b]">
+          <div className="flex items-center gap-2 text-secondary opacity-80">
             <Calendar size={18} />
             <p>
               {getDate(event.startTime)} &bull; {getTime(event.startTime)} -{" "}
@@ -64,7 +64,7 @@ const EventCard = React.memo(function EventCard({
             </div>
           ))}
         </div>
-        <p>{event.description}</p>
+        <p className="text-secondary">{event.description}</p>
       </CardBody>
     </Card>
   );
@@ -160,7 +160,7 @@ export default function MyEvents() {
   return (
     <div className="mx-auto mb-auto mt-28 flex w-full max-w-screen-xl flex-col gap-8 p-8">
       <div className="flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-0">
-        <h2 className="font-display text-5xl font-bold text-black">
+        <h2 className="font-display text-5xl font-bold text-secondary">
           My Events
         </h2>
         {isOrganization ? (

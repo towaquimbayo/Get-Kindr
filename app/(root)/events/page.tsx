@@ -312,7 +312,7 @@ export default function Events() {
 
       {/* Info and Sort */}
       <Container className="flex items-center justify-between !py-0">
-        <p className="text-xl font-semibold text-gray-800">
+        <p className="text-xl font-semibold text-secondary">
           Showing <span id="numEvents">{searchResults.length}</span> events
         </p>
         <div className="flex items-center text-gray-400">
@@ -368,11 +368,11 @@ export default function Events() {
                           </p>
                         </div>
                         <div>
-                          <Link className="text-lg font-semibold hover:text-primary transition-all duration-300 ease-in-out" href={`/event?id=${event.id}`}>{event.name}</Link>
-                          <p className="text-gray-600">
+                          <Link className="text-lg font-semibold text-secondary hover:text-primary transition-all duration-300 ease-in-out" href={`/event?id=${event.id}`}>{event.name}</Link>
+                          <p className="text-secondary opacity-80">
                             {(event as any).organization.name}
                           </p>
-                          <p className="text-gray-600">
+                          <p className="text-secondary opacity-80">
                             {event.city} - {event.end_time.toString()}
                           </p>
                         </div>

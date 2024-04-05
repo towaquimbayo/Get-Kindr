@@ -145,7 +145,7 @@ export default function Add_Event() {
             document.getElementById('menu-button')?.classList.remove('bg-white');
             document.getElementById('menu-button')?.classList.add('bg-tertiary');
             document.getElementById('menu-button')?.classList.add('brightness-90');
-            document.getElementById('menu-button')?.classList.add('bg-opacity-60');
+            document.getElementById('menu-button')?.classList.add('bg-opacity-40');
             handleSearch();
         } else {
             // Otherwise clear the search data and hide the dropdown.
@@ -154,7 +154,7 @@ export default function Add_Event() {
             document.getElementById('menu-button')?.classList.add('bg-white');
             document.getElementById('menu-button')?.classList.remove('bg-tertiary');
             document.getElementById('menu-button')?.classList.remove('brightness-90');
-            document.getElementById('menu-button')?.classList.remove('bg-opacity-60');
+            document.getElementById('menu-button')?.classList.remove('bg-opacity-40');
             document.getElementById('addressDropdown')?.classList.add('h-0');
             document.getElementById('addressDropdown')?.classList.remove('ring-1');
             showAddress = false;
@@ -204,13 +204,13 @@ export default function Add_Event() {
         // Remove selection indication from all dropdown items.
         for (let i = 1; i <= 5; i++) {
             document.getElementById('dropdown-' + i)?.classList.remove('bg-tertiary');
-            document.getElementById('dropdown-' + i)?.classList.remove('brightness-90');
+            document.getElementById('dropdown-' + i)?.classList.remove('brightness-105');
             document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-opacity-60');
             document.getElementById('dropdown-' + i)?.classList.add('hover:bg-gray-100');
         }
         // Add selection indication to the selected dropdown item.
         document.getElementById('dropdown-' + index)?.classList.add('bg-tertiary');
-        document.getElementById('dropdown-' + index)?.classList.add('brightness-90');
+        document.getElementById('dropdown-' + index)?.classList.add('brightness-105');
         document.getElementById('dropdown-' + index)?.classList.remove('hover:bg-gray-100');
         document.getElementById('dropdown-' + index)?.classList.add('hover:bg-opacity-60');
         // Set coordinates, location, and address values based on the selected dropdown item.
@@ -543,7 +543,7 @@ export default function Add_Event() {
             <div id="bodyContainer" className="flex flex-col w-10/12">
 
                 <p id="title" className="text-left font-display font-bold text-tertiary brightness-90 text-3xl mt-16 pl-6">Edit Event</p>
-                <p id="subTitle" className="font-display font-bold text-4xl max-w-xs sm:max-w-full md:max-w-2xl md:text-6xl lg:max-w-full mb-12 pl-6">Host the future of giving back.</p>
+                <p id="subTitle" className="font-display text-secondary font-bold text-4xl max-w-xs sm:max-w-full md:max-w-2xl md:text-6xl lg:max-w-full mb-12 pl-6">Host the future of giving back.</p>
 
                 <div id="editEventBox" className="flex flex-col items-center border-4 rounded-lg border-primary bg-secondary bg-opacity-5">
 
@@ -553,7 +553,7 @@ export default function Add_Event() {
 
                     <div id="eventNameContainer" className="flex justify-evenly w-full mt-4">
                         <div id="eventNameSubContainer" className="flex flex-col w-5/6">
-                            <label htmlFor="NameInput" className=" text-lg pl-4">Event Name <span className="text-primary">*</span></label>
+                            <label htmlFor="NameInput" className=" text-lg pl-4 text-secondary">Event Name <span className="text-primary">*</span></label>
                             <input id="NameInput" onChange={(e) => updateNameHandler(e)} value={valueName} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 sm:text-lg text-ellipsis pl-6 " placeholder="Enter Your Event Name"></input>
                         </div>
                     </div>
@@ -561,12 +561,12 @@ export default function Add_Event() {
                     <div id="locationContainer" className="flex justify-evenly w-full pt-12">
 
                         <div id="addressSubContainer" className="flex flex-col w-1/3 min-w-36 sm:min-w-52 pl-6 mb:pl-0 mb:ml-12 md:ml-16 md:px-0 md:pr-8">
-                            <label htmlFor="PositionInput" className="text-lg pl-2 w-full mb:ml-4">Location <span className="text-primary">*</span></label>
+                            <label htmlFor="PositionInput" className="text-lg pl-2 w-full mb:ml-4 text-secondary">Location <span className="text-primary">*</span></label>
                             <input id="PositionInput" onChange={(e) => updateLocationHandler(e)} value={valueLocation} className="rounded-lg border-2 border border-[#EAEAEA] text-gray-800 text-sm sm:text-lg min-w-32 pl-3 mb:pl-4 mb:ml-2" placeholder="Event Address"></input>
                         </div>
 
                         <div id="locationDropDownContainer" className="flex flex-col w-1/2 px-4 sm:px-0 sm:mx-8 mb:mx-12 md:m-0 md:px-8 lg:pl-16">
-                            <label htmlFor="AddressInput" className="text-lg pl-3 mb:pl-4">Address <span className="text-primary">*</span></label>
+                            <label htmlFor="AddressInput" className="text-lg pl-3 mb:pl-4 text-secondary">Address <span className="text-primary">*</span></label>
                             <button type="button" className="inline-flex justify-center gap-x-1.5 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 bg-white hover:bg-gray-200 font-semibold text-gray-900 text-sm sm:text-lg py-2.5 px-6 w-full "
                                 id="menu-button" aria-expanded="true" aria-haspopup="true" onClick={showAddresses}>
                                 {addressButtonValue}
@@ -600,12 +600,12 @@ export default function Add_Event() {
                     <div id="dateTimeContainer" className="flex flex-col sm:flex-row justify-evenly items-center w-full">
 
                         <div className="flex flex-col w-4/5 sm:w-1/3 sm:min-w-40 mt-8">
-                            <label htmlFor="DateInput" className="text-lg pl-2 mb:pl-4">Date <span className="text-primary">*</span></label>
+                            <label htmlFor="DateInput" className="text-lg pl-2 mb:pl-4 text-secondary">Date <span className="text-primary">*</span></label>
                             <input type="date" id="DateInput" onChange={(e) => formatDate(e.target.value)} onBlur={(e) => validDate(e.target.value)} className="rounded-lg text-center border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-sm sm:text-base min-w-34 sm:px-3 md:px-6" value={valueDate}></input>
                         </div>
 
                         <div className="flex flex-col w-4/5 mt-8 sm:w-min lg:w-1/3">
-                            <label htmlFor="timeInput" className=" text-lg pl-2 mb:pl-4">Time <span className="text-primary">*</span></label>
+                            <label htmlFor="timeInput" className=" text-lg pl-2 mb:pl-4 text-secondary">Time <span className="text-primary">*</span></label>
                             <div className="bg-white flex flex-row w-full p-0.5 rounded-lg border-2 border border-[#EAEAEA]">
                                 <input type="time" id="startTime" onChange={(e) => updateStartTimeHandler(e)} value={valueStartTime} className="border-0 m-auto font-semibold text-gray-800 text-sm sm:text-base sm:p-2 md:px-3" placeholder="12:00"></input>
                                 <h1 className="text-xl sm:text-2xl mt-0.5 ">-</h1>
@@ -619,7 +619,7 @@ export default function Add_Event() {
                         <div id="subSpotsAndCheckboxContainer" className="flex w-full justify-between md:w-4/5 mt-10 md:mt-0 mb-4">
 
                             <div id="" className="flex flex-col w-1/3 sm:min-w-36 ml-6 mb:ml-16 md:ml-6 md:pt-4">
-                                <label htmlFor="SpotsInput" className="pl-2 sm:pl-4 text-lg mb:min-w-36">Available Spots <span className="text-primary">*</span></label>
+                                <label htmlFor="SpotsInput" className="pl-2 sm:pl-4 text-lg mb:min-w-36 text-secondary">Available Spots <span className="text-primary">*</span></label>
                                 <input type="number" id="SpotsInput" value={valueVolNum} onClick={handleInputClickVolNum} onChange={handleInputChangeVolNum} onBlur={handleInputBlurVolNum} className=" text-center rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 text-xl sm:text-2xl sm:min-w-40 pl-6" placeholder={placeholderVolNum}></input>
                             </div>
 
@@ -628,7 +628,7 @@ export default function Add_Event() {
                                 <div className="w-full mt-2 ml-2">
                                     <input id="VirtualInput" type="checkbox" checked={valueOnline} onChange={(e) => setValueOnline((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary focus:checked:brightness-90 hover:checked:brightness-90" />
-                                    <label className="cursor-pointer select-none font-semibold text-gray-700 md:text-xl mt-px pl-2" htmlFor="VirtualInput">
+                                    <label className="cursor-pointer select-none font-semibold text-secondary md:text-xl mt-px pl-2 " htmlFor="VirtualInput">
                                         Virtual
                                     </label>
                                 </div>
@@ -636,7 +636,7 @@ export default function Add_Event() {
                                 <div className="w-full mt-2 ml-2">
                                     <input id="RecurringInput" type="checkbox" checked={valueRecurring} onChange={(e) => setValueRecurring((e.target as HTMLInputElement).checked)}
                                         className="mb-1 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-secondary transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-secondary before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary before:bg-secondary hover:before:opacity-10 focus:ring-tertiary focus:border-tertiary focus:checked:ring-tertiary hover:checked:border-tertiary hover:checked:bg-tertiary focus:checked:bg-tertiary focus:checked:brightness-90 hover:checked:brightness-90" />
-                                    <label className="cursor-pointer select-none font-semibold text-gray-700 md:text-xl mt-px pl-2" htmlFor="RecurringInput">
+                                    <label className="cursor-pointer select-none font-semibold text-secondary md:text-xl mt-px pl-2" htmlFor="RecurringInput">
                                         Recurring
                                     </label>
                                 </div>
@@ -648,14 +648,14 @@ export default function Add_Event() {
 
                     <div className="flex justify-evenly w-full pt-2">
                         <div className="flex flex-col w-4/5">
-                            <label htmlFor="DescriptionInput" className=" text-lg pl-4">Description <span className="text-primary">*</span></label>
+                            <label htmlFor="DescriptionInput" className=" text-lg pl-4 text-secondary">Description <span className="text-primary">*</span></label>
                             <textarea id="DescriptionInput" rows={6} onChange={(e) => updateDescriptionHandler(e)} value={valueDescription} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-gray-800 max-h-44 min-h-36 pl-3"></textarea>
                         </div>
                     </div>
 
                     <div className="flex justify-evenly w-full mt-8">
                         <div className="flex flex-col w-4/5">
-                            <label htmlFor="TagsInput" className="text-lg pl-4">Tags</label>
+                            <label htmlFor="TagsInput" className="text-lg pl-4 text-secondary">Tags</label>
                             <input id="TagsInput" value={valueTags} onInput={updateValueTags} onBlur={(e) => formatValueTags(e.target.value)} className="rounded-lg border-2 border border-[#EAEAEA] font-semibold text-primary pl-3" placeholder="Enter tags related to your event ..."></input>
                         </div>
                     </div>

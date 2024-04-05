@@ -201,8 +201,8 @@ export default function Recovery() {
   return (
     <div id="forgotPasswordBody" className="flex flex-1 flex-col items-center place-content-center bg-gradient-to-r from-start to-end w-full h-4/5">
       <div id="innerContainer" className="flex flex-col items-center bg-gray-50 border-4 rounded-lg border-secondary w-11/12 h-fit md:w-2/3 mb-20 px-6 mt-20 md:px-0 md:mb-8 md:mt-0">
-        <p className="text-center font-display font-bold text-4xl md:text-5xl mb-16 mt-6 md:mb-12">Forgot Password?</p>
-        <p className="text-center font-display font-bold text-base text-secondary md:text-xl mb-4">Enter the email connected to your account.</p>
+        <p className="text-center font-display font-bold text-secondary text-4xl md:text-5xl mb-16 mt-6 md:mb-12">Forgot Password?</p>
+        <p className="text-center font-display font-bold text-base text-secondary opacity-80 md:text-xl mb-4">Enter the email connected to your account.</p>
         <input onChange={(e) => updateEmail(e)} className="rounded-lg border border-[#EAEAEA] h-16 w-full md:h-12 md:w-2/3 px-6 mb-10 mt-2 md:mt-0" placeholder="example@email.com"></input>
         <div id="buttonsContainer" className="flex justify-evenly w-full mb-8 mt-8 mb:mt-0">
           <Link href="/" className="w-1/3 "><button id="return" className="rounded-md bg-secondary bg-opacity-60 font-semibold text-md text-white focus:outline-none hover:opacity-80 transition-all duration-300 h-12 w-full">Cancel</button></Link>

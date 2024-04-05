@@ -141,10 +141,10 @@ const Home = async () => {
       <div
         className="flex flex-col justify-center rounded-md bg-white p-8 shadow-lg"
       >
-        <div className=" mt-6 text-2xl font-medium leading-10">
+        <div className=" mt-6 text-2xl font-medium text-secondary leading-10">
           <span className="break-words">{eventName}</span>
         </div>
-        <div className="flex flex-col justify-center mt-5 leading-8 text-black text-opacity-60 h-24">
+        <div className="flex flex-col justify-center mt-5 leading-8 text-secondary text-opacity-60 h-24">
           {description}
         </div>
         <div className="mt-5 flex justify-between gap-5 leading-[187.5%]">
@@ -155,7 +155,7 @@ const Home = async () => {
             quality={100}
             alt="Location Icon"
           />
-          <div className="flex-auto">{location}</div>
+          <div className="flex-auto text-secondary">{location}</div>
         </div>
         <div className="my-4 flex justify-between gap-5 leading-[187.5%]">
           <Image
@@ -165,7 +165,7 @@ const Home = async () => {
             quality={100}
             alt="Calendar Icon"
           />
-          <div className="flex-auto">{date}</div>
+          <div className="flex-auto text-secondary">{date}</div>
         </div>
         <div className="relative mt-auto flex flex-col items-start sm:flex-row sm:items-center">
           <a
@@ -195,10 +195,10 @@ const Home = async () => {
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-orange-200 to-transparent opacity-90"></div>
         <div className="z-20 flex w-full items-end">
           <div className="mb-16 max-w-xl">
-            <p className="text-md font-bold uppercase tracking-widest text-tertiary brightness-90 drop-shadow-[0_0_3px_rgb(255,255,255)]">
+            <p className="text-md font-bold uppercase tracking-widest text-tertiary brightness-90 drop-shadow-[0_0_3px_rgb(150,100,100)]">
               earn points with purpose
             </p>
-            <h1 className="py-1 pb-6 font-display text-4xl font-bold leading-snug tracking-tight text-gray-800 md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">
+            <h1 className="py-1 pb-6 font-display text-4xl text-secondary drop-shadow-[0_0_2px_rgb(100,100,100)] font-bold leading-snug tracking-tight text-gray-800 md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">
               Spend with freedom.
             </h1>
 
@@ -290,8 +290,8 @@ const Home = async () => {
         <div className="grid gap-10 sm:p-3 md:grid-cols-2 md:gap-8 lg:px-12 xl:px-32">
           {faq_data.map((faq, index) => (
             <div key={index} className="mb-4">
-              <h3 className="text-xl font-bold">{faq.question}</h3>
-              <p>{faq.answer}</p>
+              <h3 className="text-xl font-bold text-secondary">{faq.question}</h3>
+              <p className="text-secondary opacity-80">{faq.answer}</p>
             </div>
           ))}
         </div>

@@ -434,21 +434,21 @@ export default function Profile() {
             <div className="flex w-full justify-between">
               <p className="text-sm text-[#4b4b4b]">
                 Tokens:{" "}
-                <span className="font-semibold text-black">
+                <span className="font-semibold text-secondary">
                   {userData.tokenBalance}
                 </span>
               </p>
               {isOrganization ? (
                 <p className="text-sm text-[#4b4b4b]">
                   Hosted Events:{" "}
-                  <span className="font-semibold text-black">
+                  <span className="font-semibold text-secondary">
                     {userData.orgHostedEvents}
                   </span>
                 </p>
               ) : (
                 <p className="text-sm text-[#4b4b4b]">
                   Volunteered:{" "}
-                  <span className="font-semibold text-black">
+                    <span className="font-semibold text-secondary">
                     {userData.volunteerHours}h
                   </span>
                 </p>

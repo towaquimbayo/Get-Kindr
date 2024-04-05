@@ -132,7 +132,7 @@ export default function Signup() {
             className="mr-2"
           />
         </Link>
-        <h1 className="mb-16 text-center font-display text-4xl font-bold md:text-5xl">
+        <h1 className="mb-16 text-center font-display text-4xl font-bold text-secondary md:text-5xl">
           Get Started with KINDR
         </h1>
         <div className="flex w-full rounded-lg border border-[#eaeaea]">
@@ -170,7 +170,7 @@ export default function Signup() {
         </div>
         <div className="my-10 flex w-full justify-between">
           <hr className="my-auto h-px w-48 border-0 bg-[#EAEAEA]" />
-          <p className="px-8 text-sm text-black">OR</p>
+          <p className="px-8 text-sm text-secondary">OR</p>
           <hr className="my-auto h-px w-48 border-0 bg-[#EAEAEA]" />
         </div>
         {errorMsg && <AlertMessage message={errorMsg} />}

@@ -17,13 +17,13 @@ const SectionTitle = ({ children, align, pretitle, title }: {
         )}
 
         {title && (
-            <h2 className="max-w-lg mt-3 text-3xl font-display font-bold leading-snug tracking-tight text-gray-800 lg:leading-tight lg:text-5xl">
+            <h2 className="max-w-lg mt-3 text-3xl font-display font-bold leading-snug tracking-tight text-secondary lg:leading-tight lg:text-5xl">
                 {title}
             </h2>
         )}
 
         {children && (
-            <p className="max-w-2xl py-4 text-lg leading-normal text-gray-500 lg:text-xl xl:text-xl text-left">
+            <p className="max-w-2xl py-4 text-lg leading-normal text-secondary opacity-80 lg:text-xl xl:text-xl text-left">
                 {children}
             </p>
         )}

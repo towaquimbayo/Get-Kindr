@@ -114,7 +114,7 @@ export default function Event() {
       </button>
       <div className="flex w-full flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex w-full flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <h1 className="flex font-display text-4xl font-bold text-black md:text-5xl">
+          <h1 className="flex font-display text-4xl font-bold text-secondary md:text-5xl">
             {event.name}
           </h1>
           {isOrganization &&
@@ -139,15 +139,15 @@ export default function Event() {
           <div className="text-md flex flex-col items-start gap-2 text-[#4b4b4b] sm:flex-row md:text-lg">
             <div className="flex items-center gap-2">
               <LucideBuilding size={20} />
-              <p>{event.organization}</p>
+              <p className="text-secondary opacity-80">{event.organization}</p>
             </div>
             <div className="flex items-center gap-2">
               <MapPin size={20} />
-              <p>{event.city}</p>
+              <p className="text-secondary opacity-80">{event.city}</p>
             </div>
             <div className="flex items-center gap-2">
               <Calendar size={20} />
-              <p>
+              <p className="text-secondary opacity-80">
                 {getDate(event.startTime)} &bull; {getTime(event.startTime)} -{" "}
                 {getTime(event.endTime)}
               </p>
@@ -166,17 +166,17 @@ export default function Event() {
           </div>
         </div>
         <div className="flex w-full flex-col justify-center gap-4 rounded-lg border border-[#EAEAEA] bg-white p-4 sm:flex-row sm:gap-12 lg:w-1/4 lg:flex-col lg:items-start lg:gap-4">
-          <div className="flex flex-row items-center gap-4 text-[#4b4b4b] sm:flex-col md:flex-row">
+          <div className="flex flex-row items-center gap-4 text-secondary opacity-80 sm:flex-col md:flex-row">
             <Users size={20} />
             <h2 className="text-md md:text-lg">
               {event.numberOfSpots} spots available
             </h2>
           </div>
-          <div className="flex flex-row items-center gap-4 text-[#4b4b4b] sm:flex-col md:flex-row">
+          <div className="flex flex-row items-center gap-4 text-secondary opacity-80 sm:flex-col md:flex-row">
             <Coins size={20} />
             <h2 className="text-md md:text-lg">{event.tokenBounty} tokens</h2>
           </div>
-          <div className="flex flex-row items-center gap-4 text-[#4b4b4b] sm:flex-col md:flex-row">
+          <div className="flex flex-row items-center gap-4 text-secondary opacity-80 sm:flex-col md:flex-row">
             {event.online ? (
               <>
                 <Tv size={20} />
@@ -193,12 +193,12 @@ export default function Event() {
       </div>
 
       <div className="mt-8 flex w-full flex-col">
-        <h2 className="mb-4 text-3xl font-semibold">Description</h2>
-        <p>{event.description}</p>
+        <h2 className="mb-4 text-secondary text-3xl font-semibold">Description</h2>
+        <p className="text-secondary">{event.description}</p>
       </div>
 
       <div className="mt-12 flex w-full flex-col gap-4">
-        <h2 className="mb-4 text-3xl font-semibold">
+        <h2 className="mb-4  text-secondary text-3xl font-semibold">
           Event Volunteers{" "}
           <span className="font-normal text-[#858585]">
             ({event.volunteers.length})
