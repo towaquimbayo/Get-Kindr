@@ -381,7 +381,7 @@ export default function Events() {
                         <LucideHeart size={20} color="#cccccc" />
                       </Link>
                     </div>
-                    <p className="mb-6 text-gray-500">{event.description}</p>
+                    <p className="mb-6 text-secondary opacity-80">{event.description}</p>
                     {/* Display number of volunteers and token bounty as two inline pills */}
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-2">
