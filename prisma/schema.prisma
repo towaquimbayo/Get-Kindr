@@ -1,33 +1,28 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = "postgres://default:U2weChZDLnJ9@ep-cold-cake-a45x34h1-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb?pgbouncer=true&connect_timeout=15"
+  directUrl = "postgres://default:U2weChZDLnJ9@ep-cold-cake-a45x34h1.us-east-1.postgres.vercel-storage.com:5432/verceldb"
 }
 
-
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -39,95 +34,94 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
 }
 
 model User {
-  id              String    @id @default(cuid())
-  hashedPassword  String?
-  name            String?
-  email           String?   @unique
-  emailVerified   DateTime?
-  phoneNumber     String?
-  image           String
-  accounts        Account[]
-  sessions        Session[]
-  accountType     AccountType @default(VOLUNTEER)
-  organization    Organization?
-  volunteer       Volunteer?
-  wallet          Wallet?
-  admin           Boolean @default(false)
-  tokenBalance    Int @default(0)
+  id             String        @id @default(cuid())
+  hashedPassword String?
+  name           String?
+  email          String?       @unique
+  emailVerified  DateTime?
+  phoneNumber    String?
+  image          String
+  accountType    AccountType   @default(VOLUNTEER)
+  admin          Boolean       @default(false)
+  tokenBalance   Int           @default(0)
+  accounts       Account[]
+  organization   Organization?
+  sessions       Session[]
+  volunteer      Volunteer?
+  wallet         Wallet?
 }
 
 model Event {
-  id                String   @id @default(uuid())
-  name              String
-  description       String?
-  start_time        DateTime
-  end_time          DateTime
-  organization_id   String
-  organization      Organization @relation(fields: [organization_id], references: [id])
-  tags              String[]
-  address           String
-  city              String
-  recurring         Boolean
-  online            Boolean
-  token_bounty      Int
-  number_of_spots   Int
-  status            String
-  event_volunteers  EventVolunteer[]
-  latitude          Float
-  longitude         Float
+  id               String           @id @default(uuid())
+  name             String
+  description      String?
+  start_time       DateTime
+  end_time         DateTime
+  organization_id  String
+  tags             String[]
+  address          String
+  city             String
+  recurring        Boolean
+  online           Boolean
+  token_bounty     Int
+  number_of_spots  Int
+  status           String
+  latitude         Float
+  longitude        Float
+  organization     Organization     @relation(fields: [organization_id], references: [id])
+  event_volunteers EventVolunteer[]
 }
 
 model EventVolunteer {
-  id        String   @id @default(cuid())
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id])
+  id          String    @id @default(cuid())
+  eventId     String
   volunteerId String
-  volunteer Volunteer @relation(fields: [volunteerId], references: [id])
+  event       Event     @relation(fields: [eventId], references: [id])
+  volunteer   Volunteer @relation(fields: [volunteerId], references: [id])
+
   @@unique([eventId, volunteerId])
 }
 
 model Volunteer {
-  id              String   @id @default(cuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id])
+  id              String           @id @default(cuid())
+  userId          String           @unique
   bio             String
   volunteerEvents EventVolunteer[]
-  @@unique([userId])
+  user            User             @relation(fields: [userId], references: [id])
 }
 
 model Organization {
-  id              String   @id @default(cuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id])
-  name            String
-  description     String?
-  address         String?
-  events          Event[]
-  @@unique([userId])
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  name        String
+  description String?
+  address     String?
+  events      Event[]
+  user        User    @relation(fields: [userId], references: [id])
 }
 
 model Wallet {
-  id                      String   @id @default(cuid())
-  userId                  String
-  user                    User     @relation(fields: [userId], references: [id])
-  balance                 Int
-  transactionsToWallet    Transaction[]  @relation("TransactionToWallet")
-  transactionsFromWallet  Transaction[] @relation("TransactionFromWallet")
-  @@unique([userId])
+  id                     String        @id @default(cuid())
+  userId                 String        @unique
+  balance                Int
+  transactionsFromWallet Transaction[] @relation("TransactionFromWallet")
+  transactionsToWallet   Transaction[] @relation("TransactionToWallet")
+  user                   User          @relation(fields: [userId], references: [id])
 }
 
 model Transaction {
-  id                    String   @id @default(cuid())
-  sourceWalletId        String
-  sourceWallet          Wallet   @relation("TransactionToWallet", fields: [sourceWalletId], references: [id])
-  destinationWalletId   String
-  destinationWallet     Wallet   @relation("TransactionFromWallet", fields: [destinationWalletId], references: [id])
-  amount                Int
-  createdAt             DateTime @default(now())
+  id                  String   @id @default(cuid())
+  sourceWalletId      String
+  destinationWalletId String
+  amount              Int
+  createdAt           DateTime @default(now())
+  destinationWallet   Wallet   @relation("TransactionFromWallet", fields: [destinationWalletId], references: [id])
+  sourceWallet        Wallet   @relation("TransactionToWallet", fields: [sourceWalletId], references: [id])
 }
 
 model VerificationToken {
@@ -139,9 +133,9 @@ model VerificationToken {
 }
 
 model OneTimePass {
-  userEmail    String   @unique
-  OneTimePass  String    @unique
-  expires      DateTime
+  userEmail   String   @unique
+  OneTimePass String   @unique
+  expires     DateTime
 }
 
 enum AccountType {
