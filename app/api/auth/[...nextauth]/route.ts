@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
           name: profile.name,
           email: profile.email,
           image: profile.picture,
-          accountType: "GOOGLE VOLUNTEER",
+          accountType: "VOLUNTEER",
           volunteer: {
             create: {
               bio: "",
