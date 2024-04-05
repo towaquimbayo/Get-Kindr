@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import prisma from "@/lib/prisma";
 import { AccountType } from "@prisma/client";
+import { is } from "cheerio/lib/api/traversing";
 
 export async function POST(req: Request) {
   try {
@@ -80,6 +81,7 @@ export async function POST(req: Request) {
           : {},
         volunteer: isOrganization ? {} : {},
         admin: false,
+        tokenBalance: isOrganization ? 10000 : 0,
       },
     });
 
