@@ -162,6 +162,7 @@ export default function Recovery() {
 
         // If the OTP was created successfully, send an email to the user.
         if (success) {
+          responseElement.innerHTML = "Sending an email to your account ...";
           // Call the recover function to send the email.
           const result = await recover(email, OTP);
           // If the email was sent successfully, update the response element.
@@ -174,8 +175,9 @@ export default function Recovery() {
             }
             responseElement.classList.add('text-tertiary');
           } else {
+            console.log("test")
             // If the email was not sent successfully, update the response element and its color to indicate failure.
-            responseElement.innerHTML = "No account with that email found. Please try again.";
+            responseElement.innerHTML = "Error encountered sending the email. Please try again.";
             responseElement.classList.remove('text-secondary');
             responseElement.classList.add('text-primary');;
           }
