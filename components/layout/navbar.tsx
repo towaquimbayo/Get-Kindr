@@ -48,6 +48,7 @@ export default function NavBar({ session }: { session: Session | null }) {
           />
         </Link>
         <div className="flex items-center space-x-8">
+          <NavLink href="/#about" name="About Us" />
           <NavLink href="/events" name="Events" />
           {session && session.accountType.toLowerCase() === "organization" && (
             <>

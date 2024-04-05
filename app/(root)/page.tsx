@@ -204,7 +204,7 @@ const Home = async () => {
 
             <div className="flex flex-col items-start space-y-3 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
               <a
-                href="#"
+                href="/sign-up"
                 className="rounded-2xl bg-primary px-8 py-4 text-center text-sm font-medium uppercase tracking-widest text-white"
               >
                 join us today
@@ -248,7 +248,8 @@ const Home = async () => {
       </Container>
 
       {/* About */}
-      <Container className="my-10 flex flex-wrap items-center !p-0">
+      <div id="about" className="h-0"></div>
+      <Container className="mt-10 flex flex-wrap items-center !p-0">
         <div className="lg:w-1/2">
           <SectionTitle
             title="Together we can make a difference."
@@ -276,7 +277,7 @@ const Home = async () => {
           />
         </div>
       </Container>
-
+      <div id="faq" className="h-0 mb-10"></div>
       {/* FAQ */}
       <SectionTitle title="Frequently Asked Questions" pretitle="FAQ">
         KINDR redefines the concept of rewards by intertwining the spirit of
@@ -313,16 +314,34 @@ const Home = async () => {
               <div className="flex flex-col">
                 <p className="text-xs uppercase tracking-widest">Site Map</p>
                 <a
-                  href="https://getkindr.com/"
+                  href="http://localhost:3000/"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Home
                 </a>
                 <a
-                  href="https://getkindr.com/events"
+                  href="#about"
+                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
+                >
+                  About
+                </a>
+                <a
+                  href="#faq"
+                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
+                >
+                  FAQ
+                </a>
+                <a
+                  href="http://localhost:3000/events"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Events
+                </a>
+                <a
+                  href="http://localhost:3000/profile"
+                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
+                >
+                  Profile
                 </a>
               </div>
               <div className="flex flex-col">

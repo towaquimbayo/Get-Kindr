@@ -2,7 +2,7 @@
 import { ImageResponse } from "next/server";
 
 export const runtime = "edge";
-export const alt = "KINDR - Kindness is our currency";
+export const alt = "Get Kindr";
 export const contentType = "image/png";
 
 export default async function OG() {
