@@ -595,7 +595,9 @@ export default function Events() {
                             }
                           ]
                         }
-                      ]
+                      ],
+                      mapTypeControl: false,
+                      streetViewControl: false,
                     }}
                   >
                     {markerCoordinates.map((coords, index) => (
