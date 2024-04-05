@@ -238,7 +238,7 @@ export default function Event() {
                     </p>
                   </div>
                 </div>
-                {isOrganization && (
+                {isOrganization && session?.organizationID === event.organizationId && (
                   <div className="flex items-center gap-4">
                     <button className="text-primary">Remove</button>
                   </div>

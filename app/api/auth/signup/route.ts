@@ -80,6 +80,7 @@ export async function POST(req: Request) {
           : {},
         volunteer: isOrganization ? {} : {},
         admin: false,
+        tokenBalance: isOrganization ? 10000 : 0,
       },
     });
 
