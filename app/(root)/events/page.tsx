@@ -394,7 +394,7 @@ export default function Events() {
                       <div className="flex items-center space-x-2 mt-2">
                         {event.tags.map((tag: string) => (
                           <span
-                            key={tag}
+                            key={event.id + tag}
                             className="inline-block rounded bg-primary bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-primary"
                           >
                             #&nbsp;{tag}
