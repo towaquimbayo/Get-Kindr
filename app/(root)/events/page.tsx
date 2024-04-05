@@ -107,6 +107,9 @@ export default function Events() {
 
   useEffect(() => {
     async function fetchEvents() {
+      if (!user) {
+        setIsFetchingVolunteers(false);
+      }
       if (user?.volunteerId) {
         setIsFetchingVolunteers(true);
       } else {
