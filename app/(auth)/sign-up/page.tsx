@@ -126,8 +126,8 @@ export default function Signup() {
           <Image
             src="/get_KINDR_logo.png"
             alt="Get KINDR logo"
-            width="120"
-            height="120"
+            width="150"
+            height="150"
             style={{ objectFit: "contain" }}
             className="mr-2"
           />

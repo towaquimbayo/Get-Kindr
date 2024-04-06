@@ -41,7 +41,7 @@ export default function NavBar({ session }: { session: Session | null }) {
           <Image
             src="/get_KINDR_logo.png"
             alt="Get KINDR logo"
-            width="100"
+            width="150"
             height="100"
             style={{ objectFit: "contain" }}
             className="mr-2"

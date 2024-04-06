@@ -301,11 +301,11 @@ const Home = async () => {
       <div className="w-full bg-orange-50">
         <Container>
           <div className="flex flex-col gap-4 justify-between sm:flex-row sm:gap-0">
-            <div className="-ml-2 sm:-ml-0">
+            <div className="-ml-2 sm:-ml-0 mr-16 lg:ml-6 lg:mr-0">
               <Image
                 src="/get_KINDR_logo.png"
-                width="110"
-                height="10"
+                width="150"
+                height="100"
                 quality={100}
                 alt="Get Kindr Logo"
               />
@@ -315,7 +315,7 @@ const Home = async () => {
                 <p className="text-xs uppercase tracking-widest">Site Map</p>
                 <div className="h-1"></div>
                 <a
-                  href="http://localhost:3000/"
+                  href="http://getKindr.com"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Home
@@ -336,14 +336,14 @@ const Home = async () => {
                 </a>
                 <div className="h-0.5"></div>
                 <a
-                  href="http://localhost:3000/events"
+                  href="http://getKindr.com/events"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Events
                 </a>
                 <div className="h-0.5"></div>
                 <a
-                  href="http://localhost:3000/profile"
+                  href="http://getKindr.com/profile"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Profile
@@ -376,19 +376,10 @@ const Home = async () => {
               <div className="flex flex-col">
                 <p className="text-xs uppercase tracking-widest">Email</p>
                 <a
-                  href="#"
+                  href="mailto:hello@getkindr.com"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   hello@getkindr.com
-                </a>
-                <p className="mt-3 text-xs uppercase tracking-widest">
-                  Phone
-                </p>
-                <a
-                  href="#"
-                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
-                >
-                  (604) 123-4567
                 </a>
               </div>
             </div>

@@ -59,8 +59,8 @@ export default function Login() {
           <Image
             src="/get_KINDR_logo.png"
             alt="get kindr logo"
-            width="120"
-            height="120"
+            width="150"
+            height="150"
             style={{ objectFit: "contain" }}
             className="mr-2"
           />
