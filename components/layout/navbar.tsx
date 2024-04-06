@@ -39,8 +39,8 @@ export default function NavBar({ session }: { session: Session | null }) {
       <Container className="flex items-center justify-between !py-4">
         <Link href="/" className="flex items-center">
           <Image
-            src="/kindr_logo.png"
-            alt="KINDR logo"
+            src="/get_KINDR_logo.png"
+            alt="Get KINDR logo"
             width="100"
             height="100"
             style={{ objectFit: "contain" }}

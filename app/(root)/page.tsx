@@ -303,11 +303,11 @@ const Home = async () => {
           <div className="flex flex-col gap-4 justify-between sm:flex-row sm:gap-0">
             <div className="-ml-2 sm:-ml-0">
               <Image
-                src="/kindr_logo.png"
+                src="/get_KINDR_logo.png"
                 width="110"
                 height="10"
                 quality={100}
-                alt="Kindr Logo"
+                alt="Get Kindr Logo"
               />
             </div>
             <div className="flex gap-30">

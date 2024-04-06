@@ -124,8 +124,8 @@ export default function Signup() {
       <div className="m-auto flex  w-full max-w-screen-sm flex-col items-center justify-center px-4 py-8 lg:w-2/3">
         <Link href="/" className="mb-10 flex w-full sm:mb-20">
           <Image
-            src="/kindr_logo.png"
-            alt="KINDR logo"
+            src="/get_KINDR_logo.png"
+            alt="Get KINDR logo"
             width="120"
             height="120"
             style={{ objectFit: "contain" }}
