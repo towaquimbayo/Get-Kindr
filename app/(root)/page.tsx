@@ -376,19 +376,10 @@ const Home = async () => {
               <div className="flex flex-col">
                 <p className="text-xs uppercase tracking-widest">Email</p>
                 <a
-                  href="#"
+                  href="mailto:hello@getkindr.com"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   hello@getkindr.com
-                </a>
-                <p className="mt-3 text-xs uppercase tracking-widest">
-                  Phone
-                </p>
-                <a
-                  href="#"
-                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
-                >
-                  (604) 123-4567
                 </a>
               </div>
             </div>
