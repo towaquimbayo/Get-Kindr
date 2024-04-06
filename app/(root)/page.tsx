@@ -301,11 +301,11 @@ const Home = async () => {
       <div className="w-full bg-orange-50">
         <Container>
           <div className="flex flex-col gap-4 justify-between sm:flex-row sm:gap-0">
-            <div className="-ml-2 sm:-ml-0">
+            <div className="-ml-2 sm:-ml-0 mr-16 lg:ml-6 lg:mr-0">
               <Image
                 src="/get_KINDR_logo.png"
-                width="110"
-                height="10"
+                width="150"
+                height="100"
                 quality={100}
                 alt="Get Kindr Logo"
               />
