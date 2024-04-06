@@ -315,7 +315,7 @@ const Home = async () => {
                 <p className="text-xs uppercase tracking-widest">Site Map</p>
                 <div className="h-1"></div>
                 <a
-                  href="http://getKindr.com"
+                  href="/"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Home
@@ -336,14 +336,14 @@ const Home = async () => {
                 </a>
                 <div className="h-0.5"></div>
                 <a
-                  href="http://getKindr.com/events"
+                  href="/events"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Events
                 </a>
                 <div className="h-0.5"></div>
                 <a
-                  href="http://getKindr.com/profile"
+                  href="/profile"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Profile
