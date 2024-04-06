@@ -420,7 +420,7 @@ export default function Add_Event() {
             } else if (res.ok) {
                 console.log("Successfully updated event.")
                 const eventData = await res.json();
-                window.location.href = "/events";
+                window.location.href = "/my-events";
             } else {
                 response.textContent = "Event update failed. Please try again.";
                 response.classList.remove('text-secondary');
