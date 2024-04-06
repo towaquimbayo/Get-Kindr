@@ -92,19 +92,19 @@ const Home = async () => {
         "Kickstart your journey with Kindr by completing your profile. The more details you provide, the better we can tailor volunteer opportunities to match your aspirations, location, and schedule. It's about making an impact where it counts, on your terms.",
     },
     {
-      question: "How do I get started as an organisation?",
+      question: "How do I get started as an organization?",
       answer:
-        "Organisations looking to harness the power of community can start by creating a profile on Kindr. Share your mission and needs; we'll connect you with passionate volunteers ready to make a difference. Your first step? Hosting a volunteer orientation session to welcome new faces to your cause.",
+        "Organizations looking to harness the power of community can start by creating a profile on Kindr. Share your mission and needs; we'll connect you with passionate volunteers ready to make a difference. Your first step? Hosting a volunteer orientation session to welcome new faces to your cause.",
     },
     {
       question: "How do I get started as a donor?",
       answer:
-        "Your contributions are vital in driving change. By donating to Kindr, not only do you support meaningful causes, but you also gain visibility into the impact of your generosity. Stay tuned for opportunities to contribute your time, and contact support@getkindr.com for more details.",
+        "Your contributions are vital in driving change. By donating to Kindr, not only do you support meaningful causes, but you also gain visibility into the impact of your generosity. Stay tuned for opportunities to contribute your time, and contact hello@getkindr.comm for more details.",
     },
     {
       question: "How do I get started as a sponsor?",
       answer:
-        "Sponsors play a crucial role in amplifying our impact. By partnering with Kindr, you help fuel our mission and extend your brand's reach to a community dedicated to positive change. Contact us at support@getkindr.com to explore sponsorship opportunities and how your organisation can contribute to our ecosystem of kindness.",
+        "Sponsors play a crucial role in amplifying our impact. By partnering with Kindr, you help fuel our mission and extend your brand's reach to a community dedicated to positive change. Contact us at hello@getkindr.com to explore sponsorship opportunities and how your organization can contribute to our ecosystem of kindness.",
     },
     {
       question: "What can I do with the Kindness Points that I earn?",
@@ -115,7 +115,7 @@ const Home = async () => {
       question:
         "How can I find out if my charity is on Kindr? What if it's not?",
       answer:
-        "Please browse through our list of participating organisations. If your charity needs to be listed, let them know about the opportunities Kindr offers, or contact us at support@getkindr.com. Your referrals not only expand our community but also earn you Kindness Points.",
+        "Please browse through our list of participating organizations. If your charity needs to be listed, let them know about the opportunities Kindr offers, or contact us at hello@getkindr.com. Your referrals not only expand our community but also earn you Kindness Points.",
     },
     {
       question: "Why use Kindr instead of traditional volunteering methods?",
@@ -310,33 +310,38 @@ const Home = async () => {
                 alt="Get Kindr Logo"
               />
             </div>
-            <div className="flex gap-30">
+            <div className="flex gap-12 md:gap-30">
               <div className="flex flex-col">
                 <p className="text-xs uppercase tracking-widest">Site Map</p>
+                <div className="h-1"></div>
                 <a
                   href="http://localhost:3000/"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Home
                 </a>
+                <div className="h-0.5"></div>
                 <a
                   href="#about"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   About
                 </a>
+                <div className="h-0.5"></div>
                 <a
                   href="#faq"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   FAQ
                 </a>
+                <div className="h-0.5"></div>
                 <a
                   href="http://localhost:3000/events"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Events
                 </a>
+                <div className="h-0.5"></div>
                 <a
                   href="http://localhost:3000/profile"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
@@ -345,12 +350,36 @@ const Home = async () => {
                 </a>
               </div>
               <div className="flex flex-col">
+                <p className="text-xs uppercase tracking-widest">Follow Us</p>
+                <div className="h-1"></div>
+                <a
+                  href="https://www.instagram.com/getkindr/"
+                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
+                >
+                  Instagram
+                </a>
+                <div className="h-2"></div>
+                <a
+                  href="https://www.tiktok.com/@getkindr"
+                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
+                >
+                  Tik Tok
+                </a>
+                <div className="h-2"></div>
+                <a
+                  href="https://www.linkedin.com/company/getkindr/about/"
+                  className="text-gray-600 underline-offset-4 transition-colors hover:underline"
+                >
+                  LinkedIn
+                </a>
+              </div>
+              <div className="flex flex-col">
                 <p className="text-xs uppercase tracking-widest">Email</p>
                 <a
                   href="#"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
-                  support@getkindr.com
+                  hello@getkindr.com
                 </a>
                 <p className="mt-3 text-xs uppercase tracking-widest">
                   Phone
