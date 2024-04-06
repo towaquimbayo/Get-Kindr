@@ -310,38 +310,33 @@ const Home = async () => {
                 alt="Get Kindr Logo"
               />
             </div>
-            <div className="flex gap-12 md:gap-30">
-              <div className="flex flex-col">
+            <div className="flex gap-8 md:gap-30 flex-col md:flex-row">
+              <div className="flex flex-col space-y-1">
                 <p className="text-xs uppercase tracking-widest">Site Map</p>
-                <div className="h-1"></div>
                 <a
                   href="/"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Home
                 </a>
-                <div className="h-0.5"></div>
                 <a
                   href="#about"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   About
                 </a>
-                <div className="h-0.5"></div>
                 <a
                   href="#faq"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   FAQ
                 </a>
-                <div className="h-0.5"></div>
                 <a
                   href="/events"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
                 >
                   Events
                 </a>
-                <div className="h-0.5"></div>
                 <a
                   href="/profile"
                   className="text-gray-600 underline-offset-4 transition-colors hover:underline"
