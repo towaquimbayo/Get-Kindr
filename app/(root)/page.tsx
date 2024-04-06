@@ -394,7 +394,7 @@ const Home = async () => {
               >
                 KINDR
               </a>
-              . All rights reserved. Last Updated: 2024-03-26 12:28:22
+              . All rights reserved.
             </p>
           </div>
         </Container>
