@@ -9,8 +9,8 @@ interface RecoveryResult {
 
 export default async function recover(email: any, OTP: any): Promise<RecoveryResult> {
   const oauth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
+    process.env.OAUTH_CLIENT_ID,
+    process.env.OAUTH_CLIENT_SECRET,
     "http://localhost"
   );
 
@@ -78,8 +78,8 @@ export default async function recover(email: any, OTP: any): Promise<RecoveryRes
 async function sendEmail(mailOptions: any) {
   // Define OAuth2 client.
   const oauth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
+    process.env.OAUTH_CLIENT_ID,
+    process.env.OAUTH_CLIENT_SECRET,
     "http://localhost"
   );
 
