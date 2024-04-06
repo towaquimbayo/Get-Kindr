@@ -57,7 +57,7 @@ export default async function recover(email: any, OTP: any): Promise<RecoveryRes
 
     KINDR Support Team
     
-    Email: support@getkindr.com        Phone: (604) 123-4567
+    Email: hello@getkindr.com        Phone: (604) 123-4567
     `
   }
 

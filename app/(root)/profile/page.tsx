@@ -516,7 +516,7 @@ export default function Profile() {
             satisfaction is our priority!
           </p>
           <Button
-            title="Send email to support@getkindr.com"
+            title="Send email to hello@getkindr.com"
             text="Email Us"
             onClick={() => {
               window.open("mailto:supportgetkindr.com");
