@@ -1,6 +1,11 @@
 # KINDR
 
-(Outdated!) Just run `npm i`, then `npm run dev` to get it up and running!
+# Run the app locally
+### Step 1: Database Setup
+1. Copy the sample `.env` file and fill in with your API and account details:  
+  - Create a PostgreSQL database either locally, or in the cloud (you can use [https://vercel.com/postgres](Vercel) for easy hosting. The various connection strings should be found in the Vercel account hosting the database
+  - Create a Google OAuth app using the following [https://refine.dev/blog/nextauth-google-github-authentication-nextjs/#for-googleprovider-make-sure-you-have-a-google-account](tutorial)
+  - Get a Mapbox access token and a Google Maps API token to view the events map
 
 ### Development mode
 1) Clone the repo
