@@ -72,3 +72,7 @@ You can easily import your `.env` into the project from the Vercel UI:
 
 
 ### Step 4: Deploy
+Deployment can be triggered manually directly from Vercel. Once finished, you should see the newly deployed instance of Get-Kindr, along with a default Vercel URL like `https://get-kindr-abcd1234-kindrs-projects.vercel.app/`.
+
+### Step 5: Domain Setup
+Setting up a domain is as simple as following the instructions on the domain hosting that is being used for that website. In the case of Wix (as was originally the host of getkindr.com, we followed the steps on [https://manage.wix.com/studio/discover](Wix.com).
