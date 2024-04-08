@@ -47,10 +47,6 @@ export default function Event() {
   const status = event.status.charAt(0).toUpperCase() + event.status.slice(1);
 
   useEffect(() => {
-    if (!session && sessionStatus === "unauthenticated") router.push("/");
-  }, [session, sessionStatus, router]);
-
-  useEffect(() => {
     async function fetchEvents() {
       await fetch("/api/events?eventID=" + eventId, {
         method: "GET",
