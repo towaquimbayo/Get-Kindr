@@ -50,8 +50,9 @@ export async function PUT(request: NextRequest) {
         : null;
 
       // Extract the latitude and longitude from the coordinates.
-      const [latitude, longitude] = coordinates;
-
+      let [latitude, longitude] = coordinates.split(",");
+      latitude = Number(latitude);
+      longitude = Number(longitude);
       // If any of the required fields are missing, return an error response.
       if (
         !name ||

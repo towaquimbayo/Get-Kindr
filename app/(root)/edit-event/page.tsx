@@ -53,7 +53,7 @@ export default function Add_Event() {
     const [addressButtonValue, setAddressButtonValue] = useState<string>('Search for a Location');
     let showAddress = false;
     // Coordinates are the latitude and longitude of the selected address.
-    const [valueCoordinates, setValueCoordinates] = useState<string[]>(['', '']);
+    const [valueCoordinates, setValueCoordinates] = useState<string>('');
 
 
     // Load the event data from the API and update the form values.
@@ -91,7 +91,7 @@ export default function Add_Event() {
             }
             setTagsValue(tagsString);
             // Convert the coordinates to a string array and save them.
-            let coordinates = [String(event.latitude), String(event.longitude)];
+            let coordinates = String(event.latitude) + "," + String(event.longitude);
             setValueCoordinates(coordinates);
         }
     }
