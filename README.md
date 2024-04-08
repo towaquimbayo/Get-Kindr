@@ -21,10 +21,54 @@ Both the frontend and backend will run at the same time on different ports:
 # Deploy the app
 You may deploy the app manually using your preferred hosting service. However, Vercel is recommended due to simplicity and their free tier:
 
-### Step 1
-1) Clone the repo
-2) Open the repo in your favourite code editor
-3) Open a terminal and run:
+### Step 1: Import the repository
+Create a Vercel account, and import the Get-Kindr repository:
+  - Add your GitHub account to the list of members of the Get-Kindr organization
+  - Then, you will see the Get-Kindr organization and repository in the Import Repository section of Vercel:
+![image](https://github.com/get-kindr/Get-Kindr/assets/97265671/2ec363d9-54ab-4357-b2b3-66da882dbfde)
+ 
+### Step 2: Add build configuration
+Building requires adding some details to the project configuration:
+  - Set the project template to Next.js
+  - Set the install command to `pnpm install --no-frozen-lockfile`
+![image](https://github.com/get-kindr/Get-Kindr/assets/97265671/b552fbea-0579-498f-a81b-524535c7b59b)
+
+### Step 3: Add environment variables
+For the project to build and deploy correctly, environment variables are required, much like with local development:
+```
+// Required for profile image API
+NEXT_PUBLIC_IMGBB_API_KEY
+
+// Required for Google login
+OAUTH_REFRESH_TOKEN  
+OAUTH_CLIENT_ID
+OAUTH_CLIENT_SECRET
+OAUTH_ACCESS_TOKEN
+
+// Required for Maps API
+NEXT_PUBLIC_GOOGLE_MAPS_API
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+
+// Required for PostgreSQL database
+POSTGRES_USER
+POSTGRES_HOST
+POSTGRES_DATABASE
+POSTGRES_URL_NON_POOLING
+POSTGRES_PRISMA_URL
+POSTGRES_URL
+POSTGRES_PASSWORD
+
+// Required for email recovery
+MAIL_PASSWORD
+MAIL_USERNAME
+
+// Required for production deploy (this can be randomly generated)
+NEXTAUTH_SECRET
+```
+  
+
 ```
 pip install -r requirements.txt
 cd backend && flask run -p 5001
