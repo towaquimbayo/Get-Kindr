@@ -183,7 +183,7 @@ export default function Home() {
             <p className="text-md font-bold uppercase tracking-widest text-tertiary brightness-90 drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]">
               Can&apos;t find the time to help your community?
             </p>
-            <h1 className="py-1 pb-6  font-display !leading-snug text-3xl font-bold tracking-tight text-secondary drop-shadow-[0_0_1px_rgb(100,100,100)] md:text-5xl lg:text-4xl xl:text-5xl">
+            <h1 className="py-1 pb-6 font-display !leading-snug text-3xl font-bold tracking-tight text-secondary drop-shadow-[0_0_1px_rgb(100,100,100)] md:text-5xl lg:text-4xl xl:text-5xl">
               Get Kindr and easily earn rewards helping others today by
               completing &quot;Voluntary Acts of Kindness&quot; or through flexible,
               short-term volunteer events.
