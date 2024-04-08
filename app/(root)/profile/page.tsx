@@ -519,7 +519,7 @@ export default function Profile() {
             title="Send email to hello@getkindr.com"
             text="Email Us"
             onClick={() => {
-              window.open("mailto:supportgetkindr.com");
+              window.open("mailto:hello@getkindr.com");
             }}
             full
             outline
