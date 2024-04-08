@@ -67,24 +67,8 @@ MAIL_USERNAME
 // Required for production deploy (this can be randomly generated)
 NEXTAUTH_SECRET
 ```
-  
+You can easily import your `.env` into the project from the Vercel UI:
+![image](https://github.com/get-kindr/Get-Kindr/assets/97265671/4782b6f0-8d30-4979-a730-111507b39170)
 
-```
-pip install -r requirements.txt
-cd backend && flask run -p 5001
-```
-4) Open another terminal and run:
-```
-cd frontend && npm i && npm run dev
-```
-5) Enjoy!
 
-### Deploy the project
-Deploying the project is very simple:
-1) Go to your favourite hosting service and deploy the repo from GitHub
-2) Add the following script to run upon deploying:
-```
-chmod a+x ./build.sh && ./build.sh
-```
-3) Set the Publishing Directory to `frontend/build`
-4) Congratulations! You should now have KINDR deployed to your site!
+### Step 4: Deploy
