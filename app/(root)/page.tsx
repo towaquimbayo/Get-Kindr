@@ -5,11 +5,9 @@ import Image from "next/image";
 import Container from "@/components/layout/Container";
 import SectionTitle from "@/components/shared/SectionTitle";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { data: session, status: sessionStatus } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession();
   const [events, setEvents] = useState([]);
 
   // Get all events from the database.
@@ -71,45 +69,44 @@ export default function Home() {
 
   const faq_data = [
     {
-      question: "Why Kindr and why now?",
+      question: "What makes Get KINDR ideal for today's volunteers?",
       answer:
-        'In today\'s fast-paced world, many individuals must balance multiple jobs in a gig economy. Kindr emerges as a beacon of hope, offering the "Ethical Side Hustle" by rewarding volunteers for their time. This unique approach frees individuals up time to contribute to causes they care about despite economic pressures.',
+      "Get Kinder acknowledges the modern challenges of time and connectivity. By offering flexible, short-term volunteer opportunities and leveraging social media for good, we provide a platform where kindness acts as a currency, and every individual can contribute to a brighter future, all while earning rewards and making meaningful connections.",
     },
     {
       question: "How do I get started as a volunteer?",
       answer:
-        "Kickstart your journey with Kindr by completing your profile. The more details you provide, the better we can tailor volunteer opportunities to match your aspirations, location, and schedule. It's about making an impact where it counts, on your terms.",
+        'Complete your <a href="/sign-up" class="text-primary font-semibold underline hover:opacity-80">profile</a> to kickstart your journey with Get Kindr. Then, you are ready to search the events section for opportunities to help that match your interests and the impact you want to make.',
+    },
+    {
+      question: 'What qualifies as a "Voluntary Act of Kindness"?',
+      answer:
+      "To incentivize taking the initiative to be kind, we reward those who help others. Any act that clearly and positively impacts individuals, communities, or the environment can qualify. This could range from helping an elderly neighbour with groceries to participating in a local clean-up. To be eligible, complete the Voluntary Acts of Kindness event and post your act of kindness on social media with a photo, video, or a short story about your act with #getkindr. The more views and likes, the more rewards you will be eligible for! It's our way of saying thank you for helping the world Get kindr.",
     },
     {
       question: "How do I get started as an organization?",
       answer:
-        "Organizations looking to harness the power of community can start by creating a profile on Kindr. Share your mission and needs; we'll connect you with passionate volunteers ready to make a difference. Your first step? Hosting a volunteer orientation session to welcome new faces to your cause.",
+        'Organizations looking to harness the power of community can start by creating a profile on Get Kindr <a href="/sign-up" class="text-primary font-semibold underline hover:opacity-80">here</a>. Share your mission and needs; we\'ll connect you with volunteers ready to make a difference. For many organizations, the first event may be hosting a volunteer orientation session to welcome new faces to their cause.',
+    },
+    {
+      question: 'What is "Help-to-Earn"?',
+      answer:
+      '"Help-to-Earn" is the blending of the concepts of rewards with the act of volunteering. Volunteers who help others in their community earn rewards for doing so. Our platform ensures a seamless connection between volunteers, organizations, and donors, fostering a community where every act of kindness is recognized and rewarded. With Get Kindr, see the impact of your contributions as we make Kindness Our Currency.',
     },
     {
       question: "How do I get started as a donor?",
       answer:
-        "Your contributions are vital in driving change. By donating to Kindr, not only do you support meaningful causes, but you also gain visibility into the impact of your generosity. Stay tuned for opportunities to contribute your time, and contact hello@getkindr.comm for more details.",
+        'Your contributions are vital in driving change. By donating to Get Kindr, you support meaningful causes and gain visibility into the impact of your generosity. Stay tuned for opportunities to contribute, and contact <a href="mailto:hello@getkindr.com" class="text-primary font-semibold underline hover:opacity-80" target="_blank">hello@getkindr.com</a> for more details.',
+    },
+    {
+      question: "What can I do with the rewards that I earn?",
+      answer:
+        "At Get Kindr, our rewards reflect our appreciation of the importance of volunteers' time and impact on our communities. As you engage in acts of kindness, your earned points open doors to various rewards, from exclusive partner discounts to the ability to make purchases. Your early and regular involvement ensures a richer reward experience as our community grows.",
     },
     {
       question: "How do I get started as a sponsor?",
       answer:
-        "Sponsors play a crucial role in amplifying our impact. By partnering with Kindr, you help fuel our mission and extend your brand's reach to a community dedicated to positive change. Contact us at hello@getkindr.com to explore sponsorship opportunities and how your organization can contribute to our ecosystem of kindness.",
-    },
-    {
-      question: "What can I do with the Kindness Points that I earn?",
-      answer:
-        "The possibilities with Kindness Points are ever-expanding. From redeeming points for discounts and rewards from our partners to converting them into cash, your early involvement ensures a richer rewards experience as our community grows.",
-    },
-    {
-      question:
-        "How can I find out if my charity is on Kindr? What if it's not?",
-      answer:
-        "Please browse through our list of participating organizations. If your charity needs to be listed, let them know about the opportunities Kindr offers, or contact us at hello@getkindr.com. Your referrals not only expand our community but also earn you Kindness Points.",
-    },
-    {
-      question: "Why use Kindr instead of traditional volunteering methods?",
-      answer:
-        "While word-of-mouth has charm, Kindr broadens your horizon by making it easier to discover volunteering opportunities that might otherwise go unnoticed. Also, earning Kindness Points adds an extra reward to your altruistic efforts. Refer friends to amplify your impact and rewards.",
+        'Sponsors play a crucial role in amplifying our impact. By partnering with Get Kindr, you help fuel our mission and extend your brand\'s reach to a community dedicated to positive change. Contact us at <a href="mailto:hello@getkindr.com" class="text-primary font-semibold underline hover:opacity-80" target="_blank">hello@getkindr.com</a> to explore sponsorship opportunities and how your organization can contribute to our ecosystem of kindness.',
     },
   ];
 
@@ -182,12 +179,14 @@ export default function Home() {
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-orange-200 to-transparent opacity-90"></div>
         <div className="z-20 flex w-full items-end">
-          <div className="mb-16 max-w-xl">
-            <p className="text-md font-bold uppercase tracking-widest text-tertiary brightness-90 drop-shadow-[0_0_2px_rgb(150,100,100)]">
-              earn points with purpose
+          <div className="mb-16 max-w-3xl">
+            <p className="text-md font-bold uppercase tracking-widest text-tertiary brightness-90 drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]">
+              Can&apos;t find the time to help your community?
             </p>
-            <h1 className="py-1 pb-6 font-display text-4xl font-bold leading-snug tracking-tight text-secondary drop-shadow-[0_0_1px_rgb(100,100,100)] md:text-6xl lg:leading-tight xl:text-8xl xl:leading-tight">
-              Spend with freedom.
+            <h1 className="py-1 pb-6 font-display text-4xl font-bold leading-snug tracking-tight text-secondary drop-shadow-[0_0_1px_rgb(100,100,100)] md:text-6xl lg:leading-tight xl:text-5xl xl:leading-tight">
+              Get Kindr and easily earn rewards helping others today by
+              completing “Voluntary Acts of Kindness” or through flexible,
+              short-term volunteer events.
             </h1>
 
             <div className="flex flex-col items-start space-y-3 sm:flex-row sm:items-center sm:space-x-4 sm:space-y-0">
@@ -195,7 +194,7 @@ export default function Home() {
                 href={session ? "/events" : "/sign-up"}
                 className="rounded-2xl bg-primary px-8 py-4 text-center text-sm font-medium uppercase tracking-widest text-white"
               >
-                join us today
+                join us today!
               </a>
             </div>
           </div>
@@ -254,16 +253,26 @@ export default function Home() {
         <div className="lg:w-1/2">
           <SectionTitle
             title="Together we can make a difference."
-            pretitle="Why Kindr"
+            pretitle="About Us"
             align="left"
           >
-            KINDR is not just a rewards program; it&apos;s a movement towards
-            creating a more empathetic and supportive world. By connecting
-            volunteers, charities, sponsors, and donors in a seamless ecosystem,
-            KINDR empowers every participant to make impactful choices.
-            It&apos;s an invitation to live a life of purpose, enjoy the freedom
-            of meaningful rewards, and be part of a community that values
-            actions that make a difference.
+            At Get Kindr, we are changing how people volunteer by introducing
+            &quot;help to earn&quot; to the world. We seamlessly bridge the
+            fragmented volunteering landscape with the rewards of a loyalty
+            program.
+            <br />
+            <br />
+            We are the volunteer platform that makes it simple for donors,
+            organizations, and volunteers to connect and make positive change.
+            Volunteers earn rewards through completing &quot;Voluntary Acts of
+            Kindness&quot; or participating in flexible, short-term volunteer
+            events that fit seamlessly into their busy lives. Through our
+            transparent tracking process, donors can see how their contributions
+            reward volunteers for helping others.
+            <br />
+            <br />
+            Join us today and be part of a community where Kindness is Our
+            Currency and every contribution makes a difference.
           </SectionTitle>
         </div>
 
@@ -280,13 +289,7 @@ export default function Home() {
       </Container>
       <div id="faq" className="mb-10 h-0"></div>
       {/* FAQ */}
-      <SectionTitle title="Frequently Asked Questions" pretitle="FAQ">
-        KINDR redefines the concept of rewards by intertwining the spirit of
-        volunteerism with the benefits of a loyalty program. As a platform that
-        celebrates and incentivises acts of kindness, KINDR offers individuals,
-        charities, sponsors, and donors a unique opportunity to engage in
-        meaningful actions that benefit society.
-      </SectionTitle>
+      <SectionTitle title="Frequently Asked Questions" pretitle="FAQ" />
       <Container>
         <div className="grid gap-10 sm:p-3 md:grid-cols-2 md:gap-8 lg:px-12 xl:px-32">
           {faq_data.map((faq, index) => (
@@ -294,7 +297,10 @@ export default function Home() {
               <h3 className="text-xl font-bold text-secondary">
                 {faq.question}
               </h3>
-              <p className="text-secondary opacity-80">{faq.answer}</p>
+              <div
+                className="text-secondary opacity-80"
+                dangerouslySetInnerHTML={{ __html: faq.answer }}
+              />
             </div>
           ))}
         </div>
