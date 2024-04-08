@@ -12,9 +12,6 @@ export default function Home() {
   const router = useRouter();
   const [events, setEvents] = useState([]);
 
-  // Define redirect for volunteer now button.
-  let volunteerRedirect = "/events";
-
   // Get all events from the database.
   useEffect(() => {
     async function fetchEvents() {
@@ -160,7 +157,7 @@ export default function Home() {
         </div>
         <div className="relative mt-auto flex flex-col items-start sm:flex-row sm:items-center">
           <a
-            href={volunteerRedirect}
+            href={`/event?id=${eventId}`}
             className="mt-4 w-full rounded-2xl bg-primary px-8 py-4 text-center text-sm font-medium tracking-widest text-white"
           >
             VOLUNTEER NOW
