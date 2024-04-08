@@ -36,7 +36,7 @@ export default function NavBar({ session }: { session: Session | null }) {
       className={`fixed top-0 flex w-full justify-center ${scrolled ? "bg-white/50 shadow-md backdrop-blur-xl" : "bg-white/0"
         } z-30 transition-all`}
     >
-      <Container className="flex items-center justify-between !py-4">
+      <Container className="flex items-center justify-between !py-4 px-4 sm:px-8">
         <Link href="/" className="flex items-center">
           <Image
             src="/get_KINDR_logo.png"
@@ -48,7 +48,7 @@ export default function NavBar({ session }: { session: Session | null }) {
           />
         </Link>
         <div className="flex items-center space-x-8">
-          <NavLink href="/#about" name="About Us" />
+          <NavLink href="/#about" name="About" />
           <NavLink href="/events" name="Events" />
           {session && session.accountType.toLowerCase() === "organization" && (
             <>
