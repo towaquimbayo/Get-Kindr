@@ -179,13 +179,13 @@ export default function Home() {
         />
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-orange-200 to-transparent opacity-90"></div>
         <div className="z-20 flex w-full items-end">
-          <div className="mb-16 max-w-3xl">
+          <div className="mb-8 max-w-3xl sm:mb-16">
             <p className="text-md font-bold uppercase tracking-widest text-tertiary brightness-90 drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]">
               Can&apos;t find the time to help your community?
             </p>
-            <h1 className="py-1 pb-6 font-display text-4xl font-bold leading-snug tracking-tight text-secondary drop-shadow-[0_0_1px_rgb(100,100,100)] md:text-6xl lg:leading-tight xl:text-5xl xl:leading-tight">
+            <h1 className="py-1 pb-6  font-display !leading-snug text-3xl font-bold tracking-tight text-secondary drop-shadow-[0_0_1px_rgb(100,100,100)] md:text-5xl lg:text-4xl xl:text-5xl">
               Get Kindr and easily earn rewards helping others today by
-              completing “Voluntary Acts of Kindness” or through flexible,
+              completing &quot;Voluntary Acts of Kindness&quot; or through flexible,
               short-term volunteer events.
             </h1>
 
