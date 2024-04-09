@@ -1,7 +1,8 @@
-// import prisma from "@/lib/prisma";
+import prisma from "@/lib/prisma";
+import { Event } from "@prisma/client";
 
-// // Define a list of dummy events to populate the database.
-// const dummyEvents = [
+// Define a list of dummy events to populate the database.
+const dummyEvents: Event[] = [
 //   {
 //     name: "Community Cleanup Day",
 //     description: "Join us for a day of cleaning up our neighborhood!",
@@ -162,29 +163,29 @@
 //     latitude: 32.7767,
 //     longitude: -96.797,
 //   },
-// ];
+];
 
-// /**
-//  * Populates the database with dummy events.
-//  * @endpoint GET /api/events/populate
-//  * @param {Request} request - The incoming request
-//  * @returns {Response} - The response to the incoming request
-//  */
-// export async function GET(request: Request) {
-//   // Loop through the dummy events and add them to the database.
-//   try {
-//     for (const event of dummyEvents) {
-//       await prisma.event.create({
-//         data: event,
-//       });
-//     }
-//   } catch (error) {
-//     // If there is an error adding the dummy events, return an error response.
-//     console.error(error);
-//     return new Response("Error adding dummy events: " + error, {
-//       status: 500,
-//     });
-//   }
-//   // Return a success message.
-//   return new Response("Events created", { status: 200 });
-// }
+/**
+ * Populates the database with dummy events.
+ * @endpoint GET /api/events/populate
+ * @param {Request} request - The incoming request
+ * @returns {Response} - The response to the incoming request
+ */
+export async function GET(request: Request) {
+  // Loop through the dummy events and add them to the database.
+  try {
+    for (const event of dummyEvents) {
+      await prisma.event.create({
+        data: event,
+      });
+    }
+  } catch (error) {
+    // If there is an error adding the dummy events, return an error response.
+    console.error(error);
+    return new Response("Error adding dummy events: " + error, {
+      status: 500,
+    });
+  }
+  // Return a success message.
+  return new Response("Events created", { status: 200 });
+}
