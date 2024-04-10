@@ -133,7 +133,7 @@ export default function Signup() {
           />
         </Link>
         <h1 className="mb-16 text-center font-display text-4xl font-bold text-secondary md:text-5xl">
-          Get Started with KINDR
+          Lets Get Kindr
         </h1>
         <div className="flex w-full rounded-lg border border-[#eaeaea]">
           <div

@@ -17,7 +17,7 @@ export default function NavBar({ session }: { session: Session | null }) {
     const active = path === href;
 
     useEffect(() => {
-      if (active) document.title = `KINDR - ${name}`;
+      if (active) document.title = `Get Kindr - ${name}`;
     }, [active, name]);
 
     return (
