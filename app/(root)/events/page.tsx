@@ -206,6 +206,13 @@ export default function Events() {
     } else {
       setIsApplying(true);
       const volunteerId = user.volunteerId;
+
+      if (!volunteerId) {
+        setIsApplying(false);
+        console.error("Volunteer ID not found.");
+        return;
+      }
+
       const data = { volunteerId, eventId };
       fetch("/api/events/attendees", {
         method: "POST",
