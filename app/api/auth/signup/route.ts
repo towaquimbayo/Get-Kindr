@@ -78,7 +78,11 @@ export async function POST(req: Request) {
               },
             }
           : {},
-        volunteer: isOrganization ? {} : {},
+        volunteer: isOrganization ? {} : {
+          create: {
+            bio: "This is my bio",
+          },
+        },
         admin: false,
         tokenBalance: isOrganization ? 10000 : 0,
       },
