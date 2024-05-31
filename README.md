@@ -1,78 +1,46 @@
-# KINDR
+# Kindr - Volunteer App
+> A gamified web app that connects volunteers seeking opportunities and organizations hosting events by allowing volunteers to apply for available events and organizations to create new volunteer opportunities.
 
-# Run the app locally  
-### Step 1: Environment Variables Setup
-Copy the sample `.env` file and fill in with your API and account details:  
-  - Create a PostgreSQL database either locally, or in the cloud (you can use [https://vercel.com/postgres](Vercel) for easy hosting. The various connection strings should be found in the Vercel account hosting the database
-  - Create a Google OAuth app using the following [https://refine.dev/blog/nextauth-google-github-authentication-nextjs/#for-googleprovider-make-sure-you-have-a-google-account](tutorial)
-  - Get a Mapbox access token and a Google Maps API token to view the events map
+View the live project [_here_](https://getkindr.com/).
 
-### Step 2: Install dependencies  
-Installing required dependencies requires Node and npm:
-  - Get Node and NPM
-  - Execute `npm i --legacy-peer-deps` on the root directory
+## Table of Contents
+* [Screenshots](#screenshots)
+* [Technologies](#technologies)
+* [Features](#features)
+* [Acknowledgements](#acknowledgements)
 
-### Step 3: Run the app
-Both the frontend and backend will run at the same time on different ports:
-  - Execute `npm run dev` to run locally
-  - This will also build the prisma schema for your PostgreSQL database if you haven't defined the schema already
-  - This will also update the schema if there is any changes to the `schema.prisma` file
+## Screenshots
+| ![Login Page](screenshots/login.png) | ![Home Page](screenshots/home.png) |
+|:--:|:--:|
+| _Login Page_ | _Home Page_ |
+| ![Events Page](screenshots/events.png) | ![Event Page](screenshots/event.png) |
+| _Events Page_ | _Event Page_ |
+| ![Profile Page](screenshots/profile.png) | ![My Events Page](screenshots/my_events.png) |
+| _Profile Page_ | _My Events Page_ |
 
-# Deploy the app
-You may deploy the app manually using your preferred hosting service. However, Vercel is recommended due to simplicity and their free tier:
+## Technologies
+- Next.js `v13.5.5`
+- TypeScript
+- TailwindCSS
+- PostgreSQL
+- Prisma
+- Vercel
+- JWT Authentication
+- Google Maps API
 
-### Step 1: Import the repository
-Create a Vercel account, and import the Get-Kindr repository:
-  - Add your GitHub account to the list of members of the Get-Kindr organization
-  - Then, you will see the Get-Kindr organization and repository in the Import Repository section of Vercel:
-![image](https://github.com/get-kindr/Get-Kindr/assets/97265671/2ec363d9-54ab-4357-b2b3-66da882dbfde)
- 
-### Step 2: Add build configuration
-Building requires adding some details to the project configuration:
-  - Set the project template to Next.js
-  - Set the install command to `pnpm install --no-frozen-lockfile`
-![image](https://github.com/get-kindr/Get-Kindr/assets/97265671/b552fbea-0579-498f-a81b-524535c7b59b)
+## Features
+- __User Authentication__: Implement JSON Web Tokens for secure user authentication and session management.
+  - __Forgot Password__: Functionality for users to reset their password through a secure OTP process.
+  - __Profile Management__: Users can update their profile information and change their password.
+- __Event Management__: Organizations can easily create and manage their event listings.
+  - __Event Details__: Comprehensive event information, including location, date, time, tags, available seats, token rewards, and description.
+  - __Apply to Events__: Volunteers can browse and apply to events that match their interests and skills.
+  - __Event Filtering and Sorting__: Users can filter events by name, tags, and location. Events can also be sorted by number of tokens and date.
+  - __Maps Integration__: Display event locations on an interactive map using the Google Maps API.
+- __Token System__: Users can earn tokens by volunteering at events and spend them on rewards.
 
-### Step 3: Add environment variables
-For the project to build and deploy correctly, environment variables are required, much like with local development:
-```
-// Required for profile image API
-NEXT_PUBLIC_IMGBB_API_KEY
-
-// Required for Google login
-OAUTH_REFRESH_TOKEN  
-OAUTH_CLIENT_ID
-OAUTH_CLIENT_SECRET
-OAUTH_ACCESS_TOKEN
-
-// Required for Maps API
-NEXT_PUBLIC_GOOGLE_MAPS_API
-NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
-
-// Required for PostgreSQL database
-POSTGRES_USER
-POSTGRES_HOST
-POSTGRES_DATABASE
-POSTGRES_URL_NON_POOLING
-POSTGRES_PRISMA_URL
-POSTGRES_URL
-POSTGRES_PASSWORD
-
-// Required for email recovery
-MAIL_PASSWORD
-MAIL_USERNAME
-
-// Required for production deploy (this can be randomly generated)
-NEXTAUTH_SECRET
-```
-You can easily import your `.env` into the project from the Vercel UI:
-![image](https://github.com/get-kindr/Get-Kindr/assets/97265671/4782b6f0-8d30-4979-a730-111507b39170)
-
-
-### Step 4: Deploy
-Deployment can be triggered manually directly from Vercel. Once finished, you should see the newly deployed instance of Get-Kindr, along with a default Vercel URL like `https://get-kindr-abcd1234-kindrs-projects.vercel.app/`.
-
-### Step 5: Domain Setup
-Setting up a domain is as simple as following the instructions on the domain hosting that is being used for that website. In the case of Wix (as was originally the host of getkindr.com, we followed the steps on [https://manage.wix.com/studio/discover](Wix.com).
+## Acknowledgements
+* [Towa Quimbayo](https://github.com/towaquimbayo)
+* [Juan Escalada](https://github.com/jescalada/)
+* [Maximillian Yong](https://github.com/MaximillianYong)
+* [Braden Rogers](https://github.com/BRogers-BCIT)
