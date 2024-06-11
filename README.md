@@ -1,6 +1,6 @@
-# Get Kindr
-
 <img align="right" src="https://visitor-badge.laobi.icu/badge?page_id=towaquimbayo.Get-Kindr" />
+
+# Get Kindr
 
 A gamified web application that connects volunteers seeking opportunities and organizations hosting events by allowing volunteers to apply for available events and organizations to create new volunteer opportunities.
 
