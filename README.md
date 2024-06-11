@@ -28,7 +28,7 @@ _Check out the live project [_here_](https://getkindr.com/)._
 | _Login Page_ | _Home Page_ |
 | ![Events Page](screenshots/events.png) | ![Event Page](screenshots/event.png) |
 | _Events Page_ | _Event Page_ |
-| ![Profile Page](screenshots/profile.png) | ![My Events Page](screenshots/my_events.png) |
+| ![Profile Page](screenshots/profile.png) | ![My Events Page](screenshots/my-events.png) |
 | _Profile Page_ | _My Events Page_ |
 
 ## Acknowledgements
