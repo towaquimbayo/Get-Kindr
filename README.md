@@ -2,6 +2,7 @@
 
 # Get Kindr
 
+![Get-Kindr Thumbnail](screenshots/get-kindr-thumbnail.jpg)
 A gamified web application that connects volunteers seeking opportunities and organizations hosting events by allowing volunteers to apply for available events and organizations to create new volunteer opportunities.
 
 _Check out the live project [_here_](https://getkindr.com/)._
