@@ -25,6 +25,7 @@ _Check out the live project [_here_](https://getkindr.com/)._
 ## Screenshots
 
 | ![Login Page](screenshots/login.png) | ![Home Page](screenshots/home.png) |
+|:--:|:--:|
 | _Login Page_ | _Home Page_ |
 | ![Events Page](screenshots/events.png) | ![Event Page](screenshots/event.png) |
 | _Events Page_ | _Event Page_ |
