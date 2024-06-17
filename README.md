@@ -103,10 +103,10 @@ _Check out the live project [_here_](https://getkindr.com/)._
 For the project to run correctly, environment variables are required. Rename the `.env.example` to `.env`.
 
 1. Create a free PostgreSQL database at <https://vercel.com/postgres/> and fill in your PostgreSQL account details.
-2. Create a Google OAuth app at <https://refine.dev/blog/nextauth-google-github-authentication-nextjs/#for-googleprovider-make-sure-you-have-a-google-account/>
-3. Create a free ImgBB account to obtain the ImgBB API key at <https://api.imgbb.com/>
-4. Create a free Mapbox account to obtain a Mapbox access token at <https://docs.mapbox.com/help/tutorials/get-started-tokens-api/>
-5. Create a free Google Cloud Console account to obtain the Google Maps API key at <https://developers.google.com/maps/documentation/javascript/get-api-key/>
+2. Create a Google OAuth app at <https://refine.dev/blog/nextauth-google-github-authentication-nextjs/#for-googleprovider-make-sure-you-have-a-google-account/>.
+3. Create a free ImgBB account to obtain the ImgBB API key at <https://api.imgbb.com/>.
+4. Create a free Mapbox account to obtain a Mapbox access token at <https://docs.mapbox.com/help/tutorials/get-started-tokens-api/>.
+5. Create a free Google Cloud Console account to obtain the Google Maps API key at <https://developers.google.com/maps/documentation/javascript/get-api-key/>.
 
 </details>
 
