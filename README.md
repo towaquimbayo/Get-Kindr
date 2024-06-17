@@ -75,13 +75,13 @@ _Check out the live project [_here_](https://getkindr.com/)._
 
 ### Installation
 
-1. Install latest npm package version.
+1. Install the latest npm package version.
 
   ```sh
   npm install npm@latest -g
   ```
 
-2. Clone the repository to local machine.
+2. Clone the repository to your local machine.
 
   ```sh
   git clone https://github.com/towaquimbayo/Get-Kindr.git
@@ -104,9 +104,9 @@ For the project to run correctly, environment variables are required. Rename the
 
 1. Create a free PostgreSQL database at <https://vercel.com/postgres/> and fill in your PostgreSQL account details.
 2. Create a Google OAuth app at <https://refine.dev/blog/nextauth-google-github-authentication-nextjs/#for-googleprovider-make-sure-you-have-a-google-account/>
-3. Create a free ImgBB account to obtain ImgBB API key at <https://api.imgbb.com/>
-4. Create a free Mapbox account to obtain Mapbox access token at <https://docs.mapbox.com/help/tutorials/get-started-tokens-api/>
-5. Create a free Google Cloud Console account to obtain Google Maps API key at <https://developers.google.com/maps/documentation/javascript/get-api-key/>
+3. Create a free ImgBB account to obtain the ImgBB API key at <https://api.imgbb.com/>
+4. Create a free Mapbox account to obtain a Mapbox access token at <https://docs.mapbox.com/help/tutorials/get-started-tokens-api/>
+5. Create a free Google Cloud Console account to obtain the Google Maps API key at <https://developers.google.com/maps/documentation/javascript/get-api-key/>
 
 </details>
 
@@ -140,7 +140,7 @@ Our event management system empowers organizations to create, manage, and track 
 
 * __Event Details__: Each event includes detailed information such as location, date, time, tags, available seats, token rewards, and a description, along with a list of volunteer applicants.
 * __Event Applications__: Volunteers can easily browse and apply to events that match their interests and skills.
-* __Event Searching, Filtering, and Sorting__: Users can filter events by name, tags, and location. Additionally, events can be sorted by the number of tokens and date, and volunteers can utilize a search tab to find specific events.
+* __Event Searching, Filtering, and Sorting__: Users can filter events by name, tags, and location. Additionally, events can be sorted by the number of tokens and dates, and volunteers can utilize a search tab to find specific events.
 * __Interactive Maps Integration__: Event locations are displayed on an interactive map using the Google Maps API and Mapbox GL, providing a visual and navigable interface.
 * __Event Completion__: Organizations have the authority to close or complete events after their date has passed, rewarding volunteers with tokens for their participation.
 
